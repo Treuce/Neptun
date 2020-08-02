@@ -1,0 +1,581 @@
+﻿<local:BasePage x:TypeArguments="local:TFViewModel"
+				x:Class="Neptun.TFPage"
+				xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+				xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+				xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+				xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+				xmlns:local="clr-namespace:Neptun"
+				xmlns:core="clr-namespace:Neptun.Core;assembly=Neptun.Core"
+				xmlns:wpfTool="clr-namespace:Xceed.Wpf.Toolkit;assembly=Xceed.Wpf.Toolkit"
+				mc:Ignorable="d"
+				x:Name="Page"
+				d:DesignHeight="690"
+				d:DesignWidth="700"
+				d:DataContext="{x:Static local:TFPageDesignModel.Instance}">
+	<Border Background="Transparent"
+			BorderBrush="{StaticResource BackgroundDarkBrush_2}"
+			BorderThickness="4"
+			CornerRadius="5">
+		<Grid>
+			<Grid.RowDefinitions>
+				<RowDefinition Height="Auto" />
+				<RowDefinition Height="Auto" />
+				<RowDefinition Height="*" />
+			</Grid.RowDefinitions>
+
+			<!--Filters-->
+			<Grid Background="Transparent"
+				  Grid.Row="0"
+				  Height="Auto"
+				  Margin="15,20,0,0">
+				<Grid.ColumnDefinitions>
+					<ColumnDefinition Width="0.25*" />
+					<ColumnDefinition Width="0.25*" />
+					<ColumnDefinition Width="0.25*" />
+					<ColumnDefinition Width="0.25*" />
+				</Grid.ColumnDefinitions>
+				<Grid.RowDefinitions>
+					<RowDefinition Height="Auto" />
+					<RowDefinition Height="Auto" />
+					<RowDefinition Height="Auto" />
+					<RowDefinition Height="Auto" />
+					<RowDefinition Height="Auto" />
+					<RowDefinition Height="Auto" />
+					<RowDefinition Height="Auto" />
+					<RowDefinition Height="Auto" />
+				</Grid.RowDefinitions>
+
+				<Label Grid.Row="0"
+					   Grid.Column="0"
+					   Content="Félévek" />
+				<ComboBox Style="{StaticResource ComboBoxTest2}"
+						  Height="20"
+						  Grid.Column="1"
+						  FontSize="{StaticResource FontSizeRegular}"
+						  Width="Auto"
+						  IsSynchronizedWithCurrentItem="True"
+						  SelectedIndex="{Binding SelectedSemesterIndex}"
+						  ItemsSource="{Binding Path=Semesters,Mode=OneWay}">
+				</ComboBox>
+				<Label Grid.Row="1"
+					   Content="Tárgytípus" />
+				<StackPanel Grid.Row="1"
+							Grid.Column="1">
+					<RadioButton GroupName="Tárgytípus"
+								 IsChecked="{Binding Path=type, Converter={local:EnumBooleanConverter}, ConverterParameter=Mintatantervi}"
+								 Content="Mintatanterv" />
+					<RadioButton GroupName="Tárgytípus"
+								 IsChecked="{Binding Path=type, Converter={local:EnumBooleanConverter}, ConverterParameter=MindenIntezmenyi}"
+								 Content="További intézményi tárgyak" />
+				</StackPanel>
+				<Label Grid.Row="3"
+					   Content="Tárgynév" />
+				<TextBox Grid.Row="3"
+						 Grid.Column="1"
+						 BorderThickness="2"
+						 Padding="5,2,0,2"
+						 FontSize="{StaticResource FontSizeSmaller}"
+						 Background="Transparent"
+						 BorderBrush="{StaticResource BackgroundDarkBrush_2}"
+						 Tag="Tárgynév"
+						 Text="{Binding SubjectName, UpdateSourceTrigger=PropertyChanged}">
+				</TextBox>
+				<Label Grid.Row="4"
+					   Content="Tárgykód" />
+				<TextBox Grid.Row="4"
+						 Grid.Column="1"
+						 BorderThickness="2"
+						 Padding="5,2,0,2"
+						 FontSize="{StaticResource FontSizeSmaller}"
+						 Tag="Tárgykód"
+						 Background="Transparent"
+						 BorderBrush="{StaticResource BackgroundDarkBrush_2}"
+						 Text="{Binding SubjectCode, UpdateSourceTrigger=PropertyChanged}">
+					<TextBox.ToolTip>
+						<ToolTip Content="Pontos vesszővel elválasztva több tárgy kód is megadható, de csak minden intézményi tárgy esetén." />
+					</TextBox.ToolTip>
+				</TextBox>
+				<Label Grid.Row="5"
+					   Content="Oktató" />
+				<TextBox Grid.Row="5"
+						 Grid.Column="1"
+						 BorderThickness="2"
+						 Padding="5,2,0,2"
+						 FontSize="{StaticResource FontSizeSmaller}"
+						 Tag="Oktató"
+						 Background="Transparent"
+						 BorderBrush="{StaticResource BackgroundDarkBrush_2}"
+						 Text="{Binding Teacher, UpdateSourceTrigger=PropertyChanged}" />
+				<Label Grid.Row="6"
+					   Content="Kurzuskód" />
+				<TextBox Grid.Row="6"
+						 Grid.Column="1"
+						 BorderThickness="2"
+						 Padding="5,2,0,2"
+						 FontSize="{StaticResource FontSizeSmaller}"
+						 Tag="Kurzuskód"
+						 Background="Transparent"
+						 BorderBrush="{StaticResource BackgroundDarkBrush_2}"
+						 Text="{Binding CourseCode, UpdateSourceTrigger=PropertyChanged}" />
+				<Label Grid.Row="0"
+					   Grid.Column="2"
+					   Margin="20,0,0,0"
+					   Content="Nyelv" />
+				<ComboBox Style="{StaticResource ComboBoxTest2}"
+						  Height="20"
+						  Margin="0,0,30,0"
+						  Grid.Column="3"
+						  FontSize="{StaticResource FontSizeRegular}"
+						  Width="Auto"
+						  IsSynchronizedWithCurrentItem="True"
+						  SelectedIndex="{Binding SelectedLanguageIndex}"
+						  ItemsSource="{Binding Path=Languages,Mode=OneWay}">
+				</ComboBox>
+				<Label Grid.Row="2"
+					   Grid.Column="2"
+					   Margin="20,0,0,0"
+					   Visibility="{Binding MintaTantervView, Converter={local:BooleanToVisiblityGoneConverter}, ConverterParameter=1, FallbackValue=Collapsed, TargetNullValue=Collapsed}"
+					   Content="Tárgyak oldalanként" />
+				<ComboBox Grid.Row="2"
+						  x:Name="PageSizeComboBox"
+						  Style="{StaticResource ComboBoxTest2}"
+						  Grid.Column="3"
+						  HorizontalAlignment="Left"
+						  SelectedValue="{Binding PageSize}"
+						  Height="20"
+						  Margin="0,0,30,0"
+						  VerticalContentAlignment="Center"
+						  HorizontalContentAlignment="Stretch"
+						  FontFamily="{StaticResource LatoBold}"
+						  ItemsSource="{Binding PageSizes}"
+						  FontSize="{StaticResource FontSizeRegular}"
+						  Background="Transparent"
+						  Width="100"
+						  ClipToBounds="True"
+						  Visibility="{Binding MintaTantervView, Converter={local:BooleanToVisiblityGoneConverter}, ConverterParameter=1, FallbackValue=Visible}">
+				</ComboBox>
+				<Label Grid.Row="1"
+					   Grid.Column="2"
+					   Margin="20,0,0,0"
+					   Content="Wait time" />
+				<wpfTool:DoubleUpDown Grid.Row="1"
+									  Grid.Column="3"
+									  Minimum="0"
+									  Padding="10,0,10,0"
+									  Maximum="20"
+									  HorizontalAlignment="Left"
+									  FormatString="F3"
+									  Increment="0.2"
+									  Background="Transparent"
+									  UpdateValueOnEnterKey="True"
+									  Value="{Binding WaitTime}"
+									  ToolTip="Ennyit vár a megerősítéssel percben">
+				</wpfTool:DoubleUpDown>
+				<Button Grid.Row="7"
+						Padding="10"
+						Content="Listázás"
+						VerticalAlignment="Center"
+						HorizontalAlignment="Center"
+						HorizontalContentAlignment="Stretch"
+						Height="Auto"
+						FontSize="{StaticResource FontSizeSmall}"
+						Command="{Binding ListSubjects}" />
+				<StackPanel Grid.Row="7" Orientation="Horizontal"
+							Grid.Column="1">
+					<Button Grid.Row="7"
+							Padding="5"
+							Margin="0,0,10,0"
+							Grid.Column="1"
+							Content="Kijelölt tárgyak felvétele"
+							Width="Auto"
+							VerticalAlignment="Center"
+							HorizontalAlignment="Center"
+							HorizontalContentAlignment="Stretch"
+							Height="Auto"
+							FontSize="{StaticResource FontSizeSmall}"
+							Command="{Binding TakeListedSubjects}" />
+					<Button Grid.Row="7"
+							Padding="5"
+							Grid.Column="1"
+							Content="Felvett tárgyak leadása"
+							VerticalAlignment="Center"
+							HorizontalAlignment="Stretch"
+							HorizontalContentAlignment="Stretch"
+							Height="Auto"
+							FontSize="{StaticResource FontSizeSmall}"
+							Command="{Binding ForgetListedSubjects}" />
+				</StackPanel>
+				
+				<StackPanel Grid.Row="7"
+							Visibility="{Binding MintaTantervView, Converter={local:BooleanToVisiblityGoneConverter}, ConverterParameter=1, FallbackValue=Visible}"
+							Grid.Column="3"
+							Orientation="Horizontal">
+					<Button Padding="10,5"
+							Name="FirstPageButton"
+							FontSize="{StaticResource FontSizeLarge}"
+							Content="{StaticResource FontAwesomeDoubleLeft}"
+							FontFamily="{StaticResource FontAwesome}"
+							Margin="10,0,10,0"
+							VerticalAlignment="Center"
+							HorizontalAlignment="Center"
+							IsEnabled="{Binding isFirstPageEnabled}"
+							HorizontalContentAlignment="Stretch"
+							Height="Auto"
+							Command="{Binding FirstPage}">
+						<Button.ToolTip>
+							<ToolTip Content="Első oldal" />
+						</Button.ToolTip>
+					</Button>
+					<Button Padding="10,5"
+							FontSize="{StaticResource FontSizeLarge}"
+							Content="{StaticResource FontAwesomeLeft}"
+							Margin="10,0,10,0"
+							VerticalAlignment="Center"
+							IsEnabled="{Binding isPrevPageEnabled}"
+							HorizontalAlignment="Center"
+							FontFamily="{StaticResource FontAwesome}"
+							HorizontalContentAlignment="Stretch"
+							Height="Auto"
+							Command="{Binding NavigateToLeft}">
+						<Button.ToolTip>
+							<ToolTip Content="Előző oldal" />
+						</Button.ToolTip>
+					</Button>
+					<TextBlock Margin="10,0,10,0"
+							   Text="{Binding CurrentPage}"
+							   VerticalAlignment="Center"
+							   FontFamily="{StaticResource LatoBold}"
+							   FontSize="{StaticResource FontSizeLarge}">
+						<TextBlock.ToolTip>
+							<ToolTip Content="Aktuális oldal" />
+						</TextBlock.ToolTip>
+					</TextBlock>
+					<Button Padding="10,5"
+							FontSize="{StaticResource FontSizeLarge}"
+							Content="{StaticResource FontAwesomeRight}"
+							Margin="10,0,10,0"
+							IsEnabled="{Binding isNextPageEnabled}"
+							VerticalAlignment="Center"
+							HorizontalAlignment="Center"
+							FontFamily="{StaticResource FontAwesome}"
+							HorizontalContentAlignment="Stretch"
+							Height="Auto"
+							Command="{Binding NavigateToRight}">
+						<Button.ToolTip>
+							<ToolTip Content="Következő oldal" />
+						</Button.ToolTip>
+					</Button>
+					<Button Padding="10,5"
+							FontSize="{StaticResource FontSizeLarge}"
+							Content="{StaticResource FontAwesomeDoubleRight}"
+							Margin="10,0,10,0"
+							IsEnabled="{Binding isLastPageEnabled}"
+							VerticalAlignment="Center"
+							HorizontalAlignment="Center"
+							FontFamily="{StaticResource FontAwesome}"
+							HorizontalContentAlignment="Stretch"
+							Height="Auto"
+							Command="{Binding LastPage}">
+						<Button.ToolTip>
+							<ToolTip Content="Utolsó oldal" />
+						</Button.ToolTip>
+					</Button>
+
+				</StackPanel>
+			</Grid>
+
+			<!--Main Content-->
+			<!--#region Mintatantervi view -->
+			<Border Margin="10"
+					Visibility="{Binding MintaTantervView, Converter={local:BooleanToVisiblityGoneConverter}}"
+					Background="Transparent"
+					BorderBrush="{StaticResource BackgroundDarkBrush_2}"
+					Padding="0,0,0,0"
+					BorderThickness="2"
+					CornerRadius="10"
+					Grid.Row="1">
+				<Grid Margin="0,0,0,0"
+					  Background="Transparent">
+					<Grid.ColumnDefinitions>
+						<ColumnDefinition Width="0.2*" />
+						<ColumnDefinition Width="0.2*" />
+						<ColumnDefinition Width="0.2*" />
+						<ColumnDefinition Width="0.2*" />
+						<ColumnDefinition Width="0.2*" />
+					</Grid.ColumnDefinitions>
+					<TextBox Padding="5"
+							 VerticalAlignment="Center"
+							 HorizontalAlignment="Center"
+							 BorderThickness="0"
+							 FontFamily="{StaticResource LatoBold}"
+							 FontSize="{StaticResource FontSizeSmall}"
+							 Text="Tárgynév"
+							 Background="Transparent" />
+					<TextBox Grid.Column="1"
+							 Padding="5"
+							 VerticalAlignment="Center"
+							 HorizontalAlignment="Center"
+							 BorderThickness="0"
+							 FontFamily="{StaticResource LatoBold}"
+							 FontSize="{StaticResource FontSizeSmall}"
+							 Text="Tárgykód"
+							 Background="Transparent" />
+					<TextBox Grid.Column="2"
+							 Padding="5"
+							 VerticalAlignment="Center"
+							 HorizontalAlignment="Center"
+							 BorderThickness="0"
+							 FontFamily="{StaticResource LatoBold}"
+							 FontSize="{StaticResource FontSizeSmall}"
+							 Text="Tárgycsoport"
+							 Background="Transparent" />
+					<TextBox Grid.Column="3"
+							 Padding="5"
+							 VerticalAlignment="Center"
+							 HorizontalAlignment="Center"
+							 BorderThickness="0"
+							 FontFamily="{StaticResource LatoBold}"
+							 FontSize="{StaticResource FontSizeSmall}"
+							 Text="Kredit"
+							 Background="Transparent" />
+					<TextBox Grid.Column="4"
+							 Padding="5"
+							 VerticalAlignment="Center"
+							 HorizontalAlignment="Center"
+							 BorderThickness="0"
+							 FontFamily="{StaticResource LatoBold}"
+							 FontSize="{StaticResource FontSizeSmall}"
+							 Text="Típus"
+							 Background="Transparent" />
+				</Grid>
+			</Border>
+
+			<Grid Margin="15"
+				  Visibility="{Binding MintaTantervView, Converter={local:BooleanToVisiblityGoneConverter}}"
+				  Grid.Row="2"
+				  x:Name="BindToThisWidth">
+				<ListView ScrollViewer.CanContentScroll="False"
+						  ScrollViewer.VerticalScrollBarVisibility="Auto"
+						  Margin="0"
+						  VerticalContentAlignment="Top"
+						  HorizontalContentAlignment="Left"
+						  Padding="10,0,0,0"
+						  ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+						  Grid.Row="3"
+						  Background="Transparent"
+						  BorderThickness="0"
+						  ItemsSource="{Binding Subjects}"
+						  Template="{DynamicResource ListBoxControlTemplate1}">
+					<ListView.Resources>
+						<Style TargetType="{x:Type Border}">
+							<Setter Property="CornerRadius"
+									Value="7" />
+							<Setter Property="BorderThickness"
+									Value="10" />
+						</Style>
+
+					</ListView.Resources>
+					<ListView.BorderBrush>
+						<StaticResource ResourceKey="BackgroundDarkBrush_2" />
+					</ListView.BorderBrush>
+					<ListView.ItemTemplate>
+						<DataTemplate>
+							<Grid Margin="0"
+								  Width="{Binding ActualWidth, ElementName=BindToThisWidth}"
+								  Background="{Binding background, FallbackValue=Transparent, TargetNullValue=Transparent}">
+								<Grid.ColumnDefinitions>
+									<ColumnDefinition Width="0.2*" />
+									<ColumnDefinition Width="0.2*" />
+									<ColumnDefinition Width="0.2*" />
+									<ColumnDefinition Width="0.2*" />
+									<ColumnDefinition Width="0.2*" />
+								</Grid.ColumnDefinitions>
+								<Grid.RowDefinitions>
+									<RowDefinition Height="Auto" />
+									<RowDefinition Height="Auto" />
+								</Grid.RowDefinitions>
+								<ContentControl PreviewMouseDoubleClick="ExpandTFControl">
+									<TextBlock Grid.Column="0"
+											   TextWrapping="WrapWithOverflow"
+											   Text="{Binding Name}"
+											   Foreground="{StaticResource WordDarkBlueBrush}"
+											   FontFamily="{StaticResource LatoBold}"
+											   Margin="20,5,0,5"
+											   HorizontalAlignment="Left"
+											   VerticalAlignment="Center" />
+								</ContentControl>
+								<TextBlock Grid.Column="1"
+										   TextWrapping="WrapWithOverflow"
+										   Text="{Binding Code}"
+										   Margin="60,0,5,0"
+										   VerticalAlignment="Center"
+										   HorizontalAlignment="Left" />
+								<TextBlock TextWrapping="WrapWithOverflow"
+										   Margin="60,0,5,0"
+										   VerticalAlignment="Center"
+										   HorizontalAlignment="Left"
+										   Grid.Column="2"
+										   Text="{Binding Category}" />
+								<TextBlock Grid.Column="3"
+										   TextWrapping="WrapWithOverflow"
+										   Text="{Binding Credit}"
+										   VerticalAlignment="Center"
+										   FontFamily="{StaticResource LatoBold}"
+										   Margin="110,0,20,0"
+										   HorizontalAlignment="Left" />
+								<TextBlock Grid.Column="4"
+										   TextWrapping="WrapWithOverflow"
+										   Text="{Binding type}"
+										   VerticalAlignment="Center"
+										   FontFamily="{StaticResource LatoRegular}"
+										   Margin="80,0,20,0"
+										   HorizontalAlignment="Left" />
+								<!--// Custom control here for other stuff-->
+								<local:TFControl Grid.ColumnSpan="5"
+												 Grid.Row="1"
+												 DataContext="{x:Null}"
+												 Visibility="{Binding Path=DataContext.InfoExpanded, Converter={local:BooleanToVisiblityGoneConverter}, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Grid}}, FallbackValue=Collapsed, TargetNullValue=Collapsed}"
+												 Width="{Binding ActualWidth, ElementName=BindToThisWidth}"
+												 FontSize="10" />
+							</Grid>
+						</DataTemplate>
+					</ListView.ItemTemplate>
+				</ListView>
+			</Grid>
+			<!--#endregion-->
+
+			<!--#region Minden intézményi tárgy view-->
+
+			<Border Margin="10"
+					Visibility="{Binding MintaTantervView, Converter={local:BooleanToVisiblityGoneConverter}, ConverterParameter=1, FallbackValue=Visible}"
+					Background="Transparent"
+					BorderBrush="{StaticResource BackgroundDarkBrush_2}"
+					Padding="0,0,0,0"
+					BorderThickness="2"
+					CornerRadius="10"
+					Grid.Row="1">
+				<Grid Margin="0,0,0,0"
+					  Background="Transparent">
+					<Grid.ColumnDefinitions>
+						<ColumnDefinition Width="0.3*" />
+						<ColumnDefinition Width="0.3*" />
+						<ColumnDefinition Width="0.3*" />
+					</Grid.ColumnDefinitions>
+					<TextBox Padding="5"
+							 VerticalAlignment="Center"
+							 HorizontalAlignment="Center"
+							 BorderThickness="0"
+							 FontFamily="{StaticResource LatoBold}"
+							 FontSize="{StaticResource FontSizeSmall}"
+							 Text="Tárgynév"
+							 Background="Transparent" />
+					<TextBox Grid.Column="1"
+							 Padding="5"
+							 VerticalAlignment="Center"
+							 HorizontalAlignment="Center"
+							 BorderThickness="0"
+							 FontFamily="{StaticResource LatoBold}"
+							 FontSize="{StaticResource FontSizeSmall}"
+							 Text="Tárgykód"
+							 Background="Transparent" />
+					<TextBox Grid.Column="2"
+							 Padding="5"
+							 VerticalAlignment="Center"
+							 HorizontalAlignment="Center"
+							 BorderThickness="0"
+							 FontFamily="{StaticResource LatoBold}"
+							 FontSize="{StaticResource FontSizeSmall}"
+							 Text="Kredit"
+							 Background="Transparent" />
+				</Grid>
+			</Border>
+			<!--<Border Grid.Row="2" BorderBrush="Black" BorderThickness="4" Height="Auto">-->
+
+			<Grid Margin="15"
+				  Grid.Row="2"
+				  Visibility="{Binding MintaTantervView, Converter={local:BooleanToVisiblityGoneConverter}, ConverterParameter=1}"
+				  x:Name="BindToThisWidth2">
+				<ListView ScrollViewer.CanContentScroll="False"
+						  ScrollViewer.VerticalScrollBarVisibility="Auto"
+						  Margin="0,0.2,0,-0.4"
+						  VerticalContentAlignment="Top"
+						  HorizontalContentAlignment="Left"
+						  Padding="10,0,0,0"
+						  ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+						  Grid.Row="2"
+						  Background="Transparent"
+						  BorderThickness="0"
+						  ItemsSource="{Binding Subjects}"
+						  Template="{DynamicResource ListBoxControlTemplate1}">
+					<ListView.Resources>
+						<Style TargetType="{x:Type Border}">
+							<Setter Property="CornerRadius"
+									Value="7" />
+							<Setter Property="BorderThickness"
+									Value="10" />
+						</Style>
+
+					</ListView.Resources>
+					<ListView.BorderBrush>
+						<StaticResource ResourceKey="BackgroundDarkBrush_2" />
+					</ListView.BorderBrush>
+					<ListView.ItemsPanel>
+						<ItemsPanelTemplate>
+							<WrapPanel VirtualizingPanel.IsVirtualizing="True" />
+						</ItemsPanelTemplate>
+					</ListView.ItemsPanel>
+					<ListView.ItemTemplate>
+						<DataTemplate>
+							<Grid Margin="0"
+								  Width="{Binding ActualWidth, ElementName=BindToThisWidth2}"
+								  Background="{Binding background, FallbackValue=Transparent, TargetNullValue=Transparent}">
+								<Grid.ColumnDefinitions>
+									<ColumnDefinition Width="0.3*" />
+									<ColumnDefinition Width="0.3*" />
+									<ColumnDefinition Width="0.4*" />
+								</Grid.ColumnDefinitions>
+								<Grid.RowDefinitions>
+									<RowDefinition Height="Auto" />
+									<RowDefinition Height="Auto" />
+								</Grid.RowDefinitions>
+								<ContentControl PreviewMouseDoubleClick="ExpandTFControl">
+									<TextBlock Grid.Column="0"
+											   TextWrapping="WrapWithOverflow"
+											   Text="{Binding Name}"
+											   Foreground="{StaticResource WordDarkBlueBrush}"
+											   FontFamily="{StaticResource LatoBold}"
+											   Margin="20,5,0,5"
+											   HorizontalAlignment="Left"
+											   VerticalAlignment="Center" />
+								</ContentControl>
+								<TextBlock Grid.Column="1"
+										   TextWrapping="WrapWithOverflow"
+										   Text="{Binding Code}"
+										   Margin="180,0,5,0"
+										   VerticalAlignment="Center"
+										   HorizontalAlignment="Stretch" />
+								<TextBlock Grid.Column="3"
+										   TextWrapping="WrapWithOverflow"
+										   Text="{Binding Credit}"
+										   VerticalAlignment="Center"
+										   FontFamily="{StaticResource LatoBold}"
+										   Margin="110,0,20,0"
+										   HorizontalAlignment="Center" />
+								<!--// Custom control here for other stuff-->
+								<local:TFControl Grid.ColumnSpan="5"
+												 Grid.Row="1"
+												 DataContext="{x:Null}"
+												 Visibility="{Binding Path=DataContext.InfoExpanded, Converter={local:BooleanToVisiblityGoneConverter}, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Grid}}, FallbackValue=Collapsed, TargetNullValue=Collapsed}"
+												 Width="{Binding ActualWidth, ElementName=BindToThisWidth2}"
+												 FontSize="10" />
+							</Grid>
+						</DataTemplate>
+					</ListView.ItemTemplate>
+				</ListView>
+			</Grid>
+
+			<!--#endregion-->
+
+		</Grid>
+	</Border>
+</local:BasePage>

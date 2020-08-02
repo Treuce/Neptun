@@ -1,0 +1,125 @@
+﻿<UserControl
+	x:Class="Neptun.MainMenuControl"
+	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+	xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+	xmlns:local="clr-namespace:Neptun"
+	xmlns:core="clr-namespace:Neptun.Core;assembly=Neptun.Core"
+	mc:Ignorable="d"
+	MinHeight="30"
+	d:DesignHeight="150"
+	d:DesignWidth="700">
+
+	<Grid
+		MinHeight="30"
+		Background="Transparent"
+		d:DataContext="{x:Static local:MainMenuDesignModel.Instance}"
+		VerticalAlignment="Top">
+		<Border
+			Width="Auto"
+			Background="{StaticResource WordBlueBrush}"
+			CornerRadius="10"
+			BorderBrush="{StaticResource WordVeryVeryLightBlueBrush}"
+			BorderThickness="1">
+			<Grid
+				Width="Auto">
+				<Grid.ColumnDefinitions>
+					<ColumnDefinition
+						Width="Auto" />
+					<ColumnDefinition
+						Width="*" />
+					<ColumnDefinition
+						Width="Auto" />
+				</Grid.ColumnDefinitions>
+				<!--IsMainMenu="True"-->
+				<!--Margin="10 3 0 3"-->
+				<Border
+					Width="Auto"
+					Background="Transparent"
+					Margin="5,5,0,0"
+					Visibility="{Binding ApplicationViewModel.IsMessagesVisible,  Source={x:Static local:ViewModelLocator.Instance}, Converter={local:BooleanToVisiblityGoneConverter}}">
+					<Button
+						Margin="20,0,20,5"
+						Command="{Binding MessagesCommand}"
+						Content="{Binding messagesText}"
+						FontSize="{StaticResource FontSizeSmaller}"
+						Padding="10"
+						VerticalAlignment="Center"></Button>
+				</Border>
+				<Menu
+					Style="{StaticResource BaseStyle}"
+					Width="Auto"
+					BorderThickness="10"
+					Grid.Column="1"
+					KeyboardNavigation.ControlTabNavigation="None"
+					KeyboardNavigation.AcceptsReturn="True"
+					HorizontalContentAlignment="Center"
+					VerticalAlignment="Center"
+					VerticalContentAlignment="Center"
+					KeyboardNavigation.TabNavigation="None"
+					Background="Transparent"
+					ItemsSource="{Binding Items}">
+					<Menu.ItemContainerStyle>
+						<Style
+							TargetType="{x:Type MenuItem}">
+							<Setter
+								Property="Header"
+								Value="{Binding Name, FallbackValue=Test}" />
+							<Setter
+								Property="CommandParameter"
+								Value="{Binding DataContext, RelativeSource={RelativeSource Mode=Self}}" />
+							<Setter
+								Property="Command"
+								Value="{Binding Path=DataContext.SwitchPageCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}" />
+							<Setter
+								Property="ItemsSource"
+								Value="{Binding Path=SubMenu, FallbackValue=null,UpdateSourceTrigger=PropertyChanged}" />
+							<Setter
+								Property="VerticalAlignment"
+								Value="Center" />
+							<Setter
+								Property="Margin"
+								Value="5" />
+							<Setter
+								Property="FontWeight"
+								Value="ExtraBlack" />
+							<Setter
+								Property="FontFamily"
+								Value="{StaticResource LatoBold}" />
+						</Style>
+					</Menu.ItemContainerStyle>
+				</Menu>
+				<Border
+					Grid.Column="2"
+					Background="{StaticResource ForegroundDarkBrush}"
+					Padding="10,0,0,0"
+					CornerRadius="10"
+					BorderThickness="5"
+					Visibility="{Binding ApplicationViewModel.HasNameAndNeptun, 
+					Source={x:Static local:ViewModelLocator.Instance},
+					Converter={local:BooleanToVisiblityGoneConverter},
+					FallbackValue=Visible}"
+					VerticalAlignment="Center"
+					HorizontalAlignment="Right">
+					<StackPanel
+						Orientation="Horizontal">
+						<TextBlock
+							VerticalAlignment="Center"
+							FontSize="10"
+							Margin="0,0,10,0"
+							Text="{Binding ApplicationViewModel.NameAndNeptun, Source={x:Static local:ViewModelLocator.Instance},FallbackValue='Barth Benjámin - Z8I668', TargetNullValue='Loading..'}" />
+						<Button
+							Command="{Binding Path=DataContext.LogOutCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}"
+							Height="30"
+							Margin="10,0,0,0"
+							FontSize="{StaticResource FontSizeSmaller}"
+							Width="Auto"
+							Visibility="Visible"
+							Content="Kilépés"></Button>
+					</StackPanel>
+				</Border>
+			</Grid>
+		</Border>
+	</Grid>
+</UserControl>

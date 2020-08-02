@@ -1,0 +1,38 @@
+﻿<local:BaseMessageUserControl x:Class="Neptun.MessageReadDialogBox"
+							  xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+							  xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+							  xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+							  xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+							  xmlns:local="clr-namespace:Neptun"
+							  xmlns:core="clr-namespace:Neptun.Core;assembly=Neptun.Core"
+							  mc:Ignorable="d">
+	<StackPanel d:DataContext="{x:Static local:MessageBoxDialogDesignModel.Instance}"
+				x:Name="Test"
+				Background="{StaticResource BackgroundDarkBrushLighter}">
+		<!--<TextBlock Padding="5"
+				   Foreground="{StaticResource ForegroundVeryDarkBrush}" Text="{Binding Message}"></TextBlock>-->
+		<RichTextBox IsDocumentEnabled="True"
+					 IsReadOnly="True"
+					 IsReadOnlyCaretVisible="True"
+					 BorderThickness="0"
+					 Padding="10"
+					 Background="Transparent"
+					 local:RichTextBoxHelper.DocumentXaml="{Binding Message}">
+			<RichTextBox.Resources>
+				<Style TargetType="Hyperlink">
+					<Setter Property="Cursor"
+							Value="Hand" />
+					<EventSetter Event="RequestNavigate"
+								 Handler="Hyperlink_MouseLeftButtonDown" />
+				</Style>
+			</RichTextBox.Resources>
+		</RichTextBox>
+		
+		<Button Content="{Binding OkText}"
+				IsDefault="True"
+				IsCancel="True"
+				FontSize="{StaticResource FontSizeRegular}"
+				Command="{Binding CloseCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type local:BaseMessageUserControl}}}"
+				HorizontalAlignment="Center" />
+	</StackPanel>
+</local:BaseMessageUserControl>

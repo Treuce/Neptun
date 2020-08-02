@@ -1,0 +1,74 @@
+﻿<local:BasePage x:TypeArguments="local:LoginViewModel" x:Class="Neptun.LoginPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:Neptun"
+      xmlns:core="clr-namespace:Neptun.Core;assembly=Neptun.Core"
+      mc:Ignorable="d" 
+      x:Name="Page"
+      d:DesignHeight="700" d:DesignWidth="700"
+      >
+	<Border>
+		<Grid>
+			<!-- Main content scroll -->
+            <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto">
+                <StackPanel 
+                    VerticalAlignment="Center"
+                    HorizontalAlignment="Center"
+                    TextBlock.TextAlignment="Center">
+
+                    <!-- Login main content white box -->
+					<Border Background="{StaticResource BackgroundDarkBrush_2}" 
+                            CornerRadius="10"
+                            Padding="15 50 15 15"
+                            Width="330"
+                            Margin="50 50 50 0">
+
+						<StackPanel>
+
+							<!-- Sign Up header -->
+							<TextBlock Text="Bejelentkezés" Margin="0 0 0 40"
+                                   FontSize="{StaticResource FontSizeXXLarge}"
+                                   FontFamily="{StaticResource LatoRegular}"
+                                   Foreground="{StaticResource WordBlueBrush}" />
+
+
+							<TextBox Background="{StaticResource BackgroundDarkBrushLighter}" Text="{Binding NeptunCode, UpdateSourceTrigger=PropertyChanged}"
+                                     Tag="Neptun Kód"
+									 BorderThickness="1"
+                                     local:IsFocusedProperty.Value="True"
+                                     />
+
+							<!-- Password -->
+							<PasswordBox Background="{StaticResource BackgroundDarkBrushLighter}" x:Name="PasswordText" Tag="Jelszó" Margin="0 0 0 30" />
+
+							<!--TODO: Checkbox focus style override, match app theme instead of default -->
+							<CheckBox VerticalAlignment="Center"
+									  HorizontalAlignment="Center" 
+									  HorizontalContentAlignment="Center" 
+									  VerticalContentAlignment="Center" 
+									  Margin="5 10,10,10" 
+									  Foreground="{StaticResource ForegroundMainBrush}" 
+									  FontSize="{StaticResource FontSizeXXLarge}" 
+									  Background="{StaticResource BackgroundDarkBrushLighter}" 
+									  x:Name="SaveLoginDetailsCheckBox" 
+									  Content="Adatok mentése"
+									  Checked="SaveLoginDetails_Handle" 
+									  Unchecked="SaveLoginDetails_Handle"/>
+							<!-- Login button -->
+							<Button Content="Bejelentkezés" 
+                                    IsDefault="True"
+                                    local:IsBusyProperty.Value="{Binding LoginIsRunning}"
+                                    Command="{Binding LoginCommand}"
+                                    CommandParameter="{Binding ElementName=Page}" 
+                                    HorizontalAlignment="Center" />
+
+						</StackPanel>
+
+					</Border>
+				</StackPanel>
+            </ScrollViewer>
+        </Grid>
+    </Border>
+</local:BasePage>

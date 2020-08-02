@@ -1,0 +1,176 @@
+﻿<Window x:Class="Neptun.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Neptun"
+        xmlns:core="clr-namespace:Neptun.Core;assembly=Neptun.Core"
+        mc:Ignorable="d"
+        WindowStyle="None"
+        AllowsTransparency="True"
+        WindowStartupLocation="CenterScreen"
+        x:Name="AppWindow"
+        Icon="Images/Logo/neptun.png"
+        MinWidth="{Binding WindowMinimumWidth}"
+        MinHeight="{Binding WindowMinimumHeight}"
+        Deactivated="AppWindow_Deactivated"
+        Activated="AppWindow_Activated"
+        Title="Neptun" Height="700" Width="1250">
+
+	<Window.Resources>
+		<Style TargetType="{x:Type local:MainWindow}">
+			<Setter Property="Template">
+				<Setter.Value>
+					<ControlTemplate TargetType="{x:Type Window}">
+						<!-- Outer border with the drop shadow margin -->
+
+						<Border Padding="{Binding OuterMarginSize, FallbackValue=0}"
+								BorderBrush="{StaticResource ForegroundDarkBrush}" BorderThickness="{Binding FlatBorderThickness}">
+
+							<!-- Main window outline -->
+							<Grid>
+
+								<!-- Outer dragging border -->
+								<Border BorderThickness="{Binding BeingMoved, Converter={local:BooleanToBorderThicknessConverter}}"
+                                        Panel.ZIndex="2"
+                                        CornerRadius="{Binding WindowCornerRadius, FallbackValue=10}"
+                                        BorderBrush="{StaticResource WordOrangeBrush}" />
+
+								<!-- Opacity mask for corners on grid -->
+								<Border x:Name="Container"
+                                        Background="{StaticResource BackgroundLightBrush}"
+                                        CornerRadius="{Binding WindowCornerRadius, FallbackValue=10}" />
+
+								<!-- Window border and drop shadow -->
+								<Border CornerRadius="{Binding WindowCornerRadius, FallbackValue=10}"
+                                    Background="{StaticResource ForegroundLightBrush}">
+									<Border.Effect>
+										<DropShadowEffect ShadowDepth="0.5" Opacity="0.2" />
+									</Border.Effect>
+								</Border>
+
+								<!-- The main window content -->
+								<Grid Background="{StaticResource BackgroundDarkBrushLighter}">
+
+									<!-- Corner clipping -->
+									<Grid.OpacityMask>
+										<VisualBrush Visual="{Binding ElementName=Container}" />
+									</Grid.OpacityMask>
+
+									<Grid.RowDefinitions>
+
+										<!-- Title Bar -->
+										<RowDefinition Height="{Binding TitleHeightGridLength, FallbackValue=42}" />
+
+										<!-- Internet Connection Bar -->
+										<RowDefinition Height="Auto" />
+
+										<!-- Window Content -->
+										<RowDefinition Height="*" />
+
+									</Grid.RowDefinitions>
+
+									<!-- Title Bar -->
+									<Grid Grid.Column="0" Panel.ZIndex="1">
+
+										<Grid.ColumnDefinitions>
+											<!-- Icon -->
+											<ColumnDefinition Width="Auto" />
+											<!-- Title -->
+											<ColumnDefinition Width="*" />
+											<!-- Windows Button -->
+											<ColumnDefinition Width="Auto" />
+
+										</Grid.ColumnDefinitions>
+
+										<!-- Icon -->
+										<Button Style="{StaticResource SystemIconButton}" Command="{Binding MenuCommand}">
+											<Image Source="/Images/Logo/neptun.png" />
+										</Button>
+
+										<!-- Title -->
+										<Viewbox Grid.Column="0" Grid.ColumnSpan="3" Margin="5">
+											<StackPanel>
+												<TextBlock FontFamily="{StaticResource LatoBold}" Text="NEPTUN" Foreground="{StaticResource WordDarkBlueBrush}" FontSize="{StaticResource FontSizeLarge}" Margin="0,0,0,-5"/>
+											</StackPanel>
+										</Viewbox>
+
+										<!-- Window Buttons -->
+										<StackPanel Grid.Column="2" Orientation="Horizontal">
+											<Button Foreground="{StaticResource ForegroundVeryDarkBrush}" Command="{Binding MinimizeCommand}" Style="{StaticResource WindowControlButton}" Content="_" />
+											<Button Foreground="{StaticResource ForegroundVeryDarkBrush}" Command="{Binding MaximizeCommand}" Style="{StaticResource WindowControlButton}" Content="[ ]" />
+											<Button Foreground="{StaticResource ForegroundVeryDarkBrush}" Command="{Binding CloseCommand}" Style="{StaticResource WindowCloseButton}" Content="X" />
+										</StackPanel>
+
+									</Grid>
+
+									<!-- Page Content -->
+									<Border Grid.Row="2" Padding="{Binding InnerContentPadding}" ClipToBounds="True">
+										<ContentPresenter Content="{TemplateBinding Content}" />
+									</Border>
+
+								</Grid>
+
+							</Grid>
+						</Border>
+					</ControlTemplate>
+				</Setter.Value>
+			</Setter>
+		</Style>
+	</Window.Resources>
+
+	<WindowChrome.WindowChrome>
+		<WindowChrome
+            ResizeBorderThickness="{Binding ResizeBorderThickness}"
+            CaptionHeight="{Binding TitleHeight}"
+            CornerRadius="0"
+            GlassFrameThickness="0"
+            />
+	</WindowChrome.WindowChrome>
+
+	<Border Margin="0 10 0 0" Background="Transparent">
+		<Grid>
+			<Grid.RowDefinitions>
+				<RowDefinition Height="Auto"/>
+				<RowDefinition Height="Auto"/>
+				<RowDefinition Height="*"/>
+			</Grid.RowDefinitions>
+
+			<!-- Dimmed overlay -->
+			<Border
+				Grid.RowSpan="2"
+				Panel.ZIndex="10"
+                    Opacity="0.3">
+				<Border Background="{StaticResource ForegroundVeryDarkBrush}"
+                        local:AnimateFadeInProperty.Value="{Binding DimmableOverlayVisible}"
+                        />
+			</Border>
+
+			<!-- Main Menu -->
+			<Border Grid.Row="0" BorderBrush="Transparent" Background="Transparent" local:AnimateSlideInFromTopProperty.Value="{Binding ApplicationViewModel.isLoggedIn, Source={x:Static local:ViewModelLocator.Instance}}">
+				<!--Grid.Row="0"-->
+			<local:MainMenuControl 
+				
+			    Margin="10 5 10 5"
+				Visibility="{Binding ApplicationViewModel.isLoggedIn, 
+					Source={x:Static local:ViewModelLocator.Instance},
+					Converter={local:BooleanToVisiblityGoneConverter},
+					FallbackValue=Visible}"
+				d:DataContext="{x:Static local:MainMenuDesignModel.Instance}" 
+                DataContext="{Binding ApplicationViewModel.MainMenuVM, Source={x:Static local:ViewModelLocator.Instance}}"
+				Width="Auto"
+                />
+			</Border>
+			<local:PageHost Grid.Row="2" Padding="20" x:Name="MainWindowPageHost" MaxHeight="800"
+                   CurrentPage="{Binding ApplicationViewModel.CurrentPage,
+                                        Source={x:Static local:ViewModelLocator.Instance}}"
+                   CurrentPageViewModel="{Binding ApplicationViewModel.CurrentPageViewModel,
+                                        Source={x:Static local:ViewModelLocator.Instance}}"                            
+			/>
+
+
+
+		</Grid>
+	</Border>
+
+</Window>

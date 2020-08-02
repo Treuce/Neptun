@@ -1,0 +1,58 @@
+﻿<ResourceDictionary
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="clr-namespace:Neptun"
+    xmlns:theme="clr-namespace:Microsoft.Windows.Themes;assembly=PresentationFramework.Aero2">
+	
+	<!--#region ListBoxControlTemplate1 -->
+	
+	
+	<ControlTemplate
+		x:Key="ListBoxControlTemplate1"
+		TargetType="{x:Type ListBox}">
+		<Border
+			x:Name="Bd"
+			BorderBrush="{TemplateBinding BorderBrush}"
+			BorderThickness="{TemplateBinding BorderThickness}"
+			Background="{TemplateBinding Background}"
+			Padding="1"
+			SnapsToDevicePixels="True">
+			<ScrollViewer
+				Focusable="False"
+				Padding="{TemplateBinding Padding}">
+				<ItemsPresenter
+					SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
+			</ScrollViewer>
+		</Border>
+		<ControlTemplate.Triggers>
+			<Trigger
+				Property="IsEnabled"
+				Value="False">
+				<Setter
+					Property="Background"
+					TargetName="Bd"
+					Value="Transparent" />
+				<Setter
+					Property="BorderBrush"
+					TargetName="Bd"
+					Value="Transparent" />
+			</Trigger>
+			<MultiTrigger>
+				<MultiTrigger.Conditions>
+					<Condition
+						Property="IsGrouping"
+						Value="True" />
+					<Condition
+						Property="VirtualizingPanel.IsVirtualizingWhenGrouping"
+						Value="False" />
+				</MultiTrigger.Conditions>
+				<Setter
+					Property="ScrollViewer.CanContentScroll"
+					Value="False" />
+			</MultiTrigger>
+		</ControlTemplate.Triggers>
+	</ControlTemplate>
+	
+    <!--#endregion-->
+
+</ResourceDictionary>
