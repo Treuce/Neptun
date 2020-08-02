@@ -130,6 +130,7 @@ namespace Neptun
 				html.LoadHtml(MainHTMLPage.Content);
 				var messages = html.GetElementbyId("c_messages_gridMessages_bodytable").ChildNodes[1].ChildNodes;
 				var ViewStateStr = html.GetElementbyId("__VIEWSTATE").GetAttributeValue("value", "");
+
 				var EventValidateStr = html.GetElementbyId("__EVENTVALIDATION").GetAttributeValue("value", "");
 				foreach (var a in messages)
 				{
@@ -154,7 +155,48 @@ namespace Neptun
 					AllMessages.Add(tmp);
 					Application.Current.Dispatcher.Invoke(() => Messages.Add(tmp));
 				}
-				//Messages = new ObservableCollection<MessageEntry>(AllMessages);
+				//
+				var tmppaginggridstuff = html.GetElementbyId("c_messages_gridMessages_gridmaindiv").ChildNodes[3].ChildNodes[0].ChildNodes[2].ChildNodes[0].ChildNodes[0].ChildNodes.Skip(1);
+				var test = tmppaginggridstuff.Take(tmppaginggridstuff.Count() - 2).ToList();
+				foreach (var a in test)
+				{
+					var request = new RestRequest(Configuration["NeptunServer:HostUrl"] + $"/HandleRequest.ashx?RequestType=GetData&GridID=c_messages_gridMessages&pageindex={a.InnerText}&pagesize=500&sort1=SendDate%20DESC&sort2=&fixedheader=false&searchcol=&searchtext=&searchexpanded=false&allsubrowsexpanded=False&selectedid=undefined&functionname=&level=", Method.GET);
+
+					request.AddHeader("Accept", "*/*");
+					request.AddHeader("Sec-Fetch-Site", "same-origin");
+					request.AddHeader("Sec-Fetch-Mode", "cors");
+					request.AddHeader("Sec-Fetch-Dest", "empty");
+					string result;
+					lock (RestWebClient)
+					{
+						result = RestWebClient.Execute(request).Content;
+					}
+					result = result.Replace("{type:getdata}", String.Empty);
+					html.LoadHtml(result);
+					messages = html.GetElementbyId("c_messages_gridMessages_bodytable").ChildNodes[1].ChildNodes;
+					foreach (var b in messages)
+					{
+						var asd = b.ChildNodes;
+						var sender = b.ChildNodes[4].InnerText;
+						var subject = b.ChildNodes[6].InnerText;
+						var elolvasott = b.ChildNodes[5].ChildNodes[0].GetAttributeValue("alt", "shouldn't happen") != "Olvasatlan üzenet";
+						var onclick = b.ChildNodes[6].ChildNodes[0].GetAttributeValue("onclick", "FUCK");
+						var date = b.ChildNodes[7].InnerText;
+						var id = onclick.Split('(')[1].Split(',')[0].Replace("\'", "");
+						var tmp = new MessageEntry()
+						{
+							ID = id,
+							Sender = sender,
+							Subject = subject,
+							isRead = elolvasott,
+							eventstr = EventValidateStr,
+							viewstatestr = ViewStateStr,
+							Time = date
+						};
+						AllMessages.Add(tmp);
+						Application.Current.Dispatcher.Invoke(() => Messages.Add(tmp));
+					}
+				}
 			});
 		}
 
