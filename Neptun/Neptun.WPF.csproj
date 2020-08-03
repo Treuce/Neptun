@@ -141,7 +141,7 @@
     <Compile Include="ValueConverters\MessageReadToColorConverter.cs" />
     <Compile Include="ValueConverters\StartToWidthConverter.cs" />
     <Compile Include="ValueConverters\MessageSearchConverter.cs" />
-    <Compile Include="ValueConverters\MessageFilterConverter.cs" />
+    <Compile Include="ValueConverters\EnumBooleanConverter.cs" />
     <Compile Include="ValueConverters\BooleanInvertConverter.cs" />
     <Compile Include="ValueConverters\BooleanToBorderThicknessConverter.cs" />
     <Compile Include="ValueConverters\BooleanToVisibilityConverter.cs" />

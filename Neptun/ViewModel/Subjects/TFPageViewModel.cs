@@ -429,12 +429,22 @@ namespace Neptun
 
 			ForgetListedSubjects = new RelayCommand(() =>
 			{
-				Task.Run(() =>
+				Task.Run(async () =>
 				{
+					if (Subjects.Where(s => s.isSelected && s.taken).Count() == 0)
+					{
+						await UI.ShowMessage(new MessageBoxDialogViewModel()
+						{
+							OkText = "k boi",
+							Message = "Nincs leadásra kijelölt tárgy.",
+							Title = "Figyelmeztetés"
+						});
+						return;
+					}
 					for (int i = 0; i < Subjects.Count; ++i)
 					{
 						var subject = Subjects[i];
-						if (subject.taken)
+						if (subject.taken && subject.isSelected)
 						{
 							//Debugger.Break();
 							if (subject.TakeViewModel == null)
@@ -451,11 +461,26 @@ namespace Neptun
 
 			TakeListedSubjects = new RelayCommand(() =>
 			{
-				foreach (var subject in Subjects)
+				Task.Run(async () =>
 				{
-					if (subject.InfoExpanded)
-						subject.TakeViewModel.TakeSubject.Execute(null);
-				}
+
+					if (Subjects.Where(s => s.InfoExpanded).Count() == 0)
+					{
+						await UI.ShowMessage(new MessageBoxDialogViewModel()
+						{
+							Message = "Nem található kurzus amit fel lehetne venni. Adott tárgy kurzusait ki kell jelölni.",
+							Title = "Figyelmeztetás",
+							OkText = "K then.."
+						});
+						return;
+					}
+					foreach (var subject in Subjects)
+					{
+						if (subject.InfoExpanded)
+							subject.TakeViewModel.TakeSubject.Execute(null);
+					}
+
+				});
 			});
 
 			#region Page Navigation
@@ -728,7 +753,7 @@ namespace Neptun
 
 		public List<SubjectViewModel> AllSubjects { get; set; }
 
-		public SubjectType type { get; set; } = SubjectType.MindenIntezmenyi;
+		public SubjectType type { get; set; } = SubjectType.Mintatantervi;
 
 		public string SubjectName { get; set; } = String.Empty;
 		public string SubjectCode { get; set; } = String.Empty;

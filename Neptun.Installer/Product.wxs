@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
+	<!--<?if $(var.Platform) = x64 ?>-->
+		<!--<?define ProductCode = "{85790937-CD92-4FC3-B536-617CED392BC7}" ?>-->
+	<!--<?else?>-->
+		<?define ProductCode = "{76D3443D-F50F-4131-9B51-B579153A9B13}" ?>
+	<!--<?endif?>-->
+
+	<Product Id="$(var.ProductCode)" Name="Neptun" Language="1033" Version="1.0.0.0" Manufacturer="Treuce" UpgradeCode="{AEE8892D-B924-4237-BE51-5C4DD9FB8A1E}">
+		<Package
+			InstallerVersion="200" 
+			Compressed="yes" 
+			InstallScope="perMachine" 
+			Manufacturer="Treuce"
+			Description="Neptun asztali alkalmazás"
+			/>
+
+		<MajorUpgrade DowngradeErrorMessage="A newer version of [ProductName] is already installed." />
+		<MediaTemplate
+			EmbedCab="yes"
+			/>
+
+		<Feature Id="ProductFeature" Title="Neptun" Level="1">
+			<ComponentGroupRef Id="ProductComponents" />
+		</Feature>
+
+
+		<Icon Id="icon.ico" SourceFile="$(var.Neptun.WPF.ProjectDir)\Images\Logo\icon.ico" />
+		<Property Id="APPPRODUCTION">icon.ico</Property>
+	</Product>
+
+
+	<Fragment>
+		<Directory Id="TARGETDIR" Name="SourceDir">
+			<Directory Id="ProgramFilesFolder">
+				<Directory Id="INSTALLFOLDER" Name="Neptun.Installer" />
+			</Directory>
+		</Directory>
+	</Fragment>
+
+	<Fragment>
+		<ComponentGroup Id="ProductComponents" Directory="INSTALLFOLDER">
+			<!-- TODO: Remove the comments around this Component element and the ComponentRef below in order to add resources to this installer. -->
+			<!-- <Component Id="ProductComponent"> -->
+				<!-- TODO: Insert files, registry keys, and other resources here. -->
+			<!-- </Component> -->
+		</ComponentGroup>
+	</Fragment>
+</Wix>

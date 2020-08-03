@@ -49,6 +49,8 @@ namespace Neptun
 		public string id { get; set; }
 		public string type { get; set; }
 
+		public bool isSelected { get; set; }
+
 		public TFViewModel.SubjectType SubjectType { get; set; }
 		public bool InfoExpanded { get; set; } = false;
 		public SolidColorBrush background { get => completed ? Brushes.DarkSeaGreen : (taken ? Brushes.RosyBrown : Brushes.Transparent); }

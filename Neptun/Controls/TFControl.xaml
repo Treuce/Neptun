@@ -16,6 +16,7 @@
 			Padding="5">
 		<Grid Background="Transparent"
 			  IsVisibleChanged="Grid_IsVisibleChanged"
+			  x:Name="MainGrid"
 			  d:DataContext="{x:Static local:TakeSubjectDesignModel.Instance}">
 			<Grid.RowDefinitions>
 				<RowDefinition Height="Auto" />
@@ -43,25 +44,28 @@
 					<Style TargetType="{x:Type Border}">
 						<Setter Property="CornerRadius"
 								Value="10" />
+						<Setter Property="Background"
+								Value="Red" />
 					</Style>
 				</Menu.Resources>
 				<Menu.ItemContainerStyle>
 					<Style TargetType="{x:Type MenuItem}">
 						<Setter Property="Background"
-								Value="Transparent" />
+								Value="Red" />
 						<Setter Property="Command"
 								Value="{Binding DataContext.switchpage, RelativeSource={RelativeSource AncestorType={x:Type Grid}, Mode=FindAncestor}}" />
 						<Setter Property="Header"
 								Value="{Binding Name, FallbackValue=Test}" />
+						<Setter Property="CommandParameter"
+								Value="{Binding DataContext, RelativeSource={RelativeSource Mode=Self}}" />
 						<Setter Property="ItemsSource"
 								Value="{x:Null}" />
-						<!--<Setter
-						Property="Command"
-						Value="{Binding Path=DataContext.SwitchPageCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}" />-->
 						<Setter Property="VerticalAlignment"
 								Value="Center" />
 						<Setter Property="FontWeight"
 								Value="ExtraBlack" />
+						<Setter Property="IsEnabled"
+								Value="{Binding isEnabled}" />
 						<Setter Property="FontFamily"
 								Value="{StaticResource LatoBold}" />
 					</Style>
@@ -82,6 +86,7 @@
 					  Padding="10,10,10,10"
 					  Grid.Row="1"
 					  Background="Transparent"
+					  Visibility="{Binding Path=CoursesPageVisible, Converter={local:BooleanToVisiblityGoneConverter}, FallbackValue=Visible, TargetNullValue=Visible}"
 					  ItemsSource="{Binding Courses}">
 				<ListView.Resources>
 					<Style TargetType="{x:Type Border}">
@@ -206,6 +211,7 @@
 			<StackPanel HorizontalAlignment="Right"
 						Margin="0,5,30,0"
 						Orientation="Horizontal"
+						Visibility="{Binding CoursesPageVisible, Converter={local:BooleanToVisiblityGoneConverter}}"
 						Grid.Row="2">
 				<Button Padding="8"
 						Content="Leadás"
@@ -216,6 +222,51 @@
 						Content="Mentés"
 						Command="{Binding TakeSubject}" />
 			</StackPanel>
+			<Grid Grid.Row="2"
+				  HorizontalAlignment="Left"
+				  Margin="20,0,0,0"
+				  Width="{Binding ActualWidth, ElementName=Menu}"
+				  ClipToBounds="True"
+				  DataContext="{Binding DataContext.AlapAdatok, ElementName=MainGrid}"
+				  Visibility="{Binding DataContext.StatsPageVisible, ElementName=MainGrid, Converter={local:BooleanToVisiblityGoneConverter}}"
+				  Background="Transparent">
+				<Grid.ColumnDefinitions>
+					<ColumnDefinition Width="0.5*" />
+					<ColumnDefinition Width="0.5*" />
+				</Grid.ColumnDefinitions>
+				<StackPanel HorizontalAlignment="Left" Orientation="Vertical">
+					<StackPanel VerticalAlignment="Center" Orientation="Horizontal">
+						
+					<TextBlock Text="Kód: " HorizontalAlignment="Center" />
+					<TextBlock FontFamily="{StaticResource LatoBold}"
+							   Margin="20,0,0,0"
+							   FontWeight="Bold" HorizontalAlignment="Center"
+							   Text="{Binding DataContext.ParentViewModel.Code, ElementName=MainGrid}" />
+					</StackPanel>
+					<StackPanel VerticalAlignment="Center"
+								Orientation="Horizontal">
+
+						<TextBlock Text="Név: "
+								   HorizontalAlignment="Center" />
+						<TextBlock FontFamily="{StaticResource LatoBold}"
+								   FontWeight="Bold"
+								   Margin="20,0,0,0"
+								   HorizontalAlignment="Center"
+								   Text="{Binding DataContext.ParentViewModel.Name, ElementName=MainGrid}" />
+					</StackPanel>
+					<StackPanel VerticalAlignment="Center"
+								Orientation="Horizontal">
+
+						<TextBlock Text="Eredeti tárgynév: "
+								   HorizontalAlignment="Center" />
+						<TextBlock FontFamily="{StaticResource LatoBold}"
+								   FontWeight="Bold"
+								   Margin="20,0,0,0"
+								   HorizontalAlignment="Center"
+								   Text="{Binding OriginalName}" />
+					</StackPanel>
+				</StackPanel>
+			</Grid>
 		</Grid>
 	</Border>
 </UserControl>

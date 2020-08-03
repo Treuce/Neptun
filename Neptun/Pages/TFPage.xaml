@@ -68,9 +68,9 @@
 								 IsChecked="{Binding Path=type, Converter={local:EnumBooleanConverter}, ConverterParameter=MindenIntezmenyi}"
 								 Content="További intézményi tárgyak" />
 				</StackPanel>
-				<Label Grid.Row="3"
+				<Label Grid.Row="2"
 					   Content="Tárgynév" />
-				<TextBox Grid.Row="3"
+				<TextBox Grid.Row="2"
 						 Grid.Column="1"
 						 BorderThickness="2"
 						 Padding="5,2,0,2"
@@ -80,9 +80,9 @@
 						 Tag="Tárgynév"
 						 Text="{Binding SubjectName, UpdateSourceTrigger=PropertyChanged}">
 				</TextBox>
-				<Label Grid.Row="4"
+				<Label Grid.Row="3"
 					   Content="Tárgykód" />
-				<TextBox Grid.Row="4"
+				<TextBox Grid.Row="3"
 						 Grid.Column="1"
 						 BorderThickness="2"
 						 Padding="5,2,0,2"
@@ -95,9 +95,9 @@
 						<ToolTip Content="Pontos vesszővel elválasztva több tárgy kód is megadható, de csak minden intézményi tárgy esetén." />
 					</TextBox.ToolTip>
 				</TextBox>
-				<Label Grid.Row="5"
+				<Label Grid.Row="4"
 					   Content="Oktató" />
-				<TextBox Grid.Row="5"
+				<TextBox Grid.Row="4"
 						 Grid.Column="1"
 						 BorderThickness="2"
 						 Padding="5,2,0,2"
@@ -106,9 +106,9 @@
 						 Background="Transparent"
 						 BorderBrush="{StaticResource BackgroundDarkBrush_2}"
 						 Text="{Binding Teacher, UpdateSourceTrigger=PropertyChanged}" />
-				<Label Grid.Row="6"
+				<Label Grid.Row="5"
 					   Content="Kurzuskód" />
-				<TextBox Grid.Row="6"
+				<TextBox Grid.Row="5"
 						 Grid.Column="1"
 						 BorderThickness="2"
 						 Padding="5,2,0,2"
@@ -142,8 +142,8 @@
 						  Grid.Column="3"
 						  HorizontalAlignment="Left"
 						  SelectedValue="{Binding PageSize}"
+						  Margin="0,0,0,0"
 						  Height="20"
-						  Margin="0,0,30,0"
 						  VerticalContentAlignment="Center"
 						  HorizontalContentAlignment="Stretch"
 						  FontFamily="{StaticResource LatoBold}"
@@ -157,9 +157,10 @@
 				<Label Grid.Row="1"
 					   Grid.Column="2"
 					   Margin="20,0,0,0"
-					   Content="Wait time" />
+					   Content="Válasz késleltetése" />
 				<wpfTool:DoubleUpDown Grid.Row="1"
 									  Grid.Column="3"
+									  Height="20"
 									  Minimum="0"
 									  Padding="10,0,10,0"
 									  Maximum="20"
@@ -169,7 +170,7 @@
 									  Background="Transparent"
 									  UpdateValueOnEnterKey="True"
 									  Value="{Binding WaitTime}"
-									  ToolTip="Ennyit vár a megerősítéssel percben">
+									  ToolTip="Válasz késleltetése percben">
 				</wpfTool:DoubleUpDown>
 				<Button Grid.Row="7"
 						Padding="10"
@@ -193,7 +194,11 @@
 							HorizontalContentAlignment="Stretch"
 							Height="Auto"
 							FontSize="{StaticResource FontSizeSmall}"
-							Command="{Binding TakeListedSubjects}" />
+							Command="{Binding TakeListedSubjects}">
+						<Button.ToolTip>
+							<ToolTip Content="Kurzust is ki kell jelölni, különben nem működik." />
+						</Button.ToolTip>
+					</Button>
 					<Button Grid.Row="7"
 							Padding="5"
 							Grid.Column="1"
@@ -203,7 +208,7 @@
 							HorizontalContentAlignment="Stretch"
 							Height="Auto"
 							FontSize="{StaticResource FontSizeSmall}"
-							Command="{Binding ForgetListedSubjects}" />
+							Command="{Binding ForgetListedSubjects}" ToolTip="Elég csak a jobb oldalon látható négyzetet bepipálni és ezek a kurzusok kerülnek leadásra." />
 				</StackPanel>
 				
 				<StackPanel Grid.Row="7"
@@ -532,7 +537,8 @@
 								<Grid.ColumnDefinitions>
 									<ColumnDefinition Width="0.3*" />
 									<ColumnDefinition Width="0.3*" />
-									<ColumnDefinition Width="0.4*" />
+									<ColumnDefinition Width="0.3*" />
+									<ColumnDefinition Width="0.1*" />
 								</Grid.ColumnDefinitions>
 								<Grid.RowDefinitions>
 									<RowDefinition Height="Auto" />
@@ -554,13 +560,24 @@
 										   Margin="180,0,5,0"
 										   VerticalAlignment="Center"
 										   HorizontalAlignment="Stretch" />
-								<TextBlock Grid.Column="3"
+								<TextBlock Grid.Column="2"
 										   TextWrapping="WrapWithOverflow"
 										   Text="{Binding Credit}"
 										   VerticalAlignment="Center"
 										   FontFamily="{StaticResource LatoBold}"
-										   Margin="110,0,20,0"
+										   Margin="150,0,0,0"
 										   HorizontalAlignment="Center" />
+								<CheckBox VerticalAlignment="Center"
+										  Grid.Column="3"
+										  HorizontalAlignment="Center"
+										  HorizontalContentAlignment="Center"
+										  VerticalContentAlignment="Center"
+										  Margin="5,10,10,10"
+										  IsChecked="{Binding isSelected}"
+										  Foreground="{StaticResource ForegroundMainBrush}"
+										  FontSize="{StaticResource FontSizeXXLarge}"
+										  Background="{StaticResource BackgroundDarkBrushLighter}"
+										   />
 								<!--// Custom control here for other stuff-->
 								<local:TFControl Grid.ColumnSpan="5"
 												 Grid.Row="1"
