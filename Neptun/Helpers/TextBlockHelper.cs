@@ -55,7 +55,6 @@ namespace Neptun
 						catch (Exception ex)
 						{
 							Logger.LogErrorSource(ex.Message);
-							Debugger.Break();
 						}
 						//range.Load(asd, DataFormats.Xaml);
 						// Set the document
@@ -66,7 +65,7 @@ namespace Neptun
 							{
 								if (richTextBox.Document == doc)
 								{
-									MemoryStream buffer = new MemoryStream();
+									var buffer = new MemoryStream();
 									range.Save(buffer, DataFormats.Xaml);
 									SetDocumentXaml(richTextBox,
 										Encoding.UTF8.GetString(buffer.ToArray()));
@@ -116,7 +115,7 @@ namespace Neptun
 
 		private static void FormattedTextChanged(DependencyObject sender, DependencyPropertyChangedEventArgs e)
 		{
-			TextBlock textBlock = sender as TextBlock;
+			var textBlock = sender as TextBlock;
 			FormatText(e.NewValue as string, new TextPart("TextBlock", null, textBlock.Inlines));
 		}
 
@@ -124,7 +123,7 @@ namespace Neptun
 		{
 			int len = s.Length;
 			int lastIdx = 0;
-			List<TextPart> parts = new List<TextPart>();
+			var parts = new List<TextPart>();
 			parts.Add(root);
 			Match m = mRegex.Match(s);
 			while (m.Success)
@@ -176,7 +175,7 @@ namespace Neptun
 					}
 
 					bool hasAttributes = false;
-					TextPart part = new TextPart();
+					var part = new TextPart();
 					if (tag.StartsWith("bold", StringComparison.InvariantCultureIgnoreCase))
 					{
 						part.mType = "BOLD";
@@ -279,7 +278,7 @@ namespace Neptun
 							{
 								if (!String.IsNullOrEmpty(val))
 								{
-									FontFamily ff = new FontFamily(val);
+									var ff = new FontFamily(val);
 									if (Fonts.SystemFontFamilies.Contains(ff))
 									{
 										part.mInline.FontFamily = ff;

@@ -66,7 +66,7 @@ namespace Neptun
 			// TODO start loading message here on seperate thread, create window etc
 			Task.Run(async () =>
 			{
-				RestRequest request = new RestRequest(Configuration["NeptunServer:HostUrl"] + "main.aspx", Method.POST);
+				var request = new RestRequest(Configuration["NeptunServer:HostUrl"] + "main.aspx", Method.POST);
 				request.AddParameter("__EVENTVALIDATION", message.eventstr);
 				request.AddParameter("__VIEWSTATE", message.viewstatestr);
 				var id = message.ID;
@@ -86,7 +86,7 @@ namespace Neptun
 				{
 					response = RestWebClient.Execute(request);
 				}
-				HtmlDocument html = new HtmlDocument();
+				var html = new HtmlDocument();
 				html.LoadHtml(response.Content);
 				var XAMLStr = HtmlToXamlConverter.ConvertHtmlToXaml(html.GetElementbyId("upFunction_c_messages_upModal_upmodalextenderReadMessage_ctl02_Readmessage1_UpdatePanel1").ChildNodes[5].InnerHtml, false);
 				await UI.ShowMessage(new MessageViewModel()

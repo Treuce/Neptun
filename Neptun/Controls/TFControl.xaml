@@ -4,6 +4,7 @@
 			 xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
 			 xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
 			 xmlns:ctrl="clr-namespace:Itenso.Windows.Controls.ListViewLayout;assembly=Itenso.Windows.Controls.ListViewLayout"
+			 xmlns:doc="clr-namespace:System.Windows.Documents;assembly=PresentationFramework"
 			 xmlns:local="clr-namespace:Neptun"
 			 mc:Ignorable="d"
 			 d:DesignHeight="450"
@@ -222,51 +223,193 @@
 						Content="Mentés"
 						Command="{Binding TakeSubject}" />
 			</StackPanel>
+
+			<!--#region Alapadatok -->
 			<Grid Grid.Row="2"
 				  HorizontalAlignment="Left"
 				  Margin="20,0,0,0"
-				  Width="{Binding ActualWidth, ElementName=Menu}"
 				  ClipToBounds="True"
-				  DataContext="{Binding DataContext.AlapAdatok, ElementName=MainGrid}"
-				  Visibility="{Binding DataContext.StatsPageVisible, ElementName=MainGrid, Converter={local:BooleanToVisiblityGoneConverter}}"
+				  Visibility="{Binding StatsPageVisible, Converter={local:BooleanToVisiblityGoneConverter}}"
 				  Background="Transparent">
 				<Grid.ColumnDefinitions>
 					<ColumnDefinition Width="0.5*" />
 					<ColumnDefinition Width="0.5*" />
 				</Grid.ColumnDefinitions>
-				<StackPanel HorizontalAlignment="Left" Orientation="Vertical">
-					<StackPanel VerticalAlignment="Center" Orientation="Horizontal">
-						
-					<TextBlock Text="Kód: " HorizontalAlignment="Center" />
-					<TextBlock FontFamily="{StaticResource LatoBold}"
-							   Margin="20,0,0,0"
-							   FontWeight="Bold" HorizontalAlignment="Center"
-							   Text="{Binding DataContext.ParentViewModel.Code, ElementName=MainGrid}" />
-					</StackPanel>
-					<StackPanel VerticalAlignment="Center"
-								Orientation="Horizontal">
-
-						<TextBlock Text="Név: "
-								   HorizontalAlignment="Center" />
-						<TextBlock FontFamily="{StaticResource LatoBold}"
-								   FontWeight="Bold"
-								   Margin="20,0,0,0"
-								   HorizontalAlignment="Center"
-								   Text="{Binding DataContext.ParentViewModel.Name, ElementName=MainGrid}" />
-					</StackPanel>
-					<StackPanel VerticalAlignment="Center"
-								Orientation="Horizontal">
-
-						<TextBlock Text="Eredeti tárgynév: "
-								   HorizontalAlignment="Center" />
-						<TextBlock FontFamily="{StaticResource LatoBold}"
-								   FontWeight="Bold"
-								   Margin="20,0,0,0"
-								   HorizontalAlignment="Center"
-								   Text="{Binding OriginalName}" />
-					</StackPanel>
-				</StackPanel>
+				<RichTextBox IsDocumentEnabled="True"
+							 IsReadOnly="True"
+							 IsReadOnlyCaretVisible="True"
+							 VerticalAlignment="Center"
+							 Block.TextAlignment="Left"
+							 Background="Transparent"
+							 BorderBrush="Red"
+							 BorderThickness="0"
+							 Padding="10"
+							 local:RichTextBoxHelper.DocumentXaml="{Binding TempXAMLSTring}">
+					<RichTextBox.Resources>
+						<Style TargetType="Hyperlink">
+							<Setter Property="Cursor"
+									Value="Hand" />
+						</Style>
+						<Style TargetType="doc:TableCell">
+							<Setter Property="BorderThickness"
+									Value="20" />
+							<Setter Property="Padding"
+									Value="10,5,0,5" />
+							<Setter Property="BorderBrush"
+									Value="Red" />
+						</Style>
+					</RichTextBox.Resources>
+				</RichTextBox>
+				<RichTextBox IsDocumentEnabled="True"
+							 IsReadOnly="True"
+							 IsReadOnlyCaretVisible="True"
+							 VerticalAlignment="Center"
+							 HorizontalAlignment="Center"
+							 Block.TextAlignment="Left"
+							 Grid.Column="1"
+							 Background="Transparent"
+							 BorderBrush="Red"
+							 BorderThickness="0"
+							 Padding="0"
+							 local:RichTextBoxHelper.DocumentXaml="{Binding TempXAMLSTring2}">
+					<RichTextBox.Resources>
+						<Style TargetType="Hyperlink">
+							<Setter Property="Cursor"
+									Value="Hand" />
+						</Style>
+						<Style TargetType="doc:TableCell">
+							<Setter Property="BorderThickness"
+									Value="20" />
+							<Setter Property="Padding"
+									Value="10,5,0,5" />
+							<Setter Property="BorderBrush"
+									Value="Red" />
+						</Style>
+					</RichTextBox.Resources>
+				</RichTextBox>
 			</Grid>
+			<!--#endregion-->
+
+			<!--#region Témakör -->
+			<RichTextBox IsDocumentEnabled="True"
+						 IsReadOnly="True"
+						 IsReadOnlyCaretVisible="True"
+						 VerticalAlignment="Center"
+						 Block.TextAlignment="Left"
+						 Background="Transparent"
+						 BorderBrush="Red"
+						 Visibility="{Binding ThemePageVisible, Converter={local:BooleanToVisiblityGoneConverter}}"
+						 Grid.Row="2"
+						 BorderThickness="0"
+						 Padding="10"
+						 local:RichTextBoxHelper.DocumentXaml="{Binding ThemeXAMLString}">
+				<RichTextBox.Resources>
+					<Style TargetType="Hyperlink">
+						<Setter Property="Cursor"
+								Value="Hand" />
+					</Style>
+					<Style TargetType="doc:TableCell">
+						<Setter Property="BorderThickness"
+								Value="20" />
+						<Setter Property="Padding"
+								Value="10,5,0,5" />
+						<Setter Property="BorderBrush"
+								Value="Red" />
+					</Style>
+				</RichTextBox.Resources>
+			</RichTextBox>
+			<!--#endregion-->
+
+			<!--#region Jegyzetek -->
+			<RichTextBox IsDocumentEnabled="True"
+						 IsReadOnly="True"
+						 IsReadOnlyCaretVisible="True"
+						 VerticalAlignment="Center"
+						 Block.TextAlignment="Left"
+						 Background="Transparent"
+						 BorderBrush="Red"
+						 Visibility="{Binding NotesPageVisible, Converter={local:BooleanToVisiblityGoneConverter}}"
+						 Grid.Row="2"
+						 BorderThickness="0"
+						 Padding="10"
+						 local:RichTextBoxHelper.DocumentXaml="{Binding NotesXAMLString}">
+				<RichTextBox.Resources>
+					<Style TargetType="Hyperlink">
+						<Setter Property="Cursor"
+								Value="Hand" />
+					</Style>
+					<Style TargetType="doc:TableCell">
+						<Setter Property="BorderThickness"
+								Value="20" />
+						<Setter Property="Padding"
+								Value="10,5,0,5" />
+						<Setter Property="BorderBrush"
+								Value="Red" />
+					</Style>
+				</RichTextBox.Resources>
+			</RichTextBox>
+			<!--#endregion-->
+
+			<!--#region Hallgatók -->
+			<RichTextBox IsDocumentEnabled="True"
+						 IsReadOnly="True"
+						 IsReadOnlyCaretVisible="True"
+						 VerticalAlignment="Center"
+						 Block.TextAlignment="Left"
+						 Background="Transparent"
+						 BorderBrush="Red"
+						 Visibility="{Binding StudentsPageVisible, Converter={local:BooleanToVisiblityGoneConverter}}"
+						 Grid.Row="2"
+						 BorderThickness="0"
+						 Padding="10"
+						 local:RichTextBoxHelper.DocumentXaml="{Binding StudentsXAMLString}">
+				<RichTextBox.Resources>
+					<Style TargetType="Hyperlink">
+						<Setter Property="Cursor"
+								Value="Hand" />
+					</Style>
+					<Style TargetType="doc:TableCell">
+						<Setter Property="BorderThickness"
+								Value="20" />
+						<Setter Property="Padding"
+								Value="10,5,0,5" />
+						<Setter Property="BorderBrush"
+								Value="Red" />
+					</Style>
+				</RichTextBox.Resources>
+			</RichTextBox>
+			<!--#endregion-->
+
+			<!--#region Előkövetelmény -->
+			<RichTextBox IsDocumentEnabled="True"
+						 IsReadOnly="True"
+						 IsReadOnlyCaretVisible="True"
+						 VerticalAlignment="Center"
+						 Block.TextAlignment="Left"
+						 Background="Transparent"
+						 BorderBrush="Red"
+						 Visibility="{Binding EloasdPageVisible, Converter={local:BooleanToVisiblityGoneConverter}}"
+						 Grid.Row="2"
+						 BorderThickness="0"
+						 Padding="10"
+						 local:RichTextBoxHelper.DocumentXaml="{Binding ElokovetelmenyXAMLString}">
+				<RichTextBox.Resources>
+					<Style TargetType="Hyperlink">
+						<Setter Property="Cursor"
+								Value="Hand" />
+					</Style>
+					<Style TargetType="doc:TableCell">
+						<Setter Property="BorderThickness"
+								Value="20" />
+						<Setter Property="Padding"
+								Value="10,5,0,5" />
+						<Setter Property="BorderBrush"
+								Value="Red" />
+					</Style>
+				</RichTextBox.Resources>
+			</RichTextBox>
+			<!--#endregion-->
+
 		</Grid>
 	</Border>
 </UserControl>
