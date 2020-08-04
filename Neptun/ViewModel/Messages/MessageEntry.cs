@@ -6,7 +6,7 @@ using static Neptun.Core.CoreDI;
 using Dna;
 namespace Neptun
 {
-	public class MessageEntry : IEquatable<MessageEntry>
+	public class MessageEntry : BaseViewModel, IEquatable<MessageEntry>
 	{
 
 		public string Sender { get; set; }
@@ -18,6 +18,7 @@ namespace Neptun
 		public string ID { get; set; }
 
 		public bool isRead { get; set; }
+		public bool isChecked { get; set; }
 
 		public string eventstr { get; set; }
 		public string viewstatestr { get; set; }

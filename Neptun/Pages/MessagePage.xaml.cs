@@ -27,16 +27,18 @@ namespace Neptun
         public MessagePage() : base()
         {
             InitializeComponent();
-        }
+		}
 
-        /// <summary>
-        /// Constructor with specific view model
-        /// </summary>
-        /// <param name="specificViewModel">The specific view model to use for this page</param>
-        public MessagePage(MessagesListViewModel specificViewModel) : base(specificViewModel)
+		/// <summary>
+		/// Constructor with specific view model
+		/// </summary>
+		/// <param name="specificViewModel">The specific view model to use for this page</param>
+		public MessagePage(MessagesListViewModel specificViewModel) : base(specificViewModel)
         {
             InitializeComponent();
-        }
+			DatePicker.BlackoutDates.Add(new CalendarDateRange(DateTime.Today.AddDays(1), DateTime.MaxValue));
+			//DatePicker.DisplayDateStart = DateTime.Today;
+		}
 
 		#endregion
 
@@ -66,7 +68,22 @@ namespace Neptun
 			// TODO start loading message here on seperate thread, create window etc
 			Task.Run(async () =>
 			{
-				var request = new RestRequest(Configuration["NeptunServer:HostUrl"] + "main.aspx", Method.POST);
+				IRestResponse response;
+
+
+				var request = new RestRequest(Configuration["NeptunServer:HostUrl"] + $"/HandleRequest.ashx?RequestType=GetData&GridID=c_messages_gridMessages&pageindex=1&pagesize=10000&sort1=SendDate%20DESC&sort2=&fixedheader=false&searchcol=&searchtext=&searchexpanded=false&allsubrowsexpanded=False&selectedid=undefined&functionname=&level=", Method.GET);
+
+				request.AddHeader("Accept", "*/*");
+				request.AddHeader("Sec-Fetch-Site", "same-origin");
+				request.AddHeader("Sec-Fetch-Mode", "cors");
+				request.AddHeader("Sec-Fetch-Dest", "empty");
+				lock (RestWebClient)
+				{
+					RestWebClient.Execute(request);
+				}
+
+				request = new RestRequest(Configuration["NeptunServer:HostUrl"] + "main.aspx", Method.POST);
+
 				request.AddParameter("__EVENTVALIDATION", message.eventstr);
 				request.AddParameter("__VIEWSTATE", message.viewstatestr);
 				var id = message.ID;
@@ -81,13 +98,13 @@ namespace Neptun
 				request.AddHeader("Sec-Fetch-Dest", "empty");
 				request.AddParameter("upFilter$rblMessageTypes", "Összes üzenet");
 				request.AddParameter("__EVENTTARGET", "upFunction$c_messages$upMain$upGrid$gridMessages");
-				IRestResponse response;
 				lock (RestWebClient)
 				{
 					response = RestWebClient.Execute(request);
 				}
 				var html = new HtmlDocument();
 				html.LoadHtml(response.Content);
+				var asd = html.GetElementbyId("upFunction_c_messages_upModal_upmodalextenderReadMessage_ctl02_Readmessage1_UpdatePanel1");
 				var XAMLStr = HtmlToXamlConverter.ConvertHtmlToXaml(html.GetElementbyId("upFunction_c_messages_upModal_upmodalextenderReadMessage_ctl02_Readmessage1_UpdatePanel1").ChildNodes[5].InnerHtml, false);
 				await UI.ShowMessage(new MessageViewModel()
 				{

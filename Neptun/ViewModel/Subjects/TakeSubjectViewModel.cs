@@ -1042,7 +1042,6 @@ namespace Neptun
 					request.AddParameter("upFilter$rbtnSubjectType", ParentViewModel.SubjectType == TFViewModel.SubjectType.Mintatantervi ? "Mintatantervi" : "MindenIntezmenyi");
 					response = RestWebClient.Execute(request);
 
-					//TODO: Find out why this crashes sometimes..
 					var regex = new Regex(@"(<br />|<br/>|</ br>|</br>|<br>)");
 					if (node != null)
 						resultstr = regex.Replace(node.InnerHtml, Environment.NewLine);

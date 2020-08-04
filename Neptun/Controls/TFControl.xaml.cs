@@ -40,7 +40,6 @@ namespace Neptun
 					var data = owner.DataContext as SubjectViewModel;
 					(sender as Grid).DataContext = new TakeSubjectViewModel(data.id,ref data, test);
 					data.TakeViewModel = (sender as Grid).DataContext as TakeSubjectViewModel;
-					//TODO create viewmodel and load data
 				}
 			}
 			else

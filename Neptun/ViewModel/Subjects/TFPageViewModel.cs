@@ -665,13 +665,9 @@ namespace Neptun
 
 			NavigateToRight = new RelayCommand(() =>
 			{
-				//var asd = PageSize * CurrentPage;
-				//++CurrentPage;
-				//Subjects = new ObservableCollection<SubjectViewModel>(AllSubjects.Skip(PageSize * CurrentPage++).Take(PageSize));
 				Subjects = new ObservableCollection<SubjectViewModel>();
 				Task.Run(() =>
 				{
-					// TODO Fix receiving 500 items
 					// Get all subjects and use those..
 					string responsestr;
 					{

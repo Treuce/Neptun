@@ -33,7 +33,6 @@ namespace Neptun
 						Name = j.GetDirectInnerText(),
 						LinksTo = j.Attributes.First(s => s.Name == "targeturl").Value
 					});
-					// TODO Other requests
 					
 					//Debugger.Break();
 					
