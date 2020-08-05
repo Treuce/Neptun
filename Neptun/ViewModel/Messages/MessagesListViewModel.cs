@@ -21,11 +21,6 @@ namespace Neptun
 	/// </summary>
 	public class MessagesListViewModel : BaseViewModel
 	{
-		#region Private Members
-
-		private MessageSearchEnum mSearch = MessageSearchEnum.Subject;
-
-		#endregion
 
 		#region Private Methods
 		private void Filter()
@@ -282,7 +277,7 @@ namespace Neptun
 								RestWebClient.Execute(request);
 							}
 
-							request = new RestRequest("https://hallgato.neptun.elte.hu/HandleRequest.ashx?RequestType=Update&GridID=c_messages_gridMessages&pageindex=1&pagesize=10000&sort1=SendDate%20DESC&sort2=&fixedheader=false&searchcol=&searchtext=&searchexpanded=false&allsubrowsexpanded=False&selectedid=undefined&functionname=delete&level=1", Method.POST);
+							request = new RestRequest(Configuration["NeptunServer:HostUrl"] + "HandleRequest.ashx?RequestType=Update&GridID=c_messages_gridMessages&pageindex=1&pagesize=10000&sort1=SendDate%20DESC&sort2=&fixedheader=false&searchcol=&searchtext=&searchexpanded=false&allsubrowsexpanded=False&selectedid=undefined&functionname=delete&level=1", Method.POST);
 							request.AddHeader("Content-Type", "text/plain;charset=UTF-8");
 							request.AddHeader("Accept", "*/*");
 							request.AddHeader("Sec-Fetch-Site", "same-origin");

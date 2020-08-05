@@ -8,6 +8,7 @@ using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Linq;
 using System.Management.Instrumentation;
+using System.Numerics;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows;
@@ -16,6 +17,7 @@ using System.Windows.Input;
 using System.Windows.Markup;
 using System.Windows.Media;
 using System.Windows.Navigation;
+using Xceed.Wpf.Toolkit;
 using static Dna.FrameworkDI;
 using static Neptun.Core.CoreDI;
 using static Neptun.DI;
@@ -24,13 +26,57 @@ namespace Neptun
 {
 	public class TakeSubjectViewModel : BaseViewModel
 	{
+		#region Nested classes
+
+		public class TFMenuItemViewModel : BaseViewModel
+		{
+			public string Name { get; set; }
+			public override string ToString() => Name;
+			public bool isEnabled { get; set; } = true;
+		}
+		public enum TFPage
+		{
+			Default,
+			Felvétel,
+			Adatok,
+			Téma,
+			Notes,
+			Hallgatók,
+			Előkövetelmény
+		}
+		public class Course : BaseViewModel
+		{
+			public string CourseCode { get; set; }
+
+			public string Type { get; set; }
+			public string GroupName { get; set; }
+
+			public string Teacher { get; set; }
+
+			public string Language { get; set; }
+
+			public string Note { get; set; }
+
+			public string Limits { get; set; }
+			public string Schedule { get; set; }
+			public string rangsor { get; internal set; }
+			public bool isEnabled { get; set; }
+			public bool isSelected { get; set; }
+
+			public string ID { get; internal set; }
+			public bool SelectionChanged { get; set; } = false;
+
+			public TFViewModel.SubjectType SubjectType { get; set; }
+		}
+		#endregion
+
 		#region Private Methods
 
 		private void LoadTheme()
 		{
 			lock (RestWebClient)
 			{
-				var request = new RestRequest("https://hallgato.neptun.elte.hu/main.aspx?ismenuclick=true&ctrl=0303", Method.POST);
+				var request = new RestRequest(Configuration["NeptunServer:HostUrl"] + "main.aspx?ismenuclick=true&ctrl=0303", Method.POST);
 				request.AddHeader("Cache-Control", "no-cache");
 				request.AddHeader("X-Requested-With", "XMLHttpRequest");
 				request.AddHeader("X-MicrosoftAjax", "Delta=true");
@@ -121,7 +167,7 @@ namespace Neptun
 		{
 			lock (RestWebClient)
 			{
-				var request = new RestRequest("https://hallgato.neptun.elte.hu/main.aspx?ismenuclick=true&ctrl=0303", Method.POST);
+				var request = new RestRequest(Configuration["NeptunServer:HostUrl"] + "main.aspx?ismenuclick=true&ctrl=0303", Method.POST);
 				request.AddHeader("Cache-Control", "no-cache");
 				request.AddHeader("X-Requested-With", "XMLHttpRequest");
 				request.AddHeader("X-MicrosoftAjax", "Delta=true");
@@ -215,7 +261,7 @@ namespace Neptun
 
 		private void LoadNotes()
 		{
-			var request = new RestRequest("https://hallgato.neptun.elte.hu/main.aspx?ismenuclick=true&ctrl=0303", Method.POST);
+			var request = new RestRequest(Configuration["NeptunServer:HostUrl"] + "main.aspx?ismenuclick=true&ctrl=0303", Method.POST);
 			request.AddHeader("Cache-Control", "no-cache");
 			request.AddHeader("X-Requested-With", "XMLHttpRequest");
 			request.AddHeader("X-MicrosoftAjax", "Delta=true");
@@ -306,7 +352,8 @@ namespace Neptun
 
 		private void LoadStudents()
 		{
-			var request = new RestRequest("https://hallgato.neptun.elte.hu/main.aspx?ismenuclick=true&ctrl=0303", Method.POST);
+
+			var request = new RestRequest(Configuration["NeptunServer:HostUrl"] + "main.aspx?ismenuclick=true&ctrl=0303", Method.POST);
 			request.AddHeader("Cache-Control", "no-cache");
 			request.AddHeader("X-Requested-With", "XMLHttpRequest");
 			request.AddHeader("X-MicrosoftAjax", "Delta=true");
@@ -361,13 +408,29 @@ namespace Neptun
 			{
 				response = RestWebClient.Execute(request);
 			}
+			request = new RestRequest(Configuration["NeptunServer:HostUrl"] + "HandleRequest.ashx?RequestType=GetData&GridID=Students_on_subject1_gridStudents&pageindex=1&pagesize=10000&sort1=&sort2=&fixedheader=false&searchcol=&searchtext=&searchexpanded=false&allsubrowsexpanded=False&selectedid=undefined&functionname=&level=", Method.GET);
+			request.AddHeader("Accept", "*/*");
+			request.AddHeader("Sec-Fetch-Site", "same-origin");
+			request.AddHeader("Sec-Fetch-Mode", "cors");
+			request.AddHeader("Sec-Fetch-Dest", "empty");
+			lock (RestWebClient)
+			{
+				response = RestWebClient.Execute(request);
+			}
+
+
 			var html = new HtmlDocument();
 			html.LoadHtml(response.Content);
 			string notes = HtmlToXamlConverter.ConvertHtmlToXaml(html.GetElementbyId("Students_on_subject1_gridStudents_bodytable").OuterHtml, false);
+			var count = html.GetElementbyId("Students_on_subject1_gridStudents_tablebottom").ChildNodes[0].ChildNodes[1].InnerText;
 			//ThemeXAMLString = theme;
-
+			count = count.Remove(count.LastIndexOf('('));
+			var p = new Paragraph(new Run(count));
+			if (Application.Current.Resources["FontSizeRegular"] is double fonts)
+				p.FontSize = fonts;
 			var notessection = (Section)XamlReader.Parse(notes);
 			var notesrowgroups = notessection.Blocks.OfType<Table>().ToList()[0].RowGroups.ToList();
+			notessection.Blocks.Add(p);
 			var notesrows = notesrowgroups[0].Rows;
 			foreach (var a in notesrows)
 			{
@@ -380,7 +443,9 @@ namespace Neptun
 					inline.FontFamily = Application.Current.Resources["LatoBold"] as FontFamily;
 				}
 			}
+
 			notesrows = notesrowgroups[1].Rows;
+
 			foreach (var a in notesrows)
 			{
 				foreach (var b in a.Cells)
@@ -483,7 +548,7 @@ namespace Neptun
 			//subject_requirement_gridSubjectPre_bodytable
 
 
-			var request = new RestRequest("https://hallgato.neptun.elte.hu/main.aspx?ismenuclick=true&ctrl=0303", Method.POST);
+			var request = new RestRequest(Configuration["NeptunServer:HostUrl"] + "main.aspx?ismenuclick=true&ctrl=0303", Method.POST);
 			request.AddHeader("Cache-Control", "no-cache");
 			request.AddHeader("X-Requested-With", "XMLHttpRequest");
 			request.AddHeader("X-MicrosoftAjax", "Delta=true");
@@ -540,68 +605,56 @@ namespace Neptun
 			}
 			var html = new HtmlDocument();
 			html.LoadHtml(response.Content);
-			string elokovetelmenystr = HtmlToXamlConverter.ConvertHtmlToXaml(html.GetElementbyId("subject_requirement_gridSubjectPre_bodytable").InnerHtml, false);
-			//ElokovetelmenyXAMLString = elokovetelmenystr;
-			ElokovetelmenyXAMLString = @"<Section xml:space=""preserve"" xmlns=""http://schemas.microsoft.com/winfx/2006/xaml/presentation""><Table><TableRowGroup><TableRow><TableCell BorderThickness=""1,1,1,1"" BorderBrush=""Black""><Paragraph><Run>Szabály</Run></Paragraph></TableCell><TableCell BorderThickness=""1,1,1,1"" BorderBrush=""Black""><Paragraph><Run>Előzetes időszak teljesítés</Run></Paragraph></TableCell><TableCell BorderThickness=""1,1,1,1"" BorderBrush=""Black""><Paragraph><Run>Előzetes időszak felvétel</Run></Paragraph></TableCell><TableCell BorderThickness=""1,1,1,1"" BorderBrush=""Black""><Paragraph><Run>Előzetes időszak párhuzamos</Run></Paragraph></TableCell><TableCell BorderThickness=""1,1,1,1"" BorderBrush=""Black""><Paragraph><Run>Előzetes vizsga</Run></Paragraph></TableCell><TableCell BorderThickness=""1,1,1,1"" BorderBrush=""Black""><Paragraph><Run>Végleges időszak teljesítés</Run></Paragraph></TableCell><TableCell BorderThickness=""1,1,1,1"" BorderBrush=""Black""><Paragraph><Run>Végleges időszak felvétel</Run></Paragraph></TableCell><TableCell BorderThickness=""1,1,1,1"" BorderBrush=""Black""><Paragraph><Run>Végleges időszak párhuzamos</Run></Paragraph></TableCell><TableCell BorderThickness=""1,1,1,1"" BorderBrush=""Black""><Paragraph><Run>Végleges vizsga</Run></Paragraph></TableCell><TableCell BorderThickness=""1,1,1,1"" BorderBrush=""Black""><Paragraph><Run>Csoport</Run></Paragraph></TableCell></TableRow></TableRowGroup><TableRowGroup><TableRow><TableCell BorderThickness=""1,1,1,1"" BorderBrush=""Black""><Paragraph>1</Paragraph></TableCell><TableCell BorderThickness=""1,1,1,1"" BorderBrush=""Black""><Paragraph>1</Paragraph></TableCell></TableRow><TableRow><TableCell BorderThickness=""1,1,1,1"" BorderBrush=""Black""><Table><TableRowGroup><TableRow><TableCell BorderThickness=""1,1,1,1"" BorderBrush=""Black""><Paragraph><Run>Tantárgy</Run></Paragraph></TableCell></TableRow></TableRowGroup><TableRowGroup><TableRow><TableCell BorderThickness=""1,1,1,1"" BorderBrush=""Black""><Paragraph>Számítógépes rendszerek EA+GY/IP-18SZGREG</Paragraph></TableCell></TableRow></TableRowGroup></Table></TableCell></TableRow></TableRowGroup></Table></Section>";
+			string elokovetelmenystr = HtmlToXamlConverter.ConvertHtmlToXaml(html.GetElementbyId("subject_requirement_gridSubjectPre_bodytable").OuterHtml, false);
+			ElokovetelmenyXAMLString = elokovetelmenystr;
+
 			// TODO Fix this format to display better..
-			//var elokovetelmenysection = (Section)XamlReader.Parse(elokovetelmenystr);
-			//var elokovetelmenyrowgroups = elokovetelmenysection.Blocks.OfType<Table>().ToList()[0].RowGroups.ToList();
-			//var notesrows = elokovetelmenyrowgroups[0].Rows;
-			//foreach (var a in notesrows)
+			var elokovetelmenysection = (Section)XamlReader.Parse(elokovetelmenystr);
+			var elokovetelmenyrowgroups = elokovetelmenysection.Blocks.OfType<Table>().ToList()[0].RowGroups.ToList();
+			foreach (var a in elokovetelmenyrowgroups[0].Rows)
+			{
+				foreach (var b in a.Cells)
+				{
+					if (Application.Current.Resources["FontSizeLarge"] is double d)
+						b.FontSize = d;
+					b.BorderThickness = new Thickness(0);
+					var inline = (b.Blocks.ToList()[0] as Paragraph).Inlines.FirstInline;
+					inline.FontFamily = Application.Current.Resources["LatoBold"] as FontFamily;
+				}
+			}
+			// TODO: Parsing this..
+			//for (int i = 0; i < elokovetelmenyrowgroups[1].Rows.Count; ++i)
 			//{
-			//	foreach (var b in a.Cells)
+			//	try
 			//	{
-			//		if (Application.Current.Resources["FontSizeLarge"] is double d)
-			//			b.FontSize = d;
-			//		b.BorderThickness = new Thickness(0);
-			//		var inline = (b.Blocks.ToList()[0] as Paragraph).Inlines.FirstInline;
-			//		inline.FontFamily = Application.Current.Resources["LatoBold"] as FontFamily;
-			//	}
-			//}
-			//notesrows = elokovetelmenyrowgroups[1].Rows;
-			//foreach (var a in notesrows)
-			//{
-			//	foreach (var b in a.Cells)
-			//	{
-			//		try
+			//		if (i % 2 == 0)
 			//		{
-			//			if (Application.Current.Resources["FontSizeRegular"] is double d)
-			//				b.FontSize = d;
-			//			b.BorderThickness = new Thickness(0);
-			//			if (b.Blocks.ToList()[0] is Paragraph p)
-			//			{
-			//				var inline = p.Inlines.FirstInline;
-			//				inline.FontFamily = Application.Current.Resources["LatoRegular"] as FontFamily;
-			//				inline.FontWeight = FontWeights.Regular;
-			//			}
-			//			else if (b.Blocks.ToList()[0] is Table t)
-			//			{
-			//				var test = t.RowGroups.ToList()[0].Rows;
-			//				foreach (var asd in test)
+			//			var a = elokovetelmenyrowgroups[1].Rows[i];
+			//			foreach (var b in a.Cells)
+			//				foreach (var c in b.Blocks)
 			//				{
-			//					foreach (var asdasd in asd.Cells)
-			//					{
-			//						if (Application.Current.Resources["FontSizeRegular"] is double dd)
-			//							asdasd.FontSize = dd;
-			//						asdasd.BorderThickness = new Thickness(0);
-			//						if (asdasd.Blocks.ToList()[0] is Paragraph pp)
-			//						{
-			//							var inline = pp.Inlines.FirstInline;
-			//							inline.FontFamily = Application.Current.Resources["LatoRegular"] as FontFamily;
-			//							inline.FontWeight = FontWeights.Regular;
-			//						}
-			//					}
+			//					if (c is Paragraph p)
+			//						p.Inlines.Clear();
+			//					//c.Background = new SolidColorBrush(Colors.Red);
 			//				}
-			//				Debugger.Break();
+			//		}
+			//		else
+			//		{
+			//			var a = elokovetelmenyrowgroups[1].Rows[i];
+			//			foreach (var b in a.Cells)
+			//			{
+			//				b.Background = new SolidColorBrush(Colors.Blue);
+			//				Logger.LogErrorSource("This is running");
+			//				b.BorderThickness = new Thickness(0);
 			//			}
 			//		}
-			//		catch (Exception e)
-			//		{
-			//			Logger.LogDebugSource(e.Message);
-			//		}
+			//	}
+			//	catch (Exception e)
+			//	{
+			//		Logger.LogErrorSource(e.Message);
 			//	}
 			//}
-			//ElokovetelmenyXAMLString = XamlWriter.Save(elokovetelmenysection);
+			ElokovetelmenyXAMLString = XamlWriter.Save(elokovetelmenysection);
 		}
 
 		private void LoadCourseData(string id, TFViewModel.SubjectType type, bool loadmenu)
@@ -724,6 +777,7 @@ namespace Neptun
 							});
 						}
 						MenuItems[0].isEnabled = false;
+
 						#endregion
 
 						#region Courses
@@ -773,49 +827,6 @@ namespace Neptun
 
 		}
 
-		#endregion
-
-		#region Nested classes
-
-		public class TFMenuItemViewModel : BaseViewModel
-		{
-			public string Name { get; set; }
-			public override string ToString() => Name;
-			public bool isEnabled { get; set; } = true;
-		}
-		public enum TFPage
-		{
-			Felvétel,
-			Adatok,
-			Téma,
-			Notes,
-			Hallgatók,
-			Előkövetelmény
-		}
-		public class Course : BaseViewModel
-		{
-			public string CourseCode { get; set; }
-
-			public string Type { get; set; }
-			public string GroupName { get; set; }
-
-			public string Teacher { get; set; }
-
-			public string Language { get; set; }
-
-			public string Note { get; set; }
-
-			public string Limits { get; set; }
-			public string Schedule { get; set; }
-			public string rangsor { get; internal set; }
-			public bool isEnabled { get; set; }
-			public bool isSelected { get; set; }
-
-			public string ID { get; internal set; }
-			public bool SelectionChanged { get; set; } = false;
-
-			public TFViewModel.SubjectType SubjectType { get; set; }
-		}
 		#endregion
 
 		#region Constructors
@@ -878,8 +889,7 @@ namespace Neptun
 						}
 					default:
 						{
-							currentPage = TFPage.Felvétel;
-							Task.Run(LoadCourses);
+							currentPage = TFPage.Default;
 							break;
 						}
 				}
@@ -1229,6 +1239,7 @@ namespace Neptun
 		public bool NotesPageVisible { get => currentPage == TFPage.Notes; }
 		public bool StudentsPageVisible { get => currentPage == TFPage.Hallgatók; }
 		public bool EloasdPageVisible { get => currentPage == TFPage.Előkövetelmény; }
+		public bool DefaultPage { get => currentPage == TFPage.Default; }
 
 
 		public string TempXAMLSTring { get; set; }

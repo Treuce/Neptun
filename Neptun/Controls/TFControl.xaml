@@ -351,17 +351,21 @@
 			<!--#endregion-->
 
 			<!--#region Hallgatók -->
+				
 			<RichTextBox IsDocumentEnabled="True"
 						 IsReadOnly="True"
 						 IsReadOnlyCaretVisible="True"
 						 VerticalAlignment="Center"
 						 Block.TextAlignment="Left"
+						 VerticalContentAlignment="Top"
+						 
 						 Background="Transparent"
-						 BorderBrush="Red"
+						 VerticalScrollBarVisibility="Visible"
 						 Visibility="{Binding StudentsPageVisible, Converter={local:BooleanToVisiblityGoneConverter}}"
 						 Grid.Row="2"
 						 BorderThickness="0"
 						 Padding="10"
+						 Height="200"
 						 local:RichTextBoxHelper.DocumentXaml="{Binding StudentsXAMLString}">
 				<RichTextBox.Resources>
 					<Style TargetType="Hyperlink">
@@ -378,12 +382,14 @@
 					</Style>
 				</RichTextBox.Resources>
 			</RichTextBox>
+			<!--</ScrollViewer>-->
 			<!--#endregion-->
 
 			<!--#region Előkövetelmény -->
 			<RichTextBox IsDocumentEnabled="True"
 						 IsReadOnly="True"
 						 IsReadOnlyCaretVisible="True"
+						 Name="Test"
 						 VerticalAlignment="Center"
 						 Block.TextAlignment="Left"
 						 Background="Transparent"
@@ -409,7 +415,15 @@
 				</RichTextBox.Resources>
 			</RichTextBox>
 			<!--#endregion-->
-
+			<TextBlock Text="This is not supported"
+					   Grid.Row="2"
+					   VerticalAlignment="Center"
+					   Foreground="Red"
+					   FontSize="{StaticResource FontSizeLarge}"
+					   FontFamily="{StaticResource LatoBold}"
+					   HorizontalAlignment="Center"
+					   Margin="20"
+					   Visibility="{Binding DefaultPage, Converter={local:BooleanToVisiblityGoneConverter}}" />
 		</Grid>
 	</Border>
 </UserControl>

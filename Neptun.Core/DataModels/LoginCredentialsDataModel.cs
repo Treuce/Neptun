@@ -12,7 +12,7 @@ namespace Neptun.Core
 		/// <summary>
 		/// The unique Id
 		/// </summary>
-		public string Id { get; set; }
+		public int Id { get; set; }
 
 		/// <summary>
 		/// The users neptun code
