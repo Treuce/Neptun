@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace Neptun.Core
 {
@@ -37,5 +38,11 @@ namespace Neptun.Core
         /// </summary>
         /// <returns></returns>
         Task ClearAllLoginCredentialsAsync();
+
+        Task<bool> SaveSubjects(List<SavedSubjectDataModel> l);
+
+        Task<bool> DeleteSubjects();
+
+        Task<List<SavedSubjectDataModel>> LoadSavedSubjects();
     }
 }

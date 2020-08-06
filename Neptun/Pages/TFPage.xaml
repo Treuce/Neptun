@@ -181,7 +181,8 @@
 						Height="Auto"
 						FontSize="{StaticResource FontSizeSmall}"
 						Command="{Binding ListSubjects}" />
-				<StackPanel Grid.Row="7" Orientation="Horizontal"
+				<StackPanel Grid.Row="7"
+							Orientation="Horizontal"
 							Grid.Column="1">
 					<Button Grid.Row="7"
 							Padding="5"
@@ -208,9 +209,70 @@
 							HorizontalContentAlignment="Stretch"
 							Height="Auto"
 							FontSize="{StaticResource FontSizeSmall}"
-							Command="{Binding ForgetListedSubjects}" ToolTip="Elég csak a jobb oldalon látható négyzetet bepipálni és ezek a kurzusok kerülnek leadásra." />
+							Command="{Binding ForgetListedSubjects}"
+							ToolTip="Elég csak a jobb oldalon látható négyzetet bepipálni és ezek a kurzusok kerülnek leadásra." />
 				</StackPanel>
-				
+				<!--<StackPanel Grid.Row="7"
+							Orientation="Vertical"
+							Margin="20,0,0,0"
+							Grid.Column="2">
+					
+				<StackPanel
+							Orientation="Horizontal"
+							>-->
+				<Grid Grid.Row="7" Grid.Column="2" Margin="20,0,0,0">
+					<Grid.ColumnDefinitions>
+						<ColumnDefinition Width="0.5*" />
+						<ColumnDefinition Width="0.5*" />
+					</Grid.ColumnDefinitions>
+					<Grid.RowDefinitions>
+						<RowDefinition Height="0.5*" />
+						<RowDefinition Height="0.5*" />
+					</Grid.RowDefinitions>
+					<Button Padding="10,5,10,5"
+							Grid.Column="0"
+						Margin="0,0,10,0"
+						Content="Tárgyak mentése"
+							VerticalAlignment="Center"
+						HorizontalAlignment="Center"
+						HorizontalContentAlignment="Center"
+						Height="Auto"
+						FontSize="{StaticResource FontSizeSmall}"
+						Command="{Binding SaveListedSubjects}">
+					<Button.ToolTip>
+						<ToolTip Content="Kurzust is ki kell jelölni, különben nem működik." />
+					</Button.ToolTip>
+				</Button>
+				<Button Padding="10,5,10,5"
+						Grid.Column="2"
+						Margin="0,0,10,0"
+						Content="Tárgyak betöltése"
+						VerticalAlignment="Center"
+						HorizontalAlignment="Left"
+						HorizontalContentAlignment="Left"
+						Height="Auto"
+						FontSize="{StaticResource FontSizeSmall}"
+						Command="{Binding LoadSavedSubjects}">
+					<Button.ToolTip>
+						<ToolTip Content="Experimental feature" />
+					</Button.ToolTip>
+				</Button>
+				<!--</StackPanel>-->
+				<Button Padding="5"
+						Grid.ColumnSpan="2"
+						Grid.Row="1"
+						Content="Mentett tárgyak törlése"
+						x:Name="Test"
+						VerticalAlignment="Center"
+						HorizontalAlignment="Left"
+						HorizontalContentAlignment="Left"
+						Height="Auto"
+						Width="Auto"
+						FontSize="{StaticResource FontSizeSmall}"
+						Command="{Binding DeleteSavedSubjects}"
+						ToolTip="Elég csak a jobb oldalon látható négyzetet bepipálni és ezek a tárgyak kerülnek törlésre." />
+			</Grid>
+			<!--</StackPanel>-->
 				<StackPanel Grid.Row="7"
 							Visibility="{Binding MintaTantervView, Converter={local:BooleanToVisiblityGoneConverter}, ConverterParameter=1, FallbackValue=Visible}"
 							Grid.Column="3"
@@ -393,7 +455,8 @@
 									<ColumnDefinition Width="0.2*" />
 									<ColumnDefinition Width="0.2*" />
 									<ColumnDefinition Width="0.2*" />
-									<ColumnDefinition Width="0.2*" />
+									<ColumnDefinition Width="0.15*" />
+									<ColumnDefinition Width="0.05*" />
 								</Grid.ColumnDefinitions>
 								<Grid.RowDefinitions>
 									<RowDefinition Height="Auto" />
@@ -435,6 +498,16 @@
 										   FontFamily="{StaticResource LatoRegular}"
 										   Margin="80,0,20,0"
 										   HorizontalAlignment="Left" />
+								<CheckBox VerticalAlignment="Center"
+										  Grid.Column="6"
+										  HorizontalAlignment="Center"
+										  HorizontalContentAlignment="Center"
+										  VerticalContentAlignment="Center"
+										  Margin="5,10,10,10"
+										  IsChecked="{Binding isSelected}"
+										  Foreground="{StaticResource ForegroundMainBrush}"
+										  FontSize="{StaticResource FontSizeXXLarge}"
+										  Background="{StaticResource BackgroundDarkBrushLighter}" />
 								<!--// Custom control here for other stuff-->
 								<local:TFControl Grid.ColumnSpan="5"
 												 Grid.Row="1"
@@ -494,8 +567,6 @@
 							 Background="Transparent" />
 				</Grid>
 			</Border>
-			<!--<Border Grid.Row="2" BorderBrush="Black" BorderThickness="4" Height="Auto">-->
-
 			<Grid Margin="15"
 				  Grid.Row="2"
 				  Visibility="{Binding MintaTantervView, Converter={local:BooleanToVisiblityGoneConverter}, ConverterParameter=1}"

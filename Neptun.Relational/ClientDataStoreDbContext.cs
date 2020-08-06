@@ -15,6 +15,8 @@ namespace Neptun.Relational
         /// </summary>
         public DbSet<LoginCredentialsDataModel> LoginCredentials { get; set; }
 
+        public DbSet<SavedSubjectDataModel> SavedSubjects { get; set; }
+
         #endregion
 
         #region Constructor
@@ -43,10 +45,11 @@ namespace Neptun.Relational
             //
             // Set Id as primary key
             modelBuilder.Entity<LoginCredentialsDataModel>().HasKey(a => a.Id);
-            
-            // TODO: Set up limits
-            //modelBuilder.Entity<LoginCredentialsDataModel>().Property(a => a.FirstName).HasMaxLength(50);
-        }
+			modelBuilder.Entity<SavedSubjectDataModel>().HasKey(a => a.code);
+
+			// TODO: Set up limits
+			//modelBuilder.Entity<LoginCredentialsDataModel>().Property(a => a.FirstName).HasMaxLength(50);
+		}
 
         #endregion
     }

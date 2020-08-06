@@ -38,7 +38,7 @@ namespace Neptun
 					var owner = UIHelper.FindVisualParent<ListViewItem>(sender as Grid);
 					var test = UIHelper.FindVisualParent<TFPage>(sender as Grid).DataContext as TFViewModel;
 					var data = owner.DataContext as SubjectViewModel;
-					(sender as Grid).DataContext = new TakeSubjectViewModel(data.id,ref data, test);
+					(sender as Grid).DataContext = new TakeSubjectViewModel(data.id,data, test);
 					data.TakeViewModel = (sender as Grid).DataContext as TakeSubjectViewModel;
 				}
 			}

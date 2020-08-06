@@ -605,11 +605,23 @@ namespace Neptun
 			}
 			var html = new HtmlDocument();
 			html.LoadHtml(response.Content);
+			var tableheader = html.GetElementbyId("subject_requirement_gridSubjectPre_bodytable").ChildNodes[0].InnerHtml; //header
+			tableheader = tableheader.Insert(0, "<table>");
+			tableheader += "</table>";
+			var asd2 = html.GetElementbyId("subject_requirement_gridSubjectPre_bodytable").ChildNodes[1]; //Body
+			for (int i = asd2.ChildNodes.Count - 1; i >= 0; --i)
+			{
+				if (i % 2 == 0)
+					asd2.ChildNodes.RemoveAt(i);
+			}
+			var damn = asd2.InnerHtml;
+			//asd2 = asd2.Insert(0, "<table>");
+			//asd2 += "</table>";
+			//var damn = HtmlToXamlConverter.ConvertHtmlToXaml(asd2,false);
 			string elokovetelmenystr = HtmlToXamlConverter.ConvertHtmlToXaml(html.GetElementbyId("subject_requirement_gridSubjectPre_bodytable").OuterHtml, false);
-			ElokovetelmenyXAMLString = elokovetelmenystr;
 
 			// TODO Fix this format to display better..
-			var elokovetelmenysection = (Section)XamlReader.Parse(elokovetelmenystr);
+			var elokovetelmenysection = (Section)XamlReader.Parse(HtmlToXamlConverter.ConvertHtmlToXaml(tableheader, false));
 			var elokovetelmenyrowgroups = elokovetelmenysection.Blocks.OfType<Table>().ToList()[0].RowGroups.ToList();
 			foreach (var a in elokovetelmenyrowgroups[0].Rows)
 			{
@@ -622,39 +634,8 @@ namespace Neptun
 					inline.FontFamily = Application.Current.Resources["LatoBold"] as FontFamily;
 				}
 			}
-			// TODO: Parsing this..
-			//for (int i = 0; i < elokovetelmenyrowgroups[1].Rows.Count; ++i)
-			//{
-			//	try
-			//	{
-			//		if (i % 2 == 0)
-			//		{
-			//			var a = elokovetelmenyrowgroups[1].Rows[i];
-			//			foreach (var b in a.Cells)
-			//				foreach (var c in b.Blocks)
-			//				{
-			//					if (c is Paragraph p)
-			//						p.Inlines.Clear();
-			//					//c.Background = new SolidColorBrush(Colors.Red);
-			//				}
-			//		}
-			//		else
-			//		{
-			//			var a = elokovetelmenyrowgroups[1].Rows[i];
-			//			foreach (var b in a.Cells)
-			//			{
-			//				b.Background = new SolidColorBrush(Colors.Blue);
-			//				Logger.LogErrorSource("This is running");
-			//				b.BorderThickness = new Thickness(0);
-			//			}
-			//		}
-			//	}
-			//	catch (Exception e)
-			//	{
-			//		Logger.LogErrorSource(e.Message);
-			//	}
-			//}
 			ElokovetelmenyXAMLString = XamlWriter.Save(elokovetelmenysection);
+			//ElokovetelmenyXAMLString = damn;
 		}
 
 		private void LoadCourseData(string id, TFViewModel.SubjectType type, bool loadmenu)
@@ -836,13 +817,14 @@ namespace Neptun
 			Courses = new ObservableCollection<Course>();
 		}
 
-		public TakeSubjectViewModel(string id, ref SubjectViewModel viewmodel, TFViewModel tFView, bool loadmenu = true)
+		public TakeSubjectViewModel(string id, SubjectViewModel viewmodel, TFViewModel tFView, bool loadmenu = true)
 		{
 			//Logger.LogErrorSource(viewmodel.Code);
 			//Debugger.Break();
 			TFViewModel = tFView;
 			ParentViewModel = viewmodel;
 			myID = id;
+
 			switchpage = new RelayCommand<TFMenuItemViewModel>(vm =>
 			{
 				foreach (var menuitem in MenuItems.Where(s => !s.isEnabled))
@@ -1200,6 +1182,7 @@ namespace Neptun
 					//}
 					if (resultstr.Contains("nem sikerült"))
 						Debugger.Break();
+
 					await Task.Delay(TimeSpan.FromMinutes(TFViewModel.WaitTime));
 					await UI.ShowMessage(new MessageBoxDialogViewModel()
 					{

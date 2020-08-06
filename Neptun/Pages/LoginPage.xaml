@@ -45,17 +45,18 @@
 
 							<!--TODO: Checkbox focus style override, match app theme instead of default -->
 							<CheckBox VerticalAlignment="Center"
-									  HorizontalAlignment="Center" 
-									  HorizontalContentAlignment="Center" 
-									  VerticalContentAlignment="Center" 
-									  Margin="5 10,10,10" 
-									  Foreground="{StaticResource ForegroundMainBrush}" 
-									  FontSize="{StaticResource FontSizeXXLarge}" 
-									  Background="{StaticResource BackgroundDarkBrushLighter}" 
-									  x:Name="SaveLoginDetailsCheckBox" 
+									  HorizontalAlignment="Center"
+									  HorizontalContentAlignment="Center"
+									  VerticalContentAlignment="Center"
+									  Margin="5 10,10,10"
+									  Foreground="{StaticResource ForegroundMainBrush}"
+									  FontSize="{StaticResource FontSizeXXLarge}"
+									  Background="{StaticResource BackgroundDarkBrushLighter}"
+									  x:Name="SaveLoginDetailsCheckBox"
 									  Content="Adatok mentése"
-									  Checked="SaveLoginDetails_Handle" 
-									  Unchecked="SaveLoginDetails_Handle"/>
+									  Checked="SaveLoginDetails_Handle"
+									  ToolTip="Nem titkosítva kerül mentésre."
+									  Unchecked="SaveLoginDetails_Handle" />
 							<!-- Login button -->
 							<Button Content="Bejelentkezés" 
                                     IsDefault="True"

@@ -61,11 +61,6 @@ namespace Neptun
 
 		public MessagesListViewModel MessageList { get; set; }
 
-		/// <summary>
-		/// Determines if the application has network access to the fasetto server
-		/// </summary>
-		public bool ServerReachable { get; set; } = true;
-
 		public int UnreadMessageCount { get; set; } = 0;
 
 		#endregion
