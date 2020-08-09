@@ -56,7 +56,7 @@ namespace Neptun
 		/// <summary>
 		/// The smallest width the window can go to
 		/// </summary>
-		public double WindowMinimumWidth { get; set; } = 1000;
+		public double WindowMinimumWidth { get; set; } = 1400;
 
 		/// <summary>
 		/// The smallest height the window can go to

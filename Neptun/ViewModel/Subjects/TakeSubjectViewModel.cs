@@ -1485,10 +1485,15 @@ namespace Neptun
 				{
 					string resultstr;
 					IRestResponse response;
+					string test = String.Empty;
+					Task<IRestResponse> handle;
 					var request = new RestRequest(Configuration["NeptunServer:HostUrl"] + "main.aspx?ismenuclick=true&ctrl=0303", Method.GET);
 					var html = new HtmlDocument();
+					System.Diagnostics.Stopwatch watch = new Stopwatch();
 					lock (RestWebClient)
 					{
+						watch.Start();
+						Logger.LogErrorSource($"{ParentViewModel.Code} : Entered locking block at {DateTime.Now.Millisecond}");
 						var changedcourses = Courses.Where(s => s.SelectionChanged);
 						response = RestWebClient.Execute(request);
 
@@ -1591,8 +1596,12 @@ namespace Neptun
 						//request.AddParameter("upFilter$txtTargykod", ParentViewModel.Code);
 						request.AddParameter("upFunction$h_addsubjects$upModal$upmodal_subjectdata$_data", "Visible:true");
 						request.AddParameter("upFilter$rbtnSubjectType", ParentViewModel.SubjectType == TFViewModel.SubjectType.Mintatantervi ? "Mintatantervi" : "MindenIntezmenyi");
-						response = RestWebClient.Execute(request);
+						handle = RestWebClient.ExecuteAsync(request);
 					}
+					handle.Wait();
+					response = handle.Result;
+					watch.Stop();
+					Logger.LogErrorSource($"{ParentViewModel.Code} : Left locking: {watch.ElapsedMilliseconds} at {DateTime.Now.Millisecond}");
 					html.LoadHtml(response.Content);
 					var regex = new Regex(@"(<br />|<br/>|</ br>|</br>|<br>)");
 					resultstr = regex.Replace(html.GetElementbyId("_Label1").InnerHtml, Environment.NewLine);

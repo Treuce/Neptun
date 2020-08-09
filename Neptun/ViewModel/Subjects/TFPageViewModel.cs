@@ -525,7 +525,13 @@ namespace Neptun
 				{
 					var list = new List<string>();
 					foreach (var a in Subjects.Where(s => s.isSelected))
+					{
 						list.Add(a.Code);
+						Application.Current.Dispatcher.Invoke(() =>
+					   {
+						   Subjects.Remove(a);
+					   });
+					}
 					string msg;
 					if (list.Count == 0)
 						msg = "Nincs kijelölve semmi.";
@@ -599,16 +605,16 @@ namespace Neptun
 							});
 						}
 					}
-						MessageBoxResult result = MessageBox.Show("Felvegyem ezeket a tárgyakat most rögtön?", "Neptun", MessageBoxButton.YesNo);
-						switch (result)
-						{
-							case MessageBoxResult.Yes:
-								{
-									foreach (var a in Subjects)
-										a.TakeViewModel.TakeSubject.Execute(null);
-									break;
-								}
-						}
+					MessageBoxResult result = MessageBox.Show("Felvegyem ezeket a tárgyakat most rögtön?", "Neptun", MessageBoxButton.YesNo);
+					switch (result)
+					{
+						case MessageBoxResult.Yes:
+							{
+								foreach (var a in Subjects)
+									a.TakeViewModel.TakeSubject.Execute(null);
+								break;
+							}
+					}
 				});
 			});
 

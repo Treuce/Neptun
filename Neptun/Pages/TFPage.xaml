@@ -203,7 +203,7 @@
 					<Button Grid.Row="7"
 							Padding="5"
 							Grid.Column="1"
-							Content="Felvett tárgyak leadása"
+							Content="Kijelölt tárgyak leadása"
 							VerticalAlignment="Center"
 							HorizontalAlignment="Stretch"
 							HorizontalContentAlignment="Stretch"
