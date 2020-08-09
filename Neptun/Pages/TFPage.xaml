@@ -472,12 +472,21 @@
 											   HorizontalAlignment="Left"
 											   VerticalAlignment="Center" />
 								</ContentControl>
-								<TextBlock Grid.Column="1"
-										   TextWrapping="WrapWithOverflow"
-										   Text="{Binding Code}"
-										   Margin="60,0,5,0"
-										   VerticalAlignment="Center"
-										   HorizontalAlignment="Left" />
+								<TextBox Grid.Column="1"
+										 TextWrapping="Wrap"
+										 Text="{Binding Code}"
+										 FontSize="{StaticResource FontSizeRegular}"
+										 BorderThickness="0"
+										 FontFamily="{StaticResource LatoBold}"
+										 HorizontalAlignment="Left"
+										 Margin="70,0,0,0"
+										 IsReadOnly="True"
+										 IsReadOnlyCaretVisible="True"
+										 Background="Transparent"
+										 Padding="0"
+										 VerticalContentAlignment="Center"
+										 HorizontalContentAlignment="Left"
+										 VerticalAlignment="Center" />
 								<TextBlock TextWrapping="WrapWithOverflow"
 										   Margin="60,0,5,0"
 										   VerticalAlignment="Center"
@@ -625,10 +634,15 @@
 											   HorizontalAlignment="Left"
 											   VerticalAlignment="Center" />
 								</ContentControl>
-								<TextBlock Grid.Column="1"
+								<TextBox Grid.Column="1"
 										   TextWrapping="WrapWithOverflow"
 										   Text="{Binding Code}"
 										   Margin="180,0,5,0"
+										 FontSize="{StaticResource FontSizeRegular}"
+										 VerticalContentAlignment="Center"
+										 Background="Transparent"
+										 IsReadOnly="True" IsReadOnlyCaretVisible="True"
+										 BorderThickness="0"
 										   VerticalAlignment="Center"
 										   HorizontalAlignment="Stretch" />
 								<TextBlock Grid.Column="2"

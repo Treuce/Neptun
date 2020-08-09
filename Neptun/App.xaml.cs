@@ -62,10 +62,10 @@ namespace Neptun
 				// If the response has an error...
 				if (await result.HandleErrorIfFailedAsync("Sikertelen Bejelentkezés"))
 					await ViewModelApplication.HandleSuccessfulLoginAsync(new UserProfileDetailsApiModel(cred.NeptunCode, cred.Password, cred.Id));
+				else ViewModelApplication.GoToPage(ApplicationPage.Login);
 				//ViewModelApplication.GoToPage(ApplicationPage.Messages);
 				//TaskManager.RunAndForget(KeepConnectionAlive);
 			}
-			else ViewModelApplication.GoToPage(ApplicationPage.Login);
 			Current.MainWindow = new MainWindow();
 			Current.MainWindow.Show();
 			// Show the main window

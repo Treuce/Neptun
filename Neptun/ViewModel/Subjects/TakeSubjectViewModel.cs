@@ -4,6 +4,7 @@ using HtmlAgilityPack;
 using Microsoft.Extensions.Logging;
 using RestSharp;
 using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Linq;
@@ -214,7 +215,7 @@ namespace Neptun
 				request.AddParameter("upFilter$txtKurzuskod", "");
 				request.AddParameter("upFilter$txtOktato", "");
 				request.AddParameter("upFilter$txtTargyNev", "");
-				request.AddParameter("upFilter$txtTargykod", "");
+				request.AddParameter("upFilter$txtTargykod", ParentViewModel.Code);
 				request.AddParameter("upFunction$h_addsubjects$upFilter$searchpanel$searchpanel_state", "expanded");
 				request.AddParameter("upFunction$h_addsubjects$upModal$upmodal_subjectdata$_data", "Visible:true");
 				var response = RestWebClient.Execute(request);
@@ -792,6 +793,7 @@ namespace Neptun
 								{
 									Courses.Add(course);
 								});
+
 							}
 							catch (Exception e)
 							{
@@ -799,6 +801,46 @@ namespace Neptun
 								Debugger.Break();
 							}
 						}
+						Task.Run(() =>
+						{
+							var courseschedulelist = new List<KeyValuePair<string, string>>();
+							var client = new RestClient("http://gabeee.web.elte.hu/to_remake/");
+							client.Timeout = -1;
+							var request_to = new RestRequest(Method.GET);
+							request_to.AddHeader("Upgrade-Insecure-Requests", "1");
+							client.UserAgent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/84.0.4147.105 Safari/537.36";
+							request_to.AddHeader("Accept", "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9");
+							IRestResponse response_to = client.Execute(request_to);
+							request_to = new RestRequest("http://gabeee.web.elte.hu/to_remake/save.php", Method.POST);
+							request_to.AddHeader("Accept", "*/*");
+							request_to.AddHeader("X-Requested-With", "XMLHttpRequest");
+							client.UserAgent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/84.0.4147.105 Safari/537.36";
+							request_to.AddHeader("Content-Type", "application/x-www-form-urlencoded; charset=UTF-8");
+							request_to.AddParameter("width", "2240.02");
+							response_to = client.Execute(request_to);
+
+							request_to = new RestRequest("http://gabeee.web.elte.hu/to_remake/data.php", Method.POST);
+							request_to.AddHeader("Accept", "*/*");
+							request_to.AddHeader("X-Requested-With", "XMLHttpRequest");
+							client.UserAgent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/84.0.4147.105 Safari/537.36";
+							request_to.AddHeader("Content-Type", "application/x-www-form-urlencoded; charset=UTF-8");
+							request_to.AddParameter("felev", "2020-2021-1");
+							request_to.AddParameter("limit", "1000");
+							request_to.AddParameter("melyik", "kodalapjan");
+							request_to.AddParameter("nar", "0");
+							request_to.AddParameter("targykod", ParentViewModel.Code);
+							request_to.AddParameter("width", "2240.02");
+							response_to = client.Execute(request_to);
+							var tohtml = new HtmlDocument();
+							tohtml.LoadHtml(response_to.Content);
+							var asdasd = tohtml.GetElementbyId("collapse1").ChildNodes[1].ChildNodes[1].ChildNodes[3].ChildNodes.Where(s => s.Name == "tr");
+							foreach (var info in asdasd)
+								courseschedulelist.Add(new KeyValuePair<string, string>(info.ChildNodes[1].InnerText, info.ChildNodes[8].InnerText));
+
+							foreach (var course in Courses)
+								if (String.IsNullOrEmpty(course.Schedule))
+									course.Schedule = courseschedulelist.Find(s => s.Key == course.CourseCode).Value;
+						});
 
 						#endregion
 
