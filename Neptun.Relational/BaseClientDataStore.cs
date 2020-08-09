@@ -150,6 +150,18 @@ namespace Neptun.Relational
 			return mDbContext.SavedSubjects.ToList();
 		}
 
+		public async Task<bool> DeleteSelectedSubjects(List<string> list)
+		{
+			foreach (var a in list)
+			{
+				foreach (var b in mDbContext.SavedSubjects)
+					if (b.code == a)
+						mDbContext.SavedSubjects.Remove(b);
+			}
+			await mDbContext.SaveChangesAsync();
+			return true;
+		}
+
 		#endregion
 	}
 }

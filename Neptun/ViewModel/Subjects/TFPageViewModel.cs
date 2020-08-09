@@ -518,6 +518,29 @@ namespace Neptun
 			//Subjects = new ObservableCollection<SubjectViewModel>();
 			Languages = new ObservableCollection<LanguageViewModel>();
 			AllSubjects = new List<SubjectViewModel>();
+
+			DeleteSelectedSavedSubjects = new RelayCommand(() =>
+			{
+				Task.Run(async () =>
+				{
+					var list = new List<string>();
+					foreach (var a in Subjects.Where(s => s.isSelected))
+						list.Add(a.Code);
+					string msg;
+					if (list.Count == 0)
+						msg = "Nincs kijelölve semmi.";
+					else if (await ClientDataStore.DeleteSelectedSubjects(list))
+						msg = "A kijelölt tárgyak törölve lettek.";
+					else msg = "Valami hiba történt.";
+
+					await UI.ShowMessage(new MessageBoxDialogViewModel()
+					{
+						Title = "K",
+						Message = msg
+					});
+				});
+			});
+
 			DeleteSavedSubjects = new RelayCommand(() =>
 			{
 				Task.Run(async () =>
@@ -975,6 +998,7 @@ namespace Neptun
 		public bool isPrevPageEnabled { get => CurrentPage != 1; }
 		public bool isNextPageEnabled { get => CurrentPage != MaxPageNumber; }
 		public bool isLastPageEnabled { get => CurrentPage != MaxPageNumber; }
+
 		#endregion
 
 		#region Public Commands
@@ -990,6 +1014,6 @@ namespace Neptun
 		public ICommand DeleteSavedSubjects { get; set; }
 		public ICommand LoadSavedSubjects { get; set; }
 		#endregion
-
+		public ICommand DeleteSelectedSavedSubjects { get; set; }
 	}
 }

@@ -234,7 +234,8 @@
 						Margin="0,0,10,0"
 						Content="Tárgyak mentése"
 							VerticalAlignment="Center"
-						HorizontalAlignment="Center"
+							Width="{Binding ActualWidth, ElementName=Test}"
+						HorizontalAlignment="Left"
 						HorizontalContentAlignment="Center"
 						Height="Auto"
 						FontSize="{StaticResource FontSizeSmall}"
@@ -249,8 +250,9 @@
 						Content="Tárgyak betöltése"
 						VerticalAlignment="Center"
 						HorizontalAlignment="Left"
-						HorizontalContentAlignment="Left"
+						HorizontalContentAlignment="Center"
 						Height="Auto"
+						Width="{Binding ActualWidth, ElementName=Test}"
 						FontSize="{StaticResource FontSizeSmall}"
 						Command="{Binding LoadSavedSubjects}">
 					<Button.ToolTip>
@@ -259,19 +261,31 @@
 				</Button>
 				<!--</StackPanel>-->
 				<Button Padding="5"
-						Grid.ColumnSpan="2"
+						Grid.ColumnSpan="1"
 						Grid.Row="1"
 						Content="Mentett tárgyak törlése"
 						x:Name="Test"
 						VerticalAlignment="Center"
 						HorizontalAlignment="Left"
-						HorizontalContentAlignment="Left"
+						HorizontalContentAlignment="Center"
 						Height="Auto"
 						Width="Auto"
 						FontSize="{StaticResource FontSizeSmall}"
 						Command="{Binding DeleteSavedSubjects}"
-						ToolTip="Elég csak a jobb oldalon látható négyzetet bepipálni és ezek a tárgyak kerülnek törlésre." />
-			</Grid>
+						/>
+					<Button Padding="5"
+							Grid.ColumnSpan="1"
+							Grid.Row="1"
+							Grid.Column="2"
+							Content="Kijelölt tárgyak törlése"
+							VerticalAlignment="Center"
+							HorizontalAlignment="Left"
+							HorizontalContentAlignment="Center"
+							Height="Auto"
+							Width="{Binding ActualWidth, ElementName=Test}"
+							FontSize="{StaticResource FontSizeSmall}"
+							Command="{Binding DeleteSelectedSavedSubjects}" />
+				</Grid>
 			<!--</StackPanel>-->
 				<StackPanel Grid.Row="7"
 							Visibility="{Binding MintaTantervView, Converter={local:BooleanToVisiblityGoneConverter}, ConverterParameter=1, FallbackValue=Visible}"

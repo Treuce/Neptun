@@ -42,6 +42,7 @@ namespace Neptun.Core
         Task<bool> SaveSubjects(List<SavedSubjectDataModel> l);
 
         Task<bool> DeleteSubjects();
+        Task<bool> DeleteSelectedSubjects(List<string> list);
 
         Task<List<SavedSubjectDataModel>> LoadSavedSubjects();
     }

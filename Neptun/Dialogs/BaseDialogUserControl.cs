@@ -106,17 +106,10 @@ namespace Neptun
 
 					// Setup this controls data context binding to the view model
 					DataContext = viewModel;
-					try
-					{
+
 						//Show in the center of the parent
 						mDialogWindow.Owner = Application.Current.MainWindow;
 					mDialogWindow.WindowStartupLocation = WindowStartupLocation.CenterOwner;
-					}
-					catch (Exception e)
-					{
-						Dna.FrameworkDI.Logger.LogWarning(e.Message);
-						throw;
-					}
 
 					// Show dialog
 					mDialogWindow.ShowDialog();
