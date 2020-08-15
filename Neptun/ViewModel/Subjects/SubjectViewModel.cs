@@ -57,5 +57,6 @@ namespace Neptun
 
 		public TFViewModel.SemesterViewModel semester { get; set; }
 		public TakeSubjectViewModel TakeViewModel { get; set; }
+		public string ToolTip { get; set; }
 	}
 }

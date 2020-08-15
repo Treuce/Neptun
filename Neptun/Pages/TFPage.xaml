@@ -134,9 +134,25 @@
 				<Label Grid.Row="2"
 					   Grid.Column="2"
 					   Margin="20,0,0,0"
+					   Content="Mintatantervek" />
+				<ComboBox Style="{StaticResource ComboBoxTest2}"
+						  Height="25"
+						  Margin="0,0,30,0"
+						  Grid.Row="2"
+						  Grid.Column="3"
+						  FontSize="{StaticResource FontSizeRegular}"
+						  Width="Auto"
+						  IsSynchronizedWithCurrentItem="True"
+						  SelectedValue="{Binding SelectedMintatanterv}"
+						  SelectedIndex="0"
+						  ItemsSource="{Binding Path=Mintatantervek,Mode=OneWay}">
+				</ComboBox>
+				<Label Grid.Row="3"
+					   Grid.Column="2"
+					   Margin="20,0,0,0"
 					   Visibility="{Binding MintaTantervView, Converter={local:BooleanToVisiblityGoneConverter}, ConverterParameter=1, FallbackValue=Collapsed, TargetNullValue=Collapsed}"
 					   Content="Tárgyak oldalanként" />
-				<ComboBox Grid.Row="2"
+				<ComboBox Grid.Row="3"
 						  x:Name="PageSizeComboBox"
 						  Style="{StaticResource ComboBoxTest2}"
 						  Grid.Column="3"
@@ -176,6 +192,7 @@
 						Padding="10"
 						Content="Listázás"
 						VerticalAlignment="Center"
+						IsDefault="True"
 						HorizontalAlignment="Center"
 						HorizontalContentAlignment="Stretch"
 						Height="Auto"
@@ -476,8 +493,9 @@
 									<RowDefinition Height="Auto" />
 									<RowDefinition Height="Auto" />
 								</Grid.RowDefinitions>
-								<ContentControl PreviewMouseDoubleClick="ExpandTFControl">
+								<ContentControl ToolTip="{Binding ToolTip}" PreviewMouseDoubleClick="ExpandTFControl">
 									<TextBlock Grid.Column="0"
+											   
 											   TextWrapping="WrapWithOverflow"
 											   Text="{Binding Name}"
 											   Foreground="{StaticResource WordDarkBlueBrush}"
@@ -640,6 +658,7 @@
 								</Grid.RowDefinitions>
 								<ContentControl PreviewMouseDoubleClick="ExpandTFControl">
 									<TextBlock Grid.Column="0"
+											   ToolTip="{Binding ToolTip}"
 											   TextWrapping="WrapWithOverflow"
 											   Text="{Binding Name}"
 											   Foreground="{StaticResource WordDarkBlueBrush}"

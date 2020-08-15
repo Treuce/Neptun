@@ -26,7 +26,7 @@ namespace Neptun
 		/// The current page of the application
 		/// The starter page loaded when login is successful
 		/// </summary>
-		public ApplicationPage CurrentPage { get; private set; } = ApplicationPage.Tárgyfelvétel;
+		public ApplicationPage CurrentPage { get; private set; } = ApplicationPage.Login;
 
 		/// <summary>
 		/// The view model to use for the current page when the CurrentPage changes

@@ -59,6 +59,21 @@ namespace Neptun
 						});
 					}
 				}
+				if (Mintatantervek.Count == 0)
+				{
+					var asd = tmphtml.GetElementbyId("upFilter_cmbTemplates").ChildNodes.Where(s => s.Name == "option");
+					foreach (var a in asd)
+					{
+						Application.Current.Dispatcher.Invoke(() =>
+						{
+							Mintatantervek.Add(new MintatantervViewModel()
+							{
+								display = a.InnerText,
+								value = a.GetAttributeValue("value","")
+							});
+						});
+					}
+				}
 				if (Semesters.Count() == 0)
 				{
 
@@ -108,10 +123,9 @@ namespace Neptun
 					request.AddParameter("upFilter$txtOktato", Teacher);
 					request.AddParameter("upFilter$txtTargyNev", SubjectName);
 					request.AddParameter("upFilter$txtTargykod", subjectcode);
-					request.AddParameter("upFilter$cmbTemplates", "883053304");
+					request.AddParameter("upFilter$cmbTemplates", SelectedMintatanterv.value);
 					request.AddParameter("upFilter$cmbTerms", Semesters[SelectedSemesterIndex > 0 ? SelectedSemesterIndex : 0].Value);
 					request.AddParameter("upFilter$cmbSubjectGroups", "All");
-					request.AddParameter("upFilter$cmbTemplates", "883053304");
 					request.AddParameter("upFilter$expandedsearchbutton", "Tárgyak listázása");
 					request.AddParameter("upFilter$rbtnSubjectType", type.ToString());
 
@@ -143,6 +157,12 @@ namespace Neptun
 								break;
 							}
 							var name = a.ChildNodes[1].InnerText;
+							string note = string.Empty;
+							if (a.ChildNodes[1].ChildNodes.Count > 1)
+							{
+								name = a.ChildNodes[1].ChildNodes[0].InnerText;
+								note = a.ChildNodes[1].ChildNodes[1].InnerText;
+							}
 							var code = a.ChildNodes[2].InnerText;
 							var category = a.ChildNodes[3].InnerText;
 							var ajanlottfelev = a.ChildNodes[5].InnerText;
@@ -164,6 +184,7 @@ namespace Neptun
 								id = id,
 								completed = completed,
 								taken = taken,
+								ToolTip = note,
 								type = kotelezoe,
 								SubjectType = SubjectType.Mintatantervi
 							}));
@@ -174,82 +195,7 @@ namespace Neptun
 							//Debugger.Break();
 						}
 					}
-					//}
 				}
-
-
-				#region Oldcode
-				//request = new RestRequest(Configuration["NeptunServer:HostUrl"] + "main.aspx?ismenuclick=true&ctrl=0303", Method.POST);
-				//request.AddParameter("__EVENTVALIDATION", EventValidateStr);
-				//request.AddParameter("__VIEWSTATE", ViewStateStr);
-				////request.AddParameter("__VIEWSTATEGENERATOR", "202EA31B");
-				//request.AddParameter("upFilter$cmbLanguage", Languages[SelectedLanguageIndex].Value);
-				//request.AddParameter("upFilter$cmbSubjectGroups", "All");
-				//request.AddParameter("upFilter$txtKurzuskod", CourseCode);
-				//request.AddParameter("upFilter$txtOktato", Teacher);
-				//request.AddParameter("upFilter$txtTargyNev", SubjectName);
-				//request.AddParameter("upFilter$cmbTemplates", "883053304");
-				//request.AddParameter("upFilter$txtTargykod", SubjectCode);
-				//request.AddParameter("upFilter$cmbTerms", Semesters[SelectedSemesterIndex > 0 ? SelectedSemesterIndex : 0].Value);
-				//request.AddParameter("upFilter$expandedsearchbutton", "Tárgyak listázása");
-				//request.AddParameter("upFilter$rbtnSubjectType", type.ToString());
-
-				//IRestResponse response;
-				//lock (RestWebClient)
-				//{
-				//	response = RestWebClient.Execute(request);
-				//}
-				//var html = new HtmlDocument();
-				//html.LoadHtml(response.Content);
-				//var subjectscontainer = html.GetElementbyId("h_addsubjects_gridSubjects_bodytable").ChildNodes[1].ChildNodes;
-				//var test = html.GetElementbyId("h_addsubjects_gridSubjects_bodytable").ChildNodes[1].GetDirectInnerText();
-				//foreach (var a in subjectscontainer)
-				//{
-				//	try
-				//	{
-				//		if (a.InnerText == "Nincs találat")
-				//		{
-				//			await UI.ShowMessage(new MessageBoxDialogViewModel()
-				//			{
-				//				Title = "Tárgyak listázása",
-				//				Message = $"Nincs találat" + CourseCode,
-				//				OkText = "Bigsad"
-				//			});
-				//			break;
-				//		}
-				//		var name = a.ChildNodes[1].InnerText;
-				//		var code = a.ChildNodes[2].InnerText;
-				//		var category = a.ChildNodes[3].InnerText;
-				//		var ajanlottfelev = a.ChildNodes[5].InnerText;
-				//		var kredit = a.ChildNodes[6].InnerText;
-				//		var kotelezoe = a.ChildNodes[7].InnerText;
-				//		var cmd = a.ChildNodes[13].ChildNodes[0].GetAttributeValue("onclick", "");
-				//		var id = cmd.Split('(')[1].Split(',')[0].Replace("\'", "");
-				//		var completed = Boolean.Parse(a.ChildNodes[11].GetAttributeValue("checked", ""));
-				//		var taken = Boolean.Parse(a.ChildNodes[12].GetAttributeValue("checked", ""));
-				//		//Debugger.Break();
-				//		Application.Current.Dispatcher.Invoke(() =>
-				//		Subjects.Add(new SubjectViewModel()
-				//		{
-				//			Name = name,
-				//			Code = code,
-				//			Credit = kredit,
-				//			Category = category,
-				//			onClick = cmd,
-				//			id = id,
-				//			completed = completed,
-				//			taken = taken,
-				//			type = kotelezoe,
-				//			SubjectType = SubjectType.Mintatantervi
-				//		}));
-				//	}
-				//	catch (Exception e)
-				//	{
-				//		Logger.LogErrorSource(e.Message);
-				//		Debugger.Break();
-				//	}
-				//} 
-				#endregion
 			}
 
 			else
@@ -278,10 +224,9 @@ namespace Neptun
 					request.AddParameter("upFilter$txtOktato", Teacher);
 					request.AddParameter("upFilter$txtTargyNev", SubjectName);
 					request.AddParameter("upFilter$txtTargykod", subjectcode);
-					request.AddParameter("upFilter$cmbTemplates", "883053304");
+					request.AddParameter("upFilter$cmbTemplates", SelectedMintatanterv.value);
 					request.AddParameter("upFilter$cmbTerms", Semesters[SelectedSemesterIndex > 0 ? SelectedSemesterIndex : 0].Value);
 					request.AddParameter("upFilter$cmbSubjectGroups", "All");
-					request.AddParameter("upFilter$cmbTemplates", "883053304");
 					request.AddParameter("upFilter$expandedsearchbutton", "Tárgyak listázása");
 					request.AddParameter("upFilter$rbtnSubjectType", type.ToString());
 
@@ -346,148 +291,22 @@ namespace Neptun
 							//Debugger.Break();
 						}
 					}
-					//}
 				}
-				//PageSize = Subjects.Count;
-				#region RandomCode
-				//request = new RestRequest(Configuration["NeptunServer:HostUrl"] + "main.aspx?ismenuclick=true&ctrl=0303", Method.POST);
-				//request.AddParameter("__EVENTVALIDATION", EventValidateStr);
-				//request.AddParameter("__VIEWSTATE", ViewStateStr);
-				////request.AddParameter("__VIEWSTATEGENERATOR", "202EA31B");
-				//request.AddParameter("upFilter$cmbLanguage", Languages[SelectedLanguageIndex].Value);
-				//request.AddParameter("upFilter$cmbSubjectGroups", "All");
-				//request.AddParameter("upFilter$txtKurzuskod", CourseCode);
-				//request.AddParameter("upFilter$txtOktato", Teacher);
-				//request.AddParameter("upFilter$txtTargyNev", SubjectName);
-				//request.AddParameter("upFilter$txtTargykod", SubjectCode);
-				//request.AddParameter("upFilter$cmbTemplates", "883053304");
-				//request.AddParameter("upFilter$cmbTerms", Semesters[SelectedSemesterIndex > 0 ? SelectedSemesterIndex : 0].Value);
-				//request.AddParameter("upFilter$cmbSubjectGroups", "All");
-				//request.AddParameter("upFilter$cmbTemplates", "883053304");
-				//request.AddParameter("upFilter$expandedsearchbutton", "Tárgyak listázása");
-				//request.AddParameter("upFilter$rbtnSubjectType", type.ToString());
-
-				//IRestResponse response;
-				//lock (RestWebClient)
-				//{
-				//	response = RestWebClient.Execute(request);
-				//}
-				//var html = new HtmlDocument();
-
-				//html.LoadHtml(response.Content);
-
-
-				//var subjectscontainer = html.GetElementbyId("h_addsubjects_gridSubjects_bodytable").ChildNodes[1].ChildNodes;
-				//foreach (var a in subjectscontainer)
-				//{
-				//	if (Subjects.Count > PageSize)
-				//		break;
-				//	try
-				//	{
-				//		var b = a.ChildNodes;
-				//		var name = a.ChildNodes[1].InnerText;
-				//		var code = a.ChildNodes[2].InnerText;
-				//		var kredit = a.ChildNodes[3].InnerText;
-				//		// note: 4
-				//		var cmd = a.ChildNodes[1].ChildNodes[0].GetAttributeValue("onclick", "");
-				//		var id = cmd.Split('(')[1].Split(',')[0].Replace("\'", "");
-				//		var completed = Boolean.Parse(a.ChildNodes[5].GetAttributeValue("checked", ""));
-				//		var taken = Boolean.Parse(a.ChildNodes[6].GetAttributeValue("checked", ""));
-				//		//Debugger.Break();
-				//		Application.Current.Dispatcher.Invoke(() =>
-				//		{
-				//			Subjects.Add(new SubjectViewModel()
-				//			{
-				//				Name = name,
-				//				Code = code,
-				//				Credit = kredit,
-				//				onClick = cmd,
-				//				id = id,
-				//				completed = completed,
-				//				taken = taken,
-				//				SubjectType = SubjectType.MindenIntezmenyi
-				//			});
-				//		});
-				//	}
-				//	catch (Exception e)
-				//	{
-				//		Logger.LogErrorSource(e.Message);
-				//		//Debugger.Break();
-				//	}
-				//}
-				//Application.Current.Dispatcher.Invoke(() =>
-				//{
-				//	Subjects = new ObservableCollection<SubjectViewModel>(AllSubjects.Take(PageSize));
-				//});
-				// Load elements from first request according to pagesize for the time being, then start loading all the other subjects
-				// make the list unique once it's done
-
-				//Task.Run(() =>
-				//{
-				//	var tmpmp = Math.Ceiling(SubjectCount / 500.0);
-				//	var tmplist = new List<SubjectViewModel>();
-				//	for (int i = 1; i <= Math.Ceiling(SubjectCount / 500.0); ++i)
-				//	{
-
-				//		string responsestr;
-				//		{
-				//			request = new RestRequest(Configuration["NeptunServer:HostUrl"] + $"HandleRequest.ashx?RequestType=GetData&GridID=h_addsubjects_gridSubjects&pageindex={i}&pagesize=500&sort1=&sort2=&fixedheader=false&searchcol=&searchtext=&searchexpanded=false&allsubrowsexpanded=False&selectedid=undefined&functionname=&level=", Method.GET);
-				//			IRestResponse asd;
-				//			lock (RestWebClient)
-				//			{
-				//				asd = RestWebClient.Execute(request);
-				//			}
-				//			responsestr = asd.Content;
-				//		}
-				//		responsestr = responsestr.Replace("{type:getdata}", String.Empty);
-				//		var htmldocument = new HtmlDocument();
-				//		htmldocument.LoadHtml(responsestr);
-				//		var table = htmldocument.GetElementbyId("h_addsubjects_gridSubjects_bodytable").ChildNodes[1].ChildNodes;
-				//		foreach (var a in table)
-				//		{
-				//			try
-				//			{
-				//				var b = a.ChildNodes;
-				//				var name = a.ChildNodes[1].InnerText;
-				//				var code = a.ChildNodes[2].InnerText;
-				//				var kredit = a.ChildNodes[3].InnerText;
-				//				// note: 4
-				//				var cmd = a.ChildNodes[1].ChildNodes[0].GetAttributeValue("onclick", "");
-				//				var id = cmd.Split('(')[1].Split(',')[0].Replace("\'", "");
-				//				var completed = Boolean.Parse(a.ChildNodes[5].GetAttributeValue("checked", ""));
-				//				var taken = Boolean.Parse(a.ChildNodes[6].GetAttributeValue("checked", ""));
-				//				//Debugger.Break();
-				//				tmplist.Add(new SubjectViewModel()
-				//				{
-				//					Name = name,
-				//					Code = code,
-				//					Credit = kredit,
-				//					onClick = cmd,
-				//					id = id,
-				//					completed = completed,
-				//					taken = taken,
-				//				});
-				//			}
-				//			catch (Exception e)
-				//			{
-				//				Logger.LogErrorSource(e.Message);
-				//				Debugger.Break();
-				//			}
-				//		}
-				//	}
-				//	//Debugger.Break();
-				//	AllSubjects = tmplist;
-				//});
-
-				#endregion
 			}
-			//});
 		}
 
 		#endregion
 
 		#region Nested Classes
 
+		public class MintatantervViewModel
+		{
+			public string display { get; set; }
+
+			public string value { get; set; }
+
+			public override string ToString() => display;
+		}
 		public class LanguageViewModel
 		{
 			public string Language { get; set; }
@@ -515,10 +334,11 @@ namespace Neptun
 		{
 			//Debugger.Break();
 			Semesters = new ObservableCollection<SemesterViewModel>();
-			//Subjects = new ObservableCollection<SubjectViewModel>();
-			Languages = new ObservableCollection<LanguageViewModel>();
+			Mintatantervek = new ObservableCollection<MintatantervViewModel>();
 			AllSubjects = new List<SubjectViewModel>();
+			Languages = new ObservableCollection<LanguageViewModel>();
 
+			#region Commands
 			DeleteSelectedSavedSubjects = new RelayCommand(() =>
 			{
 				Task.Run(async () =>
@@ -563,6 +383,7 @@ namespace Neptun
 					});
 				});
 			});
+
 			LoadSavedSubjects = new RelayCommand(() =>
 			{
 				Task.Run(async () =>
@@ -712,6 +533,17 @@ namespace Neptun
 				});
 			});
 
+			ListSubjects = new RelayCommand(() =>
+			{
+				MintaTantervView = type == SubjectType.Mintatantervi;
+				var asd = SelectedSemesterIndex;
+				//Debugger.Break();
+				Task.Run(LoadSubjects);
+				//isPageChanging = false;
+			});
+			
+			#endregion
+			
 			#region Page Navigation
 
 			FirstPage = new RelayCommand(() =>
@@ -951,14 +783,6 @@ namespace Neptun
 
 			#endregion
 
-			ListSubjects = new RelayCommand(() =>
-			{
-				MintaTantervView = type == SubjectType.Mintatantervi;
-				var asd = SelectedSemesterIndex;
-				//Debugger.Break();
-				Task.Run(LoadSubjects);
-				//isPageChanging = false;
-			});
 			Task.Run(LoadSubjects);
 		}
 		#endregion
@@ -967,7 +791,10 @@ namespace Neptun
 
 		public ObservableCollection<SemesterViewModel> Semesters { get; set; }
 		public ObservableCollection<LanguageViewModel> Languages { get; set; }
+	
+		public ObservableCollection<MintatantervViewModel> Mintatantervek { get; set; }
 
+		public MintatantervViewModel SelectedMintatanterv { get; set; }
 		public int CurrentPage { get; set; } = 1;
 
 		public int SelectedSemesterIndex { get; set; } = 0;

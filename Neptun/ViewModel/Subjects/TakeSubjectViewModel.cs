@@ -57,6 +57,7 @@ namespace Neptun
 			public string Language { get; set; }
 
 			public string Note { get; set; }
+			public string ToolTip { get; set; }
 
 			public string Limits { get; set; }
 			public string Schedule { get; set; }
@@ -99,10 +100,9 @@ namespace Neptun
 				request.AddParameter("upFilter$txtOktato", "");
 				request.AddParameter("upFilter$txtTargyNev", "");
 				request.AddParameter("upFilter$txtTargykod", ParentViewModel.Code);
-				request.AddParameter("upFilter$cmbTemplates", "883053304");
+				request.AddParameter("upFilter$cmbTemplates", TFViewModel.SelectedMintatanterv.value);
 				request.AddParameter("upFilter$cmbTerms", TFViewModel.Semesters[TFViewModel.SelectedSemesterIndex > 0 ? TFViewModel.SelectedSemesterIndex : 0].Value);
 				request.AddParameter("upFilter$cmbSubjectGroups", "All");
-				request.AddParameter("upFilter$cmbTemplates", "883053304");
 				request.AddParameter("upFilter$expandedsearchbutton", "Tárgyak listázása");
 				request.AddParameter("upFilter$rbtnSubjectType", TFViewModel.type.ToString());
 				response = RestWebClient.Execute(request);
@@ -127,7 +127,7 @@ namespace Neptun
 				request.AddParameter("progressalerttype", "progress");
 				request.AddParameter("upFilter$cmbLanguage", TFViewModel.Languages[TFViewModel.SelectedLanguageIndex].Value);
 				request.AddParameter("upFilter$cmbSubjectGroups", "All");
-				request.AddParameter("upFilter$cmbTemplates", "883053304");
+				request.AddParameter("upFilter$cmbTemplates", TFViewModel.SelectedMintatanterv.value);
 				request.AddParameter("upFilter$cmbTerms", TFViewModel.Semesters[TFViewModel.SelectedSemesterIndex].Value);
 				request.AddParameter("upFilter$rbtnSubjectType", TFViewModel.type == TFViewModel.SubjectType.Mintatantervi ? "Mintatantervi" : "MindenIntezmenyi");
 				request.AddParameter("upFunction$h_addsubjects$upFilter$searchpanel$searchpanel_state", "expanded");
@@ -247,10 +247,9 @@ namespace Neptun
 				request.AddParameter("upFilter$txtOktato", "");
 				request.AddParameter("upFilter$txtTargyNev", "");
 				request.AddParameter("upFilter$txtTargykod", ParentViewModel.Code);
-				request.AddParameter("upFilter$cmbTemplates", "883053304");
+				request.AddParameter("upFilter$cmbTemplates", TFViewModel.SelectedMintatanterv.value);
 				request.AddParameter("upFilter$cmbTerms", TFViewModel.Semesters[TFViewModel.SelectedSemesterIndex > 0 ? TFViewModel.SelectedSemesterIndex : 0].Value);
 				request.AddParameter("upFilter$cmbSubjectGroups", "All");
-				request.AddParameter("upFilter$cmbTemplates", "883053304");
 				request.AddParameter("upFilter$expandedsearchbutton", "Tárgyak listázása");
 				request.AddParameter("upFilter$rbtnSubjectType", TFViewModel.type.ToString());
 				response = RestWebClient.Execute(request);
@@ -275,7 +274,7 @@ namespace Neptun
 				request.AddParameter("progressalerttype", "progress");
 				request.AddParameter("upFilter$cmbLanguage", TFViewModel.Languages[TFViewModel.SelectedLanguageIndex].Value);
 				request.AddParameter("upFilter$cmbSubjectGroups", "All");
-				request.AddParameter("upFilter$cmbTemplates", "883053304");
+				request.AddParameter("upFilter$cmbTemplates", TFViewModel.SelectedMintatanterv.value);
 				request.AddParameter("upFilter$cmbTerms", TFViewModel.Semesters[TFViewModel.SelectedSemesterIndex].Value);
 				request.AddParameter("upFilter$rbtnSubjectType", TFViewModel.type == TFViewModel.SubjectType.Mintatantervi ? "Mintatantervi" : "MindenIntezmenyi");
 				request.AddParameter("upFunction$h_addsubjects$upFilter$searchpanel$searchpanel_state", "expanded");
@@ -402,10 +401,9 @@ namespace Neptun
 				request.AddParameter("upFilter$txtOktato", "");
 				request.AddParameter("upFilter$txtTargyNev", "");
 				request.AddParameter("upFilter$txtTargykod", ParentViewModel.Code);
-				request.AddParameter("upFilter$cmbTemplates", "883053304");
+				request.AddParameter("upFilter$cmbTemplates", TFViewModel.SelectedMintatanterv.value);
 				request.AddParameter("upFilter$cmbTerms", TFViewModel.Semesters[TFViewModel.SelectedSemesterIndex > 0 ? TFViewModel.SelectedSemesterIndex : 0].Value);
 				request.AddParameter("upFilter$cmbSubjectGroups", "All");
-				request.AddParameter("upFilter$cmbTemplates", "883053304");
 				request.AddParameter("upFilter$expandedsearchbutton", "Tárgyak listázása");
 				request.AddParameter("upFilter$rbtnSubjectType", TFViewModel.type.ToString());
 				response = RestWebClient.Execute(request);
@@ -430,7 +428,7 @@ namespace Neptun
 				request.AddParameter("progressalerttype", "progress");
 				request.AddParameter("upFilter$cmbLanguage", TFViewModel.Languages[TFViewModel.SelectedLanguageIndex].Value);
 				request.AddParameter("upFilter$cmbSubjectGroups", "All");
-				request.AddParameter("upFilter$cmbTemplates", "883053304");
+				request.AddParameter("upFilter$cmbTemplates", TFViewModel.SelectedMintatanterv.value);
 				request.AddParameter("upFilter$cmbTerms", TFViewModel.Semesters[TFViewModel.SelectedSemesterIndex].Value);
 				request.AddParameter("upFilter$rbtnSubjectType", TFViewModel.type == TFViewModel.SubjectType.Mintatantervi ? "Mintatantervi" : "MindenIntezmenyi");
 				request.AddParameter("upFunction$h_addsubjects$upFilter$searchpanel$searchpanel_state", "expanded");
@@ -548,10 +546,9 @@ namespace Neptun
 				request.AddParameter("upFilter$txtOktato", "");
 				request.AddParameter("upFilter$txtTargyNev", "");
 				request.AddParameter("upFilter$txtTargykod", ParentViewModel.Code);
-				request.AddParameter("upFilter$cmbTemplates", "883053304");
+				request.AddParameter("upFilter$cmbTemplates", TFViewModel.SelectedMintatanterv.value);
 				request.AddParameter("upFilter$cmbTerms", TFViewModel.Semesters[TFViewModel.SelectedSemesterIndex > 0 ? TFViewModel.SelectedSemesterIndex : 0].Value);
 				request.AddParameter("upFilter$cmbSubjectGroups", "All");
-				request.AddParameter("upFilter$cmbTemplates", "883053304");
 				request.AddParameter("upFilter$expandedsearchbutton", "Tárgyak listázása");
 				request.AddParameter("upFilter$rbtnSubjectType", TFViewModel.type.ToString());
 				response = RestWebClient.Execute(request);
@@ -576,7 +573,7 @@ namespace Neptun
 				request.AddParameter("progressalerttype", "progress");
 				request.AddParameter("upFilter$cmbLanguage", TFViewModel.Languages[TFViewModel.SelectedLanguageIndex].Value);
 				request.AddParameter("upFilter$cmbSubjectGroups", "All");
-				request.AddParameter("upFilter$cmbTemplates", "883053304");
+				request.AddParameter("upFilter$cmbTemplates", TFViewModel.SelectedMintatanterv.value);
 				request.AddParameter("upFilter$cmbTerms", TFViewModel.Semesters[TFViewModel.SelectedSemesterIndex].Value);
 				request.AddParameter("upFilter$rbtnSubjectType", TFViewModel.type == TFViewModel.SubjectType.Mintatantervi ? "Mintatantervi" : "MindenIntezmenyi");
 				request.AddParameter("upFunction$h_addsubjects$upFilter$searchpanel$searchpanel_state", "expanded");
@@ -714,10 +711,9 @@ namespace Neptun
 				request.AddParameter("upFilter$txtOktato", "");
 				request.AddParameter("upFilter$txtTargyNev", "");
 				request.AddParameter("upFilter$txtTargykod", ParentViewModel.Code);
-				request.AddParameter("upFilter$cmbTemplates", "883053304");
+				request.AddParameter("upFilter$cmbTemplates", TFViewModel.SelectedMintatanterv.value);
 				request.AddParameter("upFilter$cmbTerms", TFViewModel.Semesters[TFViewModel.SelectedSemesterIndex > 0 ? TFViewModel.SelectedSemesterIndex : 0].Value);
 				request.AddParameter("upFilter$cmbSubjectGroups", "All");
-				request.AddParameter("upFilter$cmbTemplates", "883053304");
 				request.AddParameter("upFilter$expandedsearchbutton", "Tárgyak listázása");
 				request.AddParameter("upFilter$rbtnSubjectType", TFViewModel.type.ToString());
 				response = RestWebClient.Execute(request);
@@ -742,7 +738,7 @@ namespace Neptun
 				request.AddParameter("progressalerttype", "progress");
 				request.AddParameter("upFilter$cmbLanguage", TFViewModel.Languages[TFViewModel.SelectedLanguageIndex].Value);
 				request.AddParameter("upFilter$cmbSubjectGroups", "All");
-				request.AddParameter("upFilter$cmbTemplates", "883053304");
+				request.AddParameter("upFilter$cmbTemplates", TFViewModel.SelectedMintatanterv.value);
 				request.AddParameter("upFilter$cmbTerms", TFViewModel.Semesters[TFViewModel.SelectedSemesterIndex].Value);
 				request.AddParameter("upFilter$rbtnSubjectType", TFViewModel.type == TFViewModel.SubjectType.Mintatantervi ? "Mintatantervi" : "MindenIntezmenyi");
 				request.AddParameter("upFunction$h_addsubjects$upFilter$searchpanel$searchpanel_state", "expanded");
@@ -778,7 +774,7 @@ namespace Neptun
 				request.AddParameter("progressalerttype", "progress");
 				request.AddParameter("upFilter$cmbLanguage", TFViewModel.Languages[TFViewModel.SelectedLanguageIndex].Value);
 				request.AddParameter("upFilter$cmbSubjectGroups", "All");
-				request.AddParameter("upFilter$cmbTemplates", "883053304");
+				request.AddParameter("upFilter$cmbTemplates", TFViewModel.SelectedMintatanterv.value);
 				request.AddParameter("upFilter$cmbTerms", TFViewModel.Semesters[TFViewModel.SelectedSemesterIndex].Value);
 				request.AddParameter("upFilter$rbtnSubjectType", ParentViewModel.SubjectType == TFViewModel.SubjectType.Mintatantervi ? "Mintatantervi" : "MindenIntezmenyi");
 				request.AddParameter("upFunction$h_addsubjects$upFilter$searchpanel$searchpanel_state", "expanded");
@@ -797,7 +793,7 @@ namespace Neptun
 					course.CourseCode = b[1].ChildNodes[0].InnerText;
 					var tmpasd = b[1].ChildNodes[0].GetAttributeValue("onclick", "");
 					course.ID = String.IsNullOrWhiteSpace(tmpasd) ? "Imnotsure" : tmpasd.Split('(')[1].Split(',')[0].Replace("\'", "");
-					course.Note = b[1].ChildNodes.Count == 2 ? b[1].ChildNodes[1].InnerText : String.Empty;
+					course.ToolTip = b[1].ChildNodes.Count == 2 ? b[1].ChildNodes[1].InnerText : null;
 					course.Type = b[2].ChildNodes[0].InnerText;
 					course.GroupName = b[2].ChildNodes[0].InnerText + ParentViewModel.id;
 					course.Limits = b[3].ChildNodes[0].InnerText;
@@ -808,6 +804,7 @@ namespace Neptun
 					//TODO: órarendi infó, rohadt megjegyzés..
 					course.Teacher = b[8].ChildNodes[0].InnerText;
 					course.Language = b[9].GetDirectInnerText();
+					course.Note = b[11].GetDirectInnerText();
 					//Debugger.Break();
 					course.isSelected = b[b.Count - 1].ChildNodes.FindFirst("input").GetAttributeValue("checked", "") == "checked";
 					Application.Current.Dispatcher.Invoke(() =>
@@ -890,10 +887,9 @@ namespace Neptun
 				request.AddParameter("upFilter$txtOktato", "");
 				request.AddParameter("upFilter$txtTargyNev", "");
 				request.AddParameter("upFilter$txtTargykod", ParentViewModel.Code);
-				request.AddParameter("upFilter$cmbTemplates", "883053304");
+				request.AddParameter("upFilter$cmbTemplates", TFViewModel.SelectedMintatanterv.value);
 				request.AddParameter("upFilter$cmbTerms", TFViewModel.Semesters[TFViewModel.SelectedSemesterIndex > 0 ? TFViewModel.SelectedSemesterIndex : 0].Value);
 				request.AddParameter("upFilter$cmbSubjectGroups", "All");
-				request.AddParameter("upFilter$cmbTemplates", "883053304");
 				request.AddParameter("upFilter$expandedsearchbutton", "Tárgyak listázása");
 				request.AddParameter("upFilter$rbtnSubjectType", TFViewModel.type.ToString());
 				response = RestWebClient.Execute(request);
@@ -918,7 +914,7 @@ namespace Neptun
 				request.AddParameter("progressalerttype", "progress");
 				request.AddParameter("upFilter$cmbLanguage", TFViewModel.Languages[TFViewModel.SelectedLanguageIndex].Value);
 				request.AddParameter("upFilter$cmbSubjectGroups", "All");
-				request.AddParameter("upFilter$cmbTemplates", "883053304");
+				request.AddParameter("upFilter$cmbTemplates", TFViewModel.SelectedMintatanterv.value);
 				request.AddParameter("upFilter$cmbTerms", TFViewModel.Semesters[TFViewModel.SelectedSemesterIndex].Value);
 				request.AddParameter("upFilter$rbtnSubjectType", TFViewModel.type == TFViewModel.SubjectType.Mintatantervi ? "Mintatantervi" : "MindenIntezmenyi");
 				request.AddParameter("upFunction$h_addsubjects$upFilter$searchpanel$searchpanel_state", "expanded");
@@ -1046,10 +1042,9 @@ namespace Neptun
 					request.AddParameter("upFilter$txtOktato", "");
 					request.AddParameter("upFilter$txtTargyNev", "");
 					request.AddParameter("upFilter$txtTargykod", ParentViewModel.Code);
-					request.AddParameter("upFilter$cmbTemplates", "883053304");
+					request.AddParameter("upFilter$cmbTemplates", TFViewModel.SelectedMintatanterv.value);
 					request.AddParameter("upFilter$cmbTerms", TFViewModel.Semesters[TFViewModel.SelectedSemesterIndex > 0 ? TFViewModel.SelectedSemesterIndex : 0].Value);
 					request.AddParameter("upFilter$cmbSubjectGroups", "All");
-					request.AddParameter("upFilter$cmbTemplates", "883053304");
 					request.AddParameter("upFilter$expandedsearchbutton", "Tárgyak listázása");
 					request.AddParameter("upFilter$rbtnSubjectType", type.ToString());
 					//lock (RestWebClient)
@@ -1077,10 +1072,10 @@ namespace Neptun
 					//request.AddParameter("upFilter$txtOktato", "");
 					//request.AddParameter("upFilter$txtTargyNev", "");
 					//request.AddParameter("upFilter$txtTargykod", ParentViewModel.Code);
-					//request.AddParameter("upFilter$cmbTemplates", "883053304");
+					//request.AddParameter("upFilter$cmbTemplates", TFViewModel.SelectedMintatanterv.value);
 					//request.AddParameter("upFilter$cmbTerms", TFViewModel.Semesters[TFViewModel.SelectedSemesterIndex > 0 ? TFViewModel.SelectedSemesterIndex : 0].Value);
 					//request.AddParameter("upFilter$cmbSubjectGroups", "All");
-					//request.AddParameter("upFilter$cmbTemplates", "883053304");
+					//request.AddParameter("upFilter$cmbTemplates", TFViewModel.SelectedMintatanterv.value);
 					//request.AddParameter("upFilter$expandedsearchbutton", "Tárgyak listázása");
 					//request.AddParameter("upFilter$rbtnSubjectType", type.ToString());
 					//lock (RestWebClient)
@@ -1107,7 +1102,7 @@ namespace Neptun
 					request.AddParameter("progressalerttype", "progress");
 					request.AddParameter("upFilter$cmbLanguage", TFViewModel.Languages[TFViewModel.SelectedLanguageIndex].Value);
 					request.AddParameter("upFilter$cmbSubjectGroups", "All");
-					request.AddParameter("upFilter$cmbTemplates", "883053304");
+					request.AddParameter("upFilter$cmbTemplates", TFViewModel.SelectedMintatanterv.value);
 					request.AddParameter("upFilter$cmbTerms", TFViewModel.Semesters[TFViewModel.SelectedSemesterIndex].Value);
 					request.AddParameter("upFilter$rbtnSubjectType", type == TFViewModel.SubjectType.Mintatantervi ? "Mintatantervi" : "MindenIntezmenyi");
 					request.AddParameter("upFunction$h_addsubjects$upFilter$searchpanel$searchpanel_state", "expanded");
@@ -1151,7 +1146,7 @@ namespace Neptun
 								course.CourseCode = b[1].ChildNodes[0].InnerText;
 								var tmpasd = b[1].ChildNodes[0].GetAttributeValue("onclick", "");
 								course.ID = String.IsNullOrWhiteSpace(tmpasd) ? "Imnotsure" : tmpasd.Split('(')[1].Split(',')[0].Replace("\'", "");
-								course.Note = b[1].ChildNodes.Count == 2 ? b[1].ChildNodes[1].InnerText : String.Empty;
+								course.ToolTip = b[1].ChildNodes.Count == 2 ? b[1].ChildNodes[1].InnerText : null;
 								course.Type = b[2].ChildNodes[0].InnerText;
 								course.GroupName = b[2].ChildNodes[0].InnerText + id;
 								course.Limits = b[3].ChildNodes[0].InnerText;
@@ -1162,7 +1157,7 @@ namespace Neptun
 								//TODO: órarendi infó, rohadt megjegyzés..
 								course.Teacher = b[8].ChildNodes[0].InnerText;
 								course.Language = b[9].GetDirectInnerText();
-								//Debugger.Break();
+								course.Note= b[11].GetDirectInnerText();
 								course.isSelected = b[b.Count - 1].ChildNodes.FindFirst("input").GetAttributeValue("checked", "") == "checked";
 								Application.Current.Dispatcher.Invoke(() =>
 								{
@@ -1210,7 +1205,7 @@ namespace Neptun
 							tohtml.LoadHtml(response_to.Content);
 							var asdasd = tohtml.GetElementbyId("collapse1").ChildNodes[1].ChildNodes[1].ChildNodes[3].ChildNodes.Where(s => s.Name == "tr");
 							foreach (var info in asdasd)
-								courseschedulelist.Add(new KeyValuePair<string, string>(info.ChildNodes[1].InnerText, info.ChildNodes[8].InnerText));
+								courseschedulelist.Add(new KeyValuePair<string, string>(info.ChildNodes[1].InnerText,( info.ChildNodes[7].InnerText + Environment.NewLine + info.ChildNodes[8].InnerText)));
 
 							foreach (var course in Courses)
 								if (String.IsNullOrEmpty(course.Schedule))
@@ -1327,10 +1322,9 @@ namespace Neptun
 						request.AddParameter("upFilter$txtOktato", "");
 						request.AddParameter("upFilter$txtTargyNev", "");
 						request.AddParameter("upFilter$txtTargykod", ParentViewModel.Code);
-						request.AddParameter("upFilter$cmbTemplates", "883053304");
+						request.AddParameter("upFilter$cmbTemplates", TFViewModel.SelectedMintatanterv.value);
 						request.AddParameter("upFilter$cmbTerms", TFViewModel.Semesters[TFViewModel.SelectedSemesterIndex > 0 ? TFViewModel.SelectedSemesterIndex : 0].Value);
 						request.AddParameter("upFilter$cmbSubjectGroups", "All");
-						request.AddParameter("upFilter$cmbTemplates", "883053304");
 						request.AddParameter("upFilter$expandedsearchbutton", "Tárgyak listázása");
 						request.AddParameter("upFilter$rbtnSubjectType", TFViewModel.type.ToString());
 						response = RestWebClient.Execute(request);
@@ -1355,7 +1349,7 @@ namespace Neptun
 						request.AddParameter("progressalerttype", "progress");
 						request.AddParameter("upFilter$cmbLanguage", TFViewModel.Languages[TFViewModel.SelectedLanguageIndex].Value);
 						request.AddParameter("upFilter$cmbSubjectGroups", "All");
-						request.AddParameter("upFilter$cmbTemplates", "883053304");
+						request.AddParameter("upFilter$cmbTemplates", TFViewModel.SelectedMintatanterv.value);
 						request.AddParameter("upFilter$cmbTerms", TFViewModel.Semesters[TFViewModel.SelectedSemesterIndex].Value);
 						request.AddParameter("upFilter$rbtnSubjectType", TFViewModel.type == TFViewModel.SubjectType.Mintatantervi ? "Mintatantervi" : "MindenIntezmenyi");
 						request.AddParameter("upFunction$h_addsubjects$upFilter$searchpanel$searchpanel_state", "expanded");
@@ -1371,10 +1365,9 @@ namespace Neptun
 						request.AddParameter("upFilter$txtOktato", "");
 						request.AddParameter("upFilter$txtTargyNev", "");
 						request.AddParameter("upFilter$txtTargykod", ParentViewModel.Code);
-						request.AddParameter("upFilter$cmbTemplates", "883053304");
+						request.AddParameter("upFilter$cmbTemplates", TFViewModel.SelectedMintatanterv.value);
 						request.AddParameter("upFilter$cmbTerms", TFViewModel.Semesters[TFViewModel.SelectedSemesterIndex > 0 ? TFViewModel.SelectedSemesterIndex : 0].Value);
 						request.AddParameter("upFilter$cmbSubjectGroups", "All");
-						request.AddParameter("upFilter$cmbTemplates", "883053304");
 						request.AddParameter("upFilter$expandedsearchbutton", "Tárgyak listázása");
 						request.AddParameter("upFilter$rbtnSubjectType", TFViewModel.type.ToString());
 						response = RestWebClient.Execute(request);
@@ -1417,7 +1410,7 @@ namespace Neptun
 						request.AddParameter("upFilter$WTChooserTo$validCalloutExt_upFilter_WTChooserTo_ClientState", "");
 						request.AddParameter("upFilter$cmbLanguage", TFViewModel.Semesters[TFViewModel.SelectedSemesterIndex].Value);
 						request.AddParameter("upFilter$cmbSubjectGroups", "All");
-						request.AddParameter("upFilter$cmbTemplates", "883053304");
+						request.AddParameter("upFilter$cmbTemplates", TFViewModel.SelectedMintatanterv.value);
 						request.AddParameter("upFilter$cmbTerms", ParentViewModel.semester?.Value);
 						request.AddParameter("upFilter$rbtnSubjectType", ParentViewModel.SubjectType == TFViewModel.SubjectType.Mintatantervi ? "Mintatantervi" : "MindenIntezmenyi");
 						request.AddParameter("upDetail$modaldetailAddsubject_course11782982854$upmodalDetail$_data", "Visible:false");
@@ -1489,11 +1482,11 @@ namespace Neptun
 					Task<IRestResponse> handle;
 					var request = new RestRequest(Configuration["NeptunServer:HostUrl"] + "main.aspx?ismenuclick=true&ctrl=0303", Method.GET);
 					var html = new HtmlDocument();
-					System.Diagnostics.Stopwatch watch = new Stopwatch();
+					//System.Diagnostics.Stopwatch watch = new Stopwatch();
 					lock (RestWebClient)
 					{
-						watch.Start();
-						Logger.LogErrorSource($"{ParentViewModel.Code} : Entered locking block at {DateTime.Now.Millisecond}");
+						//watch.Start();
+						//Logger.LogErrorSource($"{ParentViewModel.Code} : Entered locking block at {DateTime.Now.Millisecond}");
 						var changedcourses = Courses.Where(s => s.SelectionChanged);
 						response = RestWebClient.Execute(request);
 
@@ -1511,10 +1504,9 @@ namespace Neptun
 						request.AddParameter("upFilter$txtOktato", "");
 						request.AddParameter("upFilter$txtTargyNev", "");
 						request.AddParameter("upFilter$txtTargykod", ParentViewModel.Code);
-						request.AddParameter("upFilter$cmbTemplates", "883053304");
+						request.AddParameter("upFilter$cmbTemplates", TFViewModel.SelectedMintatanterv.value);
 						request.AddParameter("upFilter$cmbTerms", TFViewModel.Semesters[TFViewModel.SelectedSemesterIndex > 0 ? TFViewModel.SelectedSemesterIndex : 0].Value);
 						request.AddParameter("upFilter$cmbSubjectGroups", "All");
-						request.AddParameter("upFilter$cmbTemplates", "883053304");
 						request.AddParameter("upFilter$expandedsearchbutton", "Tárgyak listázása");
 						request.AddParameter("upFilter$rbtnSubjectType", TFViewModel.type.ToString());
 						response = RestWebClient.Execute(request);
@@ -1539,7 +1531,7 @@ namespace Neptun
 						request.AddParameter("progressalerttype", "progress");
 						request.AddParameter("upFilter$cmbLanguage", TFViewModel.Languages[TFViewModel.SelectedLanguageIndex].Value);
 						request.AddParameter("upFilter$cmbSubjectGroups", "All");
-						request.AddParameter("upFilter$cmbTemplates", "883053304");
+						request.AddParameter("upFilter$cmbTemplates", TFViewModel.SelectedMintatanterv.value);
 						request.AddParameter("upFilter$cmbTerms", TFViewModel.Semesters[TFViewModel.SelectedSemesterIndex].Value);
 						request.AddParameter("upFilter$rbtnSubjectType", TFViewModel.type == TFViewModel.SubjectType.Mintatantervi ? "Mintatantervi" : "MindenIntezmenyi");
 						request.AddParameter("upFunction$h_addsubjects$upFilter$searchpanel$searchpanel_state", "expanded");
@@ -1555,10 +1547,9 @@ namespace Neptun
 						request.AddParameter("upFilter$txtOktato", "");
 						request.AddParameter("upFilter$txtTargyNev", "");
 						request.AddParameter("upFilter$txtTargykod", ParentViewModel.Code);
-						request.AddParameter("upFilter$cmbTemplates", "883053304");
+						request.AddParameter("upFilter$cmbTemplates", TFViewModel.SelectedMintatanterv.value);
 						request.AddParameter("upFilter$cmbTerms", TFViewModel.Semesters[TFViewModel.SelectedSemesterIndex > 0 ? TFViewModel.SelectedSemesterIndex : 0].Value);
 						request.AddParameter("upFilter$cmbSubjectGroups", "All");
-						request.AddParameter("upFilter$cmbTemplates", "883053304");
 						request.AddParameter("upFilter$expandedsearchbutton", "Tárgyak listázása");
 						request.AddParameter("upFilter$rbtnSubjectType", TFViewModel.type.ToString());
 						response = RestWebClient.Execute(request);
@@ -1600,8 +1591,8 @@ namespace Neptun
 					}
 					handle.Wait();
 					response = handle.Result;
-					watch.Stop();
-					Logger.LogErrorSource($"{ParentViewModel.Code} : Left locking: {watch.ElapsedMilliseconds} at {DateTime.Now.Millisecond}");
+					//watch.Stop();
+					//Logger.LogErrorSource($"{ParentViewModel.Code} : Left locking: {watch.ElapsedMilliseconds} at {DateTime.Now.Millisecond}");
 					html.LoadHtml(response.Content);
 					var regex = new Regex(@"(<br />|<br/>|</ br>|</br>|<br>)");
 					resultstr = regex.Replace(html.GetElementbyId("_Label1").InnerHtml, Environment.NewLine);
@@ -1619,7 +1610,7 @@ namespace Neptun
 					//if (resultstr.ToLower().Contains("siker"))
 					//{
 					ParentViewModel.taken = true;
-					ParentViewModel.InfoExpanded = false;
+					//ParentViewModel.InfoExpanded = false;
 					//}
 				});
 			});

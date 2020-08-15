@@ -99,6 +99,10 @@
 				</ListView.Resources>
 				<ListView.ItemContainerStyle>
 					<Style TargetType="ListViewItem">
+						<Setter Property="ToolTip"
+								Value="{Binding ToolTip}" />
+						<Setter Property="ToolTipService.ShowOnDisabled"
+								Value="True" />
 						<Setter Property="IsEnabled"
 								Value="{Binding isEnabled}" />
 					</Style>
@@ -166,7 +170,7 @@
 										ctrl:RangeColumn.MinWidth="100">
 							<GridViewColumn.CellTemplate>
 								<DataTemplate>
-									<TextBlock Text="{Binding Schedule}" />
+									<TextBlock TextWrapping="Wrap" Text="{Binding Schedule}" />
 								</DataTemplate>
 							</GridViewColumn.CellTemplate>
 						</GridViewColumn>
