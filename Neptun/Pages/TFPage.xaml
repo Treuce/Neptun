@@ -10,7 +10,7 @@
 				mc:Ignorable="d"
 				x:Name="Page"
 				d:DesignHeight="690"
-				d:DesignWidth="700"
+				d:DesignWidth="1400"
 				d:DataContext="{x:Static local:TFPageDesignModel.Instance}">
 	<Border Background="Transparent"
 			BorderBrush="{StaticResource BackgroundDarkBrush_2}"
@@ -131,28 +131,46 @@
 						  SelectedIndex="{Binding SelectedLanguageIndex}"
 						  ItemsSource="{Binding Path=Languages,Mode=OneWay}">
 				</ComboBox>
-				<Label Grid.Row="2"
+				<Label Grid.Row="4"
 					   Grid.Column="2"
 					   Margin="20,0,0,0"
+					   Visibility="{Binding MintaTantervView, Converter={local:BooleanToVisiblityGoneConverter}, FallbackValue=Visible, TargetNullValue=Visible}"
 					   Content="Mintatantervek" />
 				<ComboBox Style="{StaticResource ComboBoxTest2}"
 						  Height="25"
 						  Margin="0,0,30,0"
-						  Grid.Row="2"
+						  Grid.Row="4"
 						  Grid.Column="3"
 						  FontSize="{StaticResource FontSizeRegular}"
 						  Width="Auto"
 						  IsSynchronizedWithCurrentItem="True"
 						  SelectedValue="{Binding SelectedMintatanterv}"
 						  SelectedIndex="0"
+						  Visibility="{Binding MintaTantervView, Converter={local:BooleanToVisiblityGoneConverter}, FallbackValue=Visible, TargetNullValue=Visible}"
 						  ItemsSource="{Binding Path=Mintatantervek,Mode=OneWay}">
 				</ComboBox>
-				<Label Grid.Row="3"
+				<Label Grid.Row="3" Grid.Column="2"
+					   Margin="20,0,0,0"
+					   Visibility="{Binding MintaTantervView, Converter={local:BooleanToVisiblityGoneConverter}, FallbackValue=Visible, TargetNullValue=Visible}"
+					   Content="Tárgycsoport" />
+				<ComboBox Style="{StaticResource ComboBoxTest2}"
+						  Height="25"
+						  Margin="0,0,30,0"
+						  Grid.Row="3"
+						  Grid.Column="3"
+						  FontSize="{StaticResource FontSizeRegular}"
+						  Width="Auto"
+						  IsSynchronizedWithCurrentItem="True"
+						  SelectedValue="{Binding SelectedSubjectGroup}"
+						  SelectedIndex="0"
+						  Visibility="{Binding MintaTantervView, Converter={local:BooleanToVisiblityGoneConverter}, FallbackValue=Visible, TargetNullValue=Visible}"
+						  ItemsSource="{Binding Path=SubjectGroups,Mode=OneWay}">
+				</ComboBox>
+				<Label Grid.Row="2"
 					   Grid.Column="2"
 					   Margin="20,0,0,0"
-					   Visibility="{Binding MintaTantervView, Converter={local:BooleanToVisiblityGoneConverter}, ConverterParameter=1, FallbackValue=Collapsed, TargetNullValue=Collapsed}"
 					   Content="Tárgyak oldalanként" />
-				<ComboBox Grid.Row="3"
+				<ComboBox Grid.Row="2"
 						  x:Name="PageSizeComboBox"
 						  Style="{StaticResource ComboBoxTest2}"
 						  Grid.Column="3"
@@ -167,8 +185,7 @@
 						  FontSize="{StaticResource FontSizeRegular}"
 						  Background="Transparent"
 						  Width="100"
-						  ClipToBounds="True"
-						  Visibility="{Binding MintaTantervView, Converter={local:BooleanToVisiblityGoneConverter}, ConverterParameter=1, FallbackValue=Visible}">
+						  ClipToBounds="True">
 				</ComboBox>
 				<Label Grid.Row="1"
 					   Grid.Column="2"
@@ -614,10 +631,12 @@
 				  x:Name="BindToThisWidth2">
 				<ListView ScrollViewer.CanContentScroll="False"
 						  ScrollViewer.VerticalScrollBarVisibility="Auto"
-						  Margin="0,0.2,0,-0.4"
+						  Margin="0,0,0,0"
 						  VerticalContentAlignment="Top"
 						  HorizontalContentAlignment="Left"
-						  Padding="10,0,0,0"
+						  HorizontalAlignment="Left"
+						  x:Name="Tes22t"
+						  Padding="0,0,0,0"
 						  ScrollViewer.HorizontalScrollBarVisibility="Disabled"
 						  Grid.Row="2"
 						  Background="Transparent"
@@ -644,7 +663,7 @@
 					<ListView.ItemTemplate>
 						<DataTemplate>
 							<Grid Margin="0"
-								  Width="{Binding ActualWidth, ElementName=BindToThisWidth2}"
+								  Width="{Binding ActualWidth, ElementName=Tes22t}"
 								  Background="{Binding background, FallbackValue=Transparent, TargetNullValue=Transparent}">
 								<Grid.ColumnDefinitions>
 									<ColumnDefinition Width="0.3*" />
@@ -690,7 +709,7 @@
 										  HorizontalAlignment="Center"
 										  HorizontalContentAlignment="Center"
 										  VerticalContentAlignment="Center"
-										  Margin="5,10,10,10"
+										  Margin="5,10,30,10"
 										  IsChecked="{Binding isSelected}"
 										  Foreground="{StaticResource ForegroundMainBrush}"
 										  FontSize="{StaticResource FontSizeXXLarge}"

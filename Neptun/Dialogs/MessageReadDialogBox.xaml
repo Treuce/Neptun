@@ -31,6 +31,7 @@
 		<Button Content="{Binding OkText}"
 				IsDefault="True"
 				IsCancel="True"
+				VerticalAlignment="Bottom"
 				FontSize="{StaticResource FontSizeRegular}"
 				Command="{Binding CloseCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type local:BaseMessageUserControl}}}"
 				HorizontalAlignment="Center" />

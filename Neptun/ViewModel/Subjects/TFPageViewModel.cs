@@ -31,7 +31,6 @@ namespace Neptun
 		private async void LoadSubjects()
 		{
 			Subjects = new ObservableCollection<SubjectViewModel>();
-
 			//await Task.Run(async () =>
 			//{
 			var request = new RestRequest(Configuration["NeptunServer:HostUrl"] + "main.aspx?ismenuclick=true&ctrl=0303", Method.GET);
@@ -44,6 +43,7 @@ namespace Neptun
 				ViewStateStr = tmphtml.GetElementbyId("__VIEWSTATE").GetAttributeValue("value", "");
 				EventValidateStr = tmphtml.GetElementbyId("__EVENTVALIDATION").GetAttributeValue("value", "");
 
+				#region Languages
 				if (Languages.Count() == 0)
 				{
 					var asd = tmphtml.GetElementbyId("upFilter_cmbLanguage").ChildNodes.Where(s => s.Name == "option");
@@ -53,12 +53,41 @@ namespace Neptun
 						{
 							Languages.Add(new LanguageViewModel()
 							{
-								Value = a.GetAttributeValue("value", ""),
+								Value = a.GetAttributeValue("value", "0"),
 								Language = a.InnerText
 							});
 						});
 					}
 				}
+				#endregion
+
+				#region Subject groups
+				if (SubjectGroups.Count == 0)
+				{
+					try
+					{
+						var asd = tmphtml.GetElementbyId("upFilter_cmbSubjectGroups").ChildNodes.Where(s => s.Name == "option");
+						foreach (var a in asd)
+						{
+							Application.Current.Dispatcher.Invoke(() =>
+							{
+								SubjectGroups.Add(new SubjectGroupViewModel()
+								{
+									value = a.GetAttributeValue("value", "All"),
+									display = a.InnerText
+								});
+							});
+						}
+					}
+					catch (Exception e)
+					{
+						Logger.LogErrorSource(e.Message);
+						Debugger.Break();
+					}
+				}
+				#endregion
+
+				#region Mintatantervek
 				if (Mintatantervek.Count == 0)
 				{
 					var asd = tmphtml.GetElementbyId("upFilter_cmbTemplates").ChildNodes.Where(s => s.Name == "option");
@@ -69,11 +98,14 @@ namespace Neptun
 							Mintatantervek.Add(new MintatantervViewModel()
 							{
 								display = a.InnerText,
-								value = a.GetAttributeValue("value","")
+								value = a.GetAttributeValue("value", "All")
 							});
 						});
 					}
 				}
+				#endregion
+
+				#region Semesters
 				if (Semesters.Count() == 0)
 				{
 
@@ -93,11 +125,14 @@ namespace Neptun
 
 					}
 				}
+				#endregion
+
 			}
+
+			#region Mintatanterv
 
 			if (type == SubjectType.Mintatantervi)
 			{
-
 
 				var SubjectCodeFilters = SubjectCode.Split(new char[] { ';' }, StringSplitOptions.RemoveEmptyEntries).ToList();
 				for (int i = 0; i < SubjectCodeFilters.Count; ++i)
@@ -118,14 +153,13 @@ namespace Neptun
 					request.AddParameter("__VIEWSTATE", ViewStateStr);
 					//request.AddParameter("__VIEWSTATEGENERATOR", "202EA31B");
 					request.AddParameter("upFilter$cmbLanguage", Languages[SelectedLanguageIndex].Value);
-					request.AddParameter("upFilter$cmbSubjectGroups", "All");
+					request.AddParameter("upFilter$cmbSubjectGroups", SelectedSubjectGroup.value);
 					request.AddParameter("upFilter$txtKurzuskod", CourseCode);
 					request.AddParameter("upFilter$txtOktato", Teacher);
 					request.AddParameter("upFilter$txtTargyNev", SubjectName);
 					request.AddParameter("upFilter$txtTargykod", subjectcode);
 					request.AddParameter("upFilter$cmbTemplates", SelectedMintatanterv.value);
 					request.AddParameter("upFilter$cmbTerms", Semesters[SelectedSemesterIndex > 0 ? SelectedSemesterIndex : 0].Value);
-					request.AddParameter("upFilter$cmbSubjectGroups", "All");
 					request.AddParameter("upFilter$expandedsearchbutton", "Tárgyak listázása");
 					request.AddParameter("upFilter$rbtnSubjectType", type.ToString());
 
@@ -197,8 +231,12 @@ namespace Neptun
 					}
 				}
 			}
+			#endregion
 
 			else
+
+			#region Minden intézményi
+
 			{
 				var SubjectCodeFilters = SubjectCode.Split(new char[] { ';' }, StringSplitOptions.RemoveEmptyEntries).ToList();
 				for (int i = 0; i < SubjectCodeFilters.Count; ++i)
@@ -219,14 +257,13 @@ namespace Neptun
 					request.AddParameter("__VIEWSTATE", ViewStateStr);
 					//request.AddParameter("__VIEWSTATEGENERATOR", "202EA31B");
 					request.AddParameter("upFilter$cmbLanguage", Languages[SelectedLanguageIndex].Value);
-					request.AddParameter("upFilter$cmbSubjectGroups", "All");
+					request.AddParameter("upFilter$cmbSubjectGroups", SelectedSubjectGroup.value);
 					request.AddParameter("upFilter$txtKurzuskod", CourseCode);
 					request.AddParameter("upFilter$txtOktato", Teacher);
 					request.AddParameter("upFilter$txtTargyNev", SubjectName);
 					request.AddParameter("upFilter$txtTargykod", subjectcode);
 					request.AddParameter("upFilter$cmbTemplates", SelectedMintatanterv.value);
 					request.AddParameter("upFilter$cmbTerms", Semesters[SelectedSemesterIndex > 0 ? SelectedSemesterIndex : 0].Value);
-					request.AddParameter("upFilter$cmbSubjectGroups", "All");
 					request.AddParameter("upFilter$expandedsearchbutton", "Tárgyak listázása");
 					request.AddParameter("upFilter$rbtnSubjectType", type.ToString());
 
@@ -293,6 +330,7 @@ namespace Neptun
 					}
 				}
 			}
+			#endregion
 		}
 
 		#endregion
@@ -321,6 +359,13 @@ namespace Neptun
 
 			public override string ToString() => Semester;
 		}
+		public class SubjectGroupViewModel
+		{
+			public string display { get; set; }
+			public string value { get; set; }
+
+			public override string ToString() => display;
+		}
 		public enum SubjectType
 		{
 			Mintatantervi,
@@ -337,6 +382,7 @@ namespace Neptun
 			Mintatantervek = new ObservableCollection<MintatantervViewModel>();
 			AllSubjects = new List<SubjectViewModel>();
 			Languages = new ObservableCollection<LanguageViewModel>();
+			SubjectGroups = new ObservableCollection<SubjectGroupViewModel>();
 
 			#region Commands
 			DeleteSelectedSavedSubjects = new RelayCommand(() =>
@@ -541,9 +587,9 @@ namespace Neptun
 				Task.Run(LoadSubjects);
 				//isPageChanging = false;
 			});
-			
+
 			#endregion
-			
+
 			#region Page Navigation
 
 			FirstPage = new RelayCommand(() =>
@@ -790,11 +836,13 @@ namespace Neptun
 		#region Public Properties
 
 		public ObservableCollection<SemesterViewModel> Semesters { get; set; }
+		public ObservableCollection<SubjectGroupViewModel> SubjectGroups { get; set; }
 		public ObservableCollection<LanguageViewModel> Languages { get; set; }
-	
+
 		public ObservableCollection<MintatantervViewModel> Mintatantervek { get; set; }
 
 		public MintatantervViewModel SelectedMintatanterv { get; set; }
+		public SubjectGroupViewModel SelectedSubjectGroup { get; set; }
 		public int CurrentPage { get; set; } = 1;
 
 		public int SelectedSemesterIndex { get; set; } = 0;
@@ -840,13 +888,13 @@ namespace Neptun
 		public ICommand LastPage { get; set; }
 		public ICommand NavigateToLeft { get; set; }
 		public ICommand NavigateToRight { get; set; }
-
 		public ICommand TakeListedSubjects { get; set; }
 		public ICommand ForgetListedSubjects { get; set; }
 		public ICommand SaveListedSubjects { get; set; }
 		public ICommand DeleteSavedSubjects { get; set; }
 		public ICommand LoadSavedSubjects { get; set; }
-		#endregion
 		public ICommand DeleteSelectedSavedSubjects { get; set; }
+
+		#endregion
 	}
 }

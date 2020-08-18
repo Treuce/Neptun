@@ -128,8 +128,8 @@ namespace Neptun
 							var str = unreadmessages[2].Trim('(', ')');
 							Int32.TryParse(str, out int tmp);
 							ViewModelApplication.UnreadMessageCount = tmp;
-							ViewModelApplication.OnPropertyChanged("UnreadMessageCount");
-							ViewModelApplication.MainMenuVM.OnPropertyChanged("messagesText");
+							//ViewModelApplication.OnPropertyChanged("");
+							//ViewModelApplication.MainMenuVM.OnPropertyChanged("messagesText");
 						}
 					}
 					await Task.Delay(TimeSpan.FromMinutes(2));

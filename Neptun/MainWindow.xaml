@@ -13,6 +13,7 @@
         Icon="Images/Logo/neptun.png"
         MinWidth="{Binding WindowMinimumWidth}"
         MinHeight="{Binding WindowMinimumHeight}"
+		WindowState="Maximized"
         Deactivated="AppWindow_Deactivated"
         Activated="AppWindow_Activated"
         Title="Neptun" Height="700" Width="1250">

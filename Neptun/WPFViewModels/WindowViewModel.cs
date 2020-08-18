@@ -199,6 +199,7 @@ namespace Neptun
 				{
 					var request = new RestRequest("main.aspx/LogOutFromJS", Method.POST);
 					request.Body = new RequestBody("ContentType = \"application/json\"", "application/json", "{\"link\": \"Login.aspx?timeout=\"}");
+					request.Timeout = 100;
 					CoreDI.RestWebClient.Execute(request);
 				}
 				catch (Exception e)
