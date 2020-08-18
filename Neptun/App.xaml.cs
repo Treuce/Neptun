@@ -9,6 +9,7 @@ using RestSharp;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Text;
@@ -142,5 +143,31 @@ namespace Neptun
 			}
 		}
 
+		private void Application_DispatcherUnhandledException(object sender, System.Windows.Threading.DispatcherUnhandledExceptionEventArgs e)
+		{
+			var sb = new StringBuilder();
+
+			AppendExceptionMessages(sb, e.Exception);
+			AppendExceptionStacktraces(sb, e.Exception);
+			if (!Directory.Exists(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), @"Neptun\MyAppCrashes.log")))
+				Directory.CreateDirectory(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), @"Neptun\MyAppCrashes.log"));
+			File.AppendAllText(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), @"Neptun\MyAppCrashes.log"), sb.ToString());
+		}
+		private void AppendExceptionMessages(StringBuilder sb, Exception e)
+		{
+			while (e != null)
+			{
+				sb.AppendLine("============== Exception ===============").AppendLine(e.Message);
+				e = e.InnerException;
+			}
+		}
+		private void AppendExceptionStacktraces(StringBuilder sb, Exception e)
+		{
+			while (e != null)
+			{
+				sb.AppendLine("======== Exception Stacktrace ==========").AppendLine(e.StackTrace);
+				e = e.InnerException;
+			}
+		}
 	}
 }
