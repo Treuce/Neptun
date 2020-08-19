@@ -35,6 +35,18 @@ namespace Neptun
 	}
 	public class SubjectViewModel : BaseViewModel
 	{
+		public SubjectViewModel()
+		{
+
+		}
+		public SubjectViewModel(SubjectViewModel vm)
+		{
+			Name = vm.Name;
+			Code = vm.Code;
+			id = vm.id;
+			semester = vm.semester;
+			TakeViewModel = vm.TakeViewModel;
+		}
 		public string Name { get; set; }
 
 		public string Code { get; set; }
@@ -61,4 +73,5 @@ namespace Neptun
 
 		public bool isPopUpOpen { get; set; }
 	}
+	
 }

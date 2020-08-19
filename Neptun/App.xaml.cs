@@ -178,5 +178,6 @@ namespace Neptun
 			CoreDI.RestWebClient.Execute(request);
 			Application.Current.Shutdown();
 		}
+
 	}
 }

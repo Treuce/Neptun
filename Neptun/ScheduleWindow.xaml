@@ -6,7 +6,7 @@
 		xmlns:local="clr-namespace:Neptun"
 		xmlns:planner="http://mindfusion.eu/scheduling/wpf"
 		xmlns:core="clr-namespace:Neptun.Core;assembly=Neptun.Core"
-		xmlns:my="clr-namespace:WpfScheduler;assembly=WpfScheduler"
+		xmlns:my="clr-namespace:WpfScheduler"
 		mc:Ignorable="d"
 		WindowStyle="None"
 		SizeToContent="Height"
@@ -15,6 +15,7 @@
 		Icon="Images/Logo/neptun.png"
 		MinWidth="{Binding WindowMinimumWidth}"
 		MinHeight="{Binding WindowMinimumHeight}"
+		MaxHeight="1080"
 		Title="{Binding Title}">
 	
 	<!--#region Window stuff -->
@@ -121,7 +122,8 @@
 					  GlassFrameThickness="0" />
 	</WindowChrome.WindowChrome>
 	<!--#endregion-->
-
+	<ScrollViewer Padding="10,0,10,0">
+		
 	<Border x:Name="MainContent"
 			Background="Transparent"
 			Margin="5"
@@ -130,7 +132,7 @@
 			BorderBrush="{StaticResource BackgroundDarkBrush}">
 		<Grid>
 			<Grid.RowDefinitions>
-				<RowDefinition Height="Auto" />
+				<RowDefinition Height="0.25*" />
 				<RowDefinition Height="0.25*" />
 				<RowDefinition Height="0.25*" />
 				<RowDefinition Height="0.25*" />
@@ -275,7 +277,7 @@
 									  FontSize="{StaticResource FontSizeXXLarge}"
 									  Background="{StaticResource BackgroundDarkBrushLighter}" />
 							<!--// Custom control here for other stuff-->
-							<local:TFControl Grid.ColumnSpan="5"
+							<local:CourseList Grid.ColumnSpan="5"
 											 Grid.Row="1"
 											 DataContext="{x:Null}"
 											 Visibility="{Binding Path=DataContext.InfoExpanded, Converter={local:BooleanToVisiblityGoneConverter}, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Grid}}, FallbackValue=Collapsed, TargetNullValue=Collapsed}"
@@ -287,15 +289,19 @@
 			</ListView>
 			<my:Scheduler Grid.Row="2"
 						  HorizontalAlignment="Stretch"
-						  Name="scheduler"
+						  x:Name="scheduler"
+						  Height="745"
+						  ClipToBounds="True"
+						  
 						  VerticalAlignment="Stretch"
 						  ScrollViewer.CanContentScroll="False"
 						  ScrollViewer.HorizontalScrollBarVisibility="Visible"
 						  StartJourney="8:00"
 						  EndJourney="21:00"
-						  Events="{Binding Events}"
+						  Events="{Binding Events, UpdateSourceTrigger=PropertyChanged}"
 						  Mode="Week">
 			</my:Scheduler>
 		</Grid>
 	</Border>
+	</ScrollViewer>
 </Window>

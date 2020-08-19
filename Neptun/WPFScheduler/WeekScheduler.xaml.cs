@@ -100,49 +100,13 @@ namespace WpfScheduler
                     PaintAllDayEvents();
                 });
 
-                //_scheduler.OnStartJourneyChanged += ((object s, TimeSpan t) =>
-                //{
-                //    if (_scheduler.StartJourney.Hours == 0)
-                //        startJourney.Visibility = System.Windows.Visibility.Hidden;
-                //    else
-                //        Grid.SetRowSpan(startJourney, _scheduler.StartJourney.Hours);
-                //});
 
-                //_scheduler.OnEndJourneyChanged += ((object s, TimeSpan t) =>
-                //{
-                //    if (_scheduler.EndJourney.Hours == 0)
-                //        endJourney.Visibility = System.Windows.Visibility.Hidden;
-                //    else
-                //    {
-                //        Grid.SetRow(endJourney, _scheduler.EndJourney.Hours);
-                //        Grid.SetRowSpan(endJourney, 24 - _scheduler.EndJourney.Hours);
-                //    }
-                //});
-
-                this.SizeChanged += WeekScheduler_SizeChanged;
+				this.SizeChanged += WeekScheduler_SizeChanged;
 
                 ResizeGrids(new Size(this.ActualWidth, this.ActualHeight));
                 PaintAllEvents(null);
                 PaintAllDayEvents();
-                //if (_scheduler.StartJourney.Hours != 0)
-                //{
-                //    double hourHeight = EventsGrid.ActualHeight / 22;
-                //    ScrollEventsViewer.ScrollToVerticalOffset(hourHeight * (_scheduler.StartJourney.Hours - 1));
-                //}
-
-                //if (_scheduler.StartJourney.Hours == 0)
-                //    startJourney.Visibility = System.Windows.Visibility.Hidden;
-                //else
-                //    Grid.SetRowSpan(startJourney, _scheduler.StartJourney.Hours);
-
-                //if (_scheduler.EndJourney.Hours == 0)
-                //    endJourney.Visibility = System.Windows.Visibility.Hidden;
-                //else
-                //{
-                //    Grid.SetRow(endJourney, _scheduler.EndJourney.Hours);
-                //    Grid.SetRowSpan(endJourney, 24 - _scheduler.EndJourney.Hours);
-                //}
-            }
+			}
             catch (Exception ex)
             {                
                 throw;
@@ -201,24 +165,25 @@ namespace WpfScheduler
                 foreach (ScheduleSubject e in eventList)
                 {
                     int numColumn = (int)e.Start.Date.Subtract(FirstDay.Date).TotalDays + 1;
-                    if (numColumn >= 0 && numColumn < 7)
+                    if (numColumn >= 0 && numColumn < 5)
                     {
                         Canvas sp = (Canvas)this.FindName("column" + numColumn);
                         sp.Width = columnWidth;
 
-                        double oneHourHeight = sp.ActualHeight / 22;
+                        double oneHourHeight = sp.ActualHeight / 14;
 
                         var concurrentEvents = _scheduler.Events.Where(e1 => ((e1.Start <= e.Start && e1.End > e.Start) ||
                                                                         (e1.Start > e.Start && e1.Start < e.End)) &&
                                                                        e1.End.Date == e1.Start.Date).OrderBy(ev => ev.Start);
 
-                        double marginTop = oneHourHeight * (e.Start.Hour + (e.Start.Minute / 60.0));
-                        double width = columnWidth / (concurrentEvents.Count());
+						double marginTop = oneHourHeight * (e.Start.Hour + (e.Start.Minute / 60.0) - 8);
+						double width = columnWidth / (concurrentEvents.Count());
                         double marginLeft = width * getIndex(e, concurrentEvents.ToList());
 
                         EventUserControl wEvent = new EventUserControl(e, true);
                         wEvent.Width = width;
-                        wEvent.Height = e.End.Subtract(e.Start).TotalHours * oneHourHeight;
+                        var asd = e.End.Subtract(e.Start).TotalHours;
+                        wEvent.Height = (e.End.Subtract(e.Start).TotalHours) * oneHourHeight;
                         wEvent.Margin = new Thickness(marginLeft, marginTop, 0, 0);
                         wEvent.MouseDoubleClick += ((object sender, MouseButtonEventArgs ea) =>
                         {

@@ -186,8 +186,8 @@ namespace WpfScheduler
         {
             InitializeComponent();
             Mode = WpfScheduler.Mode.Week;
-            Events = new ObservableCollection<ScheduleSubject>();
-            SelectedDate = DateTime.Now;
+			Events = 
+			SelectedDate = DateTime.Now;
 
             WeekScheduler.OnEventDoubleClick += InnerScheduler_OnEventDoubleClick;
             //DayScheduler.OnEventDoubleClick += InnerScheduler_OnEventDoubleClick;

@@ -155,6 +155,9 @@
     <Compile Include="Controls\MainMenuControl.xaml.cs">
       <DependentUpon>MainMenuControl.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Controls\Subjects\CourseList.xaml.cs">
+      <DependentUpon>CourseList.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Controls\Subjects\TFControl.xaml.cs">
       <DependentUpon>TFControl.xaml</DependentUpon>
     </Compile>
@@ -244,6 +247,28 @@
     <Compile Include="WebRequests\Neptun_Responses.cs" />
     <Compile Include="WebRequests\WebRequestResultExtensions.cs" />
     <Compile Include="Window\UIHelpers.cs" />
+    <Compile Include="WPFScheduler\DayScheduler.xaml.cs">
+      <DependentUpon>DayScheduler.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="WPFScheduler\DragAdorner.cs" />
+    <Compile Include="WPFScheduler\EventUserControl.xaml.cs">
+      <DependentUpon>EventUserControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="WPFScheduler\MonthDay.xaml.cs">
+      <DependentUpon>MonthDay.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="WPFScheduler\MonthScheduler.xaml.cs">
+      <DependentUpon>MonthScheduler.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="WPFScheduler\Scheduler.xaml.cs">
+      <DependentUpon>Scheduler.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="WPFScheduler\SchedulerGrid.cs" />
+    <Compile Include="WPFScheduler\ScheduleSubject.cs" />
+    <Compile Include="WPFScheduler\Utils.cs" />
+    <Compile Include="WPFScheduler\WeekScheduler.xaml.cs">
+      <DependentUpon>WeekScheduler.xaml</DependentUpon>
+    </Compile>
     <Compile Include="WPFViewModels\DialogWindowViewModel.cs" />
     <Compile Include="WPFViewModels\ViewModelLocator.cs" />
     <Compile Include="WPFViewModels\WindowViewModel.cs" />
@@ -276,6 +301,10 @@
     <Page Include="Controls\MainMenuControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\Subjects\CourseList.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="Controls\Subjects\TFControl.xaml">
       <SubType>Designer</SubType>
@@ -365,6 +394,34 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="WPFScheduler\DayScheduler.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="WPFScheduler\EventUserControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="WPFScheduler\MonthDay.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="WPFScheduler\MonthScheduler.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="WPFScheduler\Scheduler.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="WPFScheduler\Themes\Generic.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="WPFScheduler\WeekScheduler.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs">
@@ -380,6 +437,7 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
+    <Resource Include="Image1.png" />
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
@@ -435,10 +493,6 @@
       <Project>{95bce913-1777-4823-acd3-b9a853117f1e}</Project>
       <Name>Neptun.Relational</Name>
     </ProjectReference>
-    <ProjectReference Include="..\WpfScheduler\WpfScheduler.csproj">
-      <Project>{f9954c26-6234-43f5-8d96-8ec6e03c03b9}</Project>
-      <Name>WpfScheduler</Name>
-    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Dna.Framework">
@@ -482,6 +536,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="ViewModel\Application\Design\" />
+    <Folder Include="WPFScheduler\Converters\" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include=".NETFramework,Version=v4.8">

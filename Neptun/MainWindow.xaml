@@ -161,7 +161,10 @@
 				Width="Auto"
                 />
 			</Border>
-			<local:PageHost Grid.Row="2" Padding="20" x:Name="MainWindowPageHost" MaxHeight="800"
+			<local:PageHost Grid.Row="2"
+							Padding="20"
+							x:Name="MainWindowPageHost"
+							MaxHeight="800"
                    CurrentPage="{Binding ApplicationViewModel.CurrentPage,
                                         Source={x:Static local:ViewModelLocator.Instance}}"
                    CurrentPageViewModel="{Binding ApplicationViewModel.CurrentPageViewModel,

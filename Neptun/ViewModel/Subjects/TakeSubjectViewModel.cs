@@ -852,7 +852,7 @@ namespace Neptun
 				tohtml.LoadHtml(response_to.Content);
 				var asdasd = tohtml.GetElementbyId("collapse1").ChildNodes[1].ChildNodes[1].ChildNodes[3].ChildNodes.Where(s => s.Name == "tr");
 				foreach (var info in asdasd)
-					courseschedulelist.Add(new KeyValuePair<string, string>(info.ChildNodes[1].InnerText, info.ChildNodes[8].InnerText));
+					courseschedulelist.Add(new KeyValuePair<string, string>(info.ChildNodes[1].InnerText, (info.ChildNodes[7].InnerText + Environment.NewLine + info.ChildNodes[8].InnerText)));
 
 				foreach (var course in Courses)
 					if (String.IsNullOrEmpty(course.Schedule))

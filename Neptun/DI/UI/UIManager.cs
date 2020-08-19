@@ -75,7 +75,7 @@ namespace Neptun
 				{
 					// Show the dialog box
 					var window = new ScheduleWindow();
-					window.Owner = Application.Current.MainWindow;
+					//window.Owner = Application.Current.MainWindow;
 					window.WindowStartupLocation = WindowStartupLocation.CenterOwner;
 					window.Show();
 				}

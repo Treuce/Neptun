@@ -38,6 +38,7 @@ namespace Neptun
         {
             // Hide overlay if we are focused
             (DataContext as WindowViewModel).DimmableOverlayVisible = false;
+            Focus();
         }
     }
 }
