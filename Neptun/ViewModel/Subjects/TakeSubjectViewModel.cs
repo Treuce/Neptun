@@ -1136,7 +1136,7 @@ namespace Neptun
 								//TODO: órarendi infó, rohadt megjegyzés..
 								course.Teacher = b[8].ChildNodes[0].InnerText;
 								course.Language = b[9].GetDirectInnerText();
-								course.Note = b[11].GetDirectInnerText();
+								course.Note = b[11].ChildNodes.Count > 1 ? b[11].ChildNodes[1].InnerText : b[11].InnerText;
 								course.isSelected = b[b.Count - 1].ChildNodes.FindFirst("input").GetAttributeValue("checked", "") == "checked";
 								Application.Current.Dispatcher.Invoke(() =>
 								{
@@ -1147,7 +1147,6 @@ namespace Neptun
 							catch (Exception e)
 							{
 								Logger.LogErrorSource($"This shouldn't happen.. {e.Message}");
-								Debugger.Break();
 							}
 						}
 
@@ -1447,13 +1446,16 @@ namespace Neptun
 						ParentViewModel.InfoExpanded = false;
 						ParentViewModel.taken = false;
 					}
-					await Task.Delay(TimeSpan.FromMinutes(TFViewModel.WaitTime));
-					await UI.ShowMessage(new MessageBoxDialogViewModel()
+					if (!(TFViewModel.WaitTime < 0))
 					{
-						Title = "Tárgyleadás: " + ParentViewModel.Code,
-						Message = resultstr,
-						OkText = "Fuck yeah"
-					});
+						await Task.Delay(TimeSpan.FromMinutes(TFViewModel.WaitTime));
+						await UI.ShowMessage(new MessageBoxDialogViewModel()
+						{
+							Title = "Tárgyleadás: " + ParentViewModel.Code,
+							Message = resultstr,
+							OkText = "Fuck yeah"
+						});
+					}
 				});
 
 			});
@@ -1588,13 +1590,16 @@ namespace Neptun
 					if (resultstr.Contains("nem sikerült"))
 						Debugger.Break();
 
-					await Task.Delay(TimeSpan.FromMinutes(TFViewModel.WaitTime));
-					await UI.ShowMessage(new MessageBoxDialogViewModel()
+					if (TFViewModel.WaitTime >= 0)
 					{
-						Title = "Tárgyfelvétel: " + ParentViewModel.Code,
-						Message = resultstr,
-						OkText = "Fuck yeah"
-					});
+						await Task.Delay(TimeSpan.FromMinutes(TFViewModel.WaitTime));
+						await UI.ShowMessage(new MessageBoxDialogViewModel()
+						{
+							Title = "Tárgyfelvétel: " + ParentViewModel.Code,
+							Message = resultstr,
+							OkText = "Fuck yeah"
+						});
+					}
 					//if (resultstr.ToLower().Contains("siker"))
 					//{
 					ParentViewModel.taken = true;

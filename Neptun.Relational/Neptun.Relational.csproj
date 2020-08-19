@@ -5,6 +5,7 @@
     <AssemblyName>Neptun.Relational</AssemblyName>
     <RootNamespace>Neptun.Relational</RootNamespace>
     <Platforms>AnyCPU;x64</Platforms>
+    <UserSecretsId>8e9d49e4-06a2-4801-99ca-6f742c011c36</UserSecretsId>
   </PropertyGroup>
 
   <ItemGroup>

@@ -21,7 +21,7 @@ namespace Neptun
     /// <summary>
     /// Interaction logic for MainPage.xaml
     /// </summary>
-    public partial class NoUIPage : BasePage<TFViewModel>
+    public partial class NoUIPage : BasePage<EmptyViewModel>
     {
         #region Constructor
 
@@ -37,7 +37,7 @@ namespace Neptun
         /// Constructor with specific view model
         /// </summary>
         /// <param name="specificViewModel">The specific view model to use for this page</param>
-        public NoUIPage(TFViewModel specificViewModel) : base(specificViewModel)
+        public NoUIPage(EmptyViewModel specificViewModel) : base(specificViewModel)
         {
             InitializeComponent();
         }

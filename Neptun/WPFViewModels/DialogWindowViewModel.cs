@@ -78,4 +78,17 @@ namespace Neptun
 
 		#endregion
 	}
+	public class ScheduleWindowViewModel : WindowViewModel
+	{
+		public string Title { get; set; } = "Órarendtervező";
+		public ScheduleWindowViewModel(Window window) : base(window)
+		{
+			// Make minimum size smaller
+			WindowMinimumWidth = 250;
+			WindowMinimumHeight = 100;
+			CloseCommand = new RelayCommand(() => mWindow.Close());
+			// Make title bar smaller
+			TitleHeight = 30;
+		}
+	}
 }

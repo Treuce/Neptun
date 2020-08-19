@@ -5,6 +5,7 @@
     <AssemblyName>Neptun.Core</AssemblyName>
     <RootNamespace>Neptun.Core</RootNamespace>
     <Platforms>AnyCPU;x64</Platforms>
+    <UserSecretsId>9ef6f13f-1ad5-44a4-9afb-03fa63f6471f</UserSecretsId>
   </PropertyGroup>
 
   <ItemGroup>

@@ -22,6 +22,7 @@ namespace Neptun
 
             // Bind to a single instance of Settings view model
             //construction.Services.AddSingleton<SettingsViewModel>();
+            construction.Services.AddSingleton<ScheduleViewModel>();
 
             // Return the construction for chaining
             return construction;

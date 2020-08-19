@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Net.Http.Headers;
 using System.Threading.Tasks;
 using Dna;
 using Neptun.Core;
@@ -87,9 +88,11 @@ namespace Neptun.Relational
 			// Clear all entries
 			mDbContext.LoginCredentials.RemoveRange(mDbContext.LoginCredentials);
 
+			//Debugger.Break();
+			//string asd = Encryption.asd(loginCredentials.Password);
 			// Add new one
 			mDbContext.LoginCredentials.Add(loginCredentials);
-
+			
 			// Save changes
 			await mDbContext.SaveChangesAsync();
 		}

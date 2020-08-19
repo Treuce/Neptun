@@ -1,13 +1,11 @@
-﻿using Neptun.Core;
-using System.Threading.Tasks;
-using static Neptun.DI;
-using static Neptun.Core.CoreDI;
-using System.Windows.Input;
-using System.Diagnostics;
+﻿using Dna;
+using Neptun.Core;
 using System;
+using System.Diagnostics;
+using System.Threading.Tasks;
 using static Dna.FrameworkDI;
-using Dna;
-using System.Windows.Navigation;
+using static Neptun.Core.CoreDI;
+using static Neptun.DI;
 
 namespace Neptun
 {

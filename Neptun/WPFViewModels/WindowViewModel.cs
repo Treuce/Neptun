@@ -242,6 +242,9 @@ namespace Neptun
 						case "0303":
 							ViewModelApplication.GoToPage(ApplicationPage.Tárgyfelvétel, new TFViewModel());
 							break;
+						case "0304":
+							ViewModelApplication.GoToPage(ApplicationPage.FelvettTárgyak, new TakenSubjectsPageViewModel());
+							break;
 						default:
 							ViewModelApplication.GoToPage(ApplicationPage.Default);
 							break;

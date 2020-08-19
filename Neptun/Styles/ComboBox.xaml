@@ -4,28 +4,15 @@
 	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
 	xmlns:local="clr-namespace:Neptun">
 
-	<Style
-        x:Key="ComboBoxTest2"
-        TargetType="{x:Type ComboBox}">
-        <!--<Setter Property="ItemContainerStyle">
-			<Setter.Value>
-				<Style TargetType="ComboBoxItem">
-					<Setter Property="BorderBrush" Value="Transparent"/>
-					<Setter Property="BorderThickness" Value="0"/>
-					<Setter Property="ClipToBounds" Value="True"/>
-					<Setter Property="Opacity" Value="1"/>
-					<Setter Property="UseLayoutRounding" Value="True"/>
-				</Style>
-			</Setter.Value>
-		</Setter>-->
-        <Setter
+	<Style x:Key="ComboBoxTest2"
+		   TargetType="{x:Type ComboBox}">
+		<Setter
             Property="Template">
             <Setter.Value>
                 <ControlTemplate
                     TargetType="ComboBox">
-                    <Grid>
-                        <ToggleButton
-                            Grid.Column="2"
+					<Grid>
+						<ToggleButton
                             Focusable="false"
                             IsChecked="{Binding Path=IsDropDownOpen,Mode=TwoWay,RelativeSource={RelativeSource TemplatedParent}}">
                             <ToggleButton.Template>
@@ -162,7 +149,7 @@
 							</MultiTrigger.Conditions>
 							<Setter Property="Background"
 									TargetName="Bd"
-									Value="#3D26A0DA" />
+									Value="{StaticResource WordBlueBrush}" />
 							<Setter Property="BorderBrush"
 									TargetName="Bd"
 									Value="#FF26A0DA" />
@@ -192,7 +179,7 @@
 							</MultiTrigger.Conditions>
 							<Setter Property="Background"
 									TargetName="Bd"
-									Value="#3DDADADA" />
+									Value="{StaticResource WordBlueBrush}" />
 							<Setter Property="BorderBrush"
 									TargetName="Bd"
 									Value="#FFDADADA" />

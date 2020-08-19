@@ -1,4 +1,5 @@
 ﻿using Dna;
+using GalaSoft.MvvmLight.Command;
 using HtmlAgilityPack;
 using Microsoft.EntityFrameworkCore.ChangeTracking.Internal;
 using Neptun.Core;
@@ -9,6 +10,7 @@ using System.Collections.ObjectModel;
 using System.Data.Common;
 using System.Diagnostics;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
@@ -145,6 +147,9 @@ namespace Neptun
 					SubjectCodeFilters.Add("");
 				foreach (var subjectcode in SubjectCodeFilters)
 				{
+					try
+					{
+
 					//if (SubjectCodeFilters.Count > 1 && subjectcode != "")
 					//{
 
@@ -176,58 +181,65 @@ namespace Neptun
 					OnPropertyChanged("MaxPageNumber");
 
 					var subjectscontainer = html.GetElementbyId("h_addsubjects_gridSubjects_bodytable").ChildNodes[1].ChildNodes;
-					foreach (var a in subjectscontainer)
-					{
-						try
+						foreach (var a in subjectscontainer)
 						{
-							if (a.InnerText == "Nincs találat")
+							try
 							{
-								await UI.ShowMessage(new MessageBoxDialogViewModel()
+								if (a.InnerText == "Nincs találat")
 								{
-									Title = "Tárgyak listázása",
-									Message = $"Nincs találat : {subjectcode}",
-									OkText = "Bigsad"
-								});
-								break;
+									await UI.ShowMessage(new MessageBoxDialogViewModel()
+									{
+										Title = "Tárgyak listázása",
+										Message = $"Nincs találat : {subjectcode}",
+										OkText = "Bigsad"
+									});
+									break;
+								}
+								var name = a.ChildNodes[1].InnerText;
+								string note = string.Empty;
+								if (a.ChildNodes[1].ChildNodes.Count > 1)
+								{
+									name = a.ChildNodes[1].ChildNodes[0].InnerText;
+									note = a.ChildNodes[1].ChildNodes[1].InnerText;
+								}
+								var code = a.ChildNodes[2].InnerText;
+								var category = a.ChildNodes[3].InnerText;
+								var ajanlottfelev = a.ChildNodes[5].InnerText;
+								var kredit = a.ChildNodes[6].InnerText;
+								var kotelezoe = a.ChildNodes[7].InnerText;
+								var cmd = a.ChildNodes[13].ChildNodes[0].GetAttributeValue("onclick", "");
+								var id = cmd.Split('(')[1].Split(',')[0].Replace("\'", "");
+								var completed = Boolean.Parse(a.ChildNodes[11].GetAttributeValue("checked", ""));
+								var taken = Boolean.Parse(a.ChildNodes[12].GetAttributeValue("checked", ""));
+								//Debugger.Break();
+								if (!code.Contains("18bAN2G"))
+									Application.Current.Dispatcher.Invoke(() =>
+									Subjects.Add(new SubjectViewModel()
+									{
+										Name = name,
+										Code = code,
+										Credit = kredit,
+										Category = category,
+										onClick = cmd,
+										id = id,
+										completed = completed,
+										taken = taken,
+										ToolTip = note,
+										type = kotelezoe,
+										SubjectType = SubjectType.Mintatantervi
+									}));
 							}
-							var name = a.ChildNodes[1].InnerText;
-							string note = string.Empty;
-							if (a.ChildNodes[1].ChildNodes.Count > 1)
+							catch (Exception e)
 							{
-								name = a.ChildNodes[1].ChildNodes[0].InnerText;
-								note = a.ChildNodes[1].ChildNodes[1].InnerText;
+								Logger.LogErrorSource(e.Message);
+								//Debugger.Break();
 							}
-							var code = a.ChildNodes[2].InnerText;
-							var category = a.ChildNodes[3].InnerText;
-							var ajanlottfelev = a.ChildNodes[5].InnerText;
-							var kredit = a.ChildNodes[6].InnerText;
-							var kotelezoe = a.ChildNodes[7].InnerText;
-							var cmd = a.ChildNodes[13].ChildNodes[0].GetAttributeValue("onclick", "");
-							var id = cmd.Split('(')[1].Split(',')[0].Replace("\'", "");
-							var completed = Boolean.Parse(a.ChildNodes[11].GetAttributeValue("checked", ""));
-							var taken = Boolean.Parse(a.ChildNodes[12].GetAttributeValue("checked", ""));
-							//Debugger.Break();
-							Application.Current.Dispatcher.Invoke(() =>
-							Subjects.Add(new SubjectViewModel()
-							{
-								Name = name,
-								Code = code,
-								Credit = kredit,
-								Category = category,
-								onClick = cmd,
-								id = id,
-								completed = completed,
-								taken = taken,
-								ToolTip = note,
-								type = kotelezoe,
-								SubjectType = SubjectType.Mintatantervi
-							}));
 						}
-						catch (Exception e)
-						{
-							Logger.LogErrorSource(e.Message);
-							//Debugger.Break();
-						}
+					}
+					catch (Exception e)
+					{
+						Logger.LogErrorSource(e.Message);
+						Debugger.Break();
 					}
 				}
 			}
@@ -590,6 +602,16 @@ namespace Neptun
 
 			#endregion
 
+			SchedulePlannerCommand = new RelayCommand(() =>
+			{
+				UI.ShowSchedulePlanner();
+			});
+
+			AddToSchedulePlanner = new RelayCommand<SubjectViewModel>((SubjectViewModel vm) =>
+			{
+				ScheduleVM.Subjects.Add(vm);
+			});
+
 			#region Page Navigation
 
 			FirstPage = new RelayCommand(() =>
@@ -895,6 +917,8 @@ namespace Neptun
 		public ICommand LoadSavedSubjects { get; set; }
 		public ICommand DeleteSelectedSavedSubjects { get; set; }
 
+		public ICommand SchedulePlannerCommand { get; set; }
+		public ICommand AddToSchedulePlanner { get; set; }
 		#endregion
 	}
 }

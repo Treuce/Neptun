@@ -20,6 +20,8 @@ namespace Neptun
 
         public static MessagesListViewModel ViewModelMessages => Framework.Service<MessagesListViewModel>();
 
+        public static ScheduleViewModel ScheduleVM => Framework.Service<ScheduleViewModel>();
+
         /// <summary>
         /// A shortcut to access toe <see cref="IClientDataStore"/> service
         /// </summary>

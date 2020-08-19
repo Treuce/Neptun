@@ -15,5 +15,7 @@ namespace Neptun
         Task ShowMessage(MessageBoxDialogViewModel viewModel);
 
         Task ShowMessage(MessageViewModel viewModel);
+
+        Task ShowSchedulePlanner();
     }
 }

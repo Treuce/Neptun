@@ -39,11 +39,10 @@ namespace Neptun.Core
 			Email = n;
 			Password = a.Unsecure();
 		}
-		public UserProfileDetailsApiModel(string n, string a, int ID)
+		public UserProfileDetailsApiModel(string n, string a)
 		{
 			Email = n;
 			Password = a;
-			Id = ID;
 		}
 		#endregion
 

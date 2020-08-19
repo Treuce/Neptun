@@ -58,5 +58,16 @@ namespace Neptun
 			((sender as ContentControl).DataContext as SubjectViewModel).InfoExpanded ^= true;
 			//Debugger.Break();
 		}
+
+		private void ContentControl_PreviewMouseRightButtonDown(object sender, MouseButtonEventArgs e)
+		{
+            ((sender as ContentControl).DataContext as SubjectViewModel).isPopUpOpen ^= true;
+        }
+
+		private async void ContentControl_LostMouseCapture(object sender, MouseEventArgs e)
+		{
+            await Task.Delay(3000);
+            ((sender as ContentControl).DataContext as SubjectViewModel).isPopUpOpen = false;
+        }
 	}
 }

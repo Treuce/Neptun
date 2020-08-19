@@ -126,7 +126,6 @@
 						</GridView.ColumnHeaderContainerStyle>
 						<GridViewColumn Header="Kurzuskód"
 										ctrl:RangeColumn.MinWidth="70"
-										ctrl:RangeColumn.MaxWidth="70"
 										DisplayMemberBinding="{Binding CourseCode}" />
 						<GridViewColumn Header="Fő/várólista/limit"
 										ctrl:RangeColumn.MinWidth="120"
@@ -145,7 +144,6 @@
 							</GridViewColumn.CellTemplate>
 						</GridViewColumn>
 						<GridViewColumn ctrl:RangeColumn.MinWidth="200"
-										ctrl:RangeColumn.MaxWidth="200"
 										Header="Oktatók">
 							<GridViewColumn.CellTemplate>
 								<DataTemplate>
@@ -156,12 +154,11 @@
 						</GridViewColumn>
 						<GridViewColumn Width="Auto"
 										ctrl:RangeColumn.MinWidth="100"
-										ctrl:RangeColumn.MaxWidth="100"
 										Header="Megjegyzés">
 							<GridViewColumn.CellTemplate>
 								<DataTemplate>
 									<TextBlock Text="{Binding Note}"
-											   TextWrapping="NoWrap" />
+											   TextWrapping="Wrap" />
 								</DataTemplate>
 							</GridViewColumn.CellTemplate>
 						</GridViewColumn>
@@ -175,8 +172,7 @@
 							</GridViewColumn.CellTemplate>
 						</GridViewColumn>
 						<GridViewColumn Header="Rangsorsorrend"
-										ctrl:RangeColumn.MinWidth="100"
-										ctrl:RangeColumn.MaxWidth="100">
+										ctrl:RangeColumn.MinWidth="100">
 							<GridViewColumn.CellTemplate>
 								<DataTemplate>
 									<TextBlock Text="{Binding rangsor}"
@@ -185,7 +181,6 @@
 							</GridViewColumn.CellTemplate>
 						</GridViewColumn>
 						<GridViewColumn Header="Nyelv"
-										ctrl:RangeColumn.MaxWidth="100"
 										ctrl:RangeColumn.MinWidth="100">
 							<GridViewColumn.CellTemplate>
 								<DataTemplate>

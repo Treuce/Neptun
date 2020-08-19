@@ -18,6 +18,6 @@
 		Messages = 2,
 
 		Tárgyfelvétel = 3,
-
+		FelvettTárgyak = 4,
 	}
 }

@@ -62,7 +62,7 @@ namespace Neptun
 				//	RestWebClient.CookieContainer.Add(new Cookie(a.Name, a.Value) { Domain = a.Domain });
 				// If the response has an error...
 				if (await result.HandleErrorIfFailedAsync("Sikertelen Bejelentkezés"))
-					await ViewModelApplication.HandleSuccessfulLoginAsync(new UserProfileDetailsApiModel(cred.NeptunCode, cred.Password, cred.Id));
+					await ViewModelApplication.HandleSuccessfulLoginAsync(new UserProfileDetailsApiModel(cred.NeptunCode, cred.Password));
 				else ViewModelApplication.GoToPage(ApplicationPage.Login);
 				//ViewModelApplication.GoToPage(ApplicationPage.Messages);
 				//TaskManager.RunAndForget(KeepConnectionAlive);
@@ -100,10 +100,6 @@ namespace Neptun
 			RestWebClient.CookieContainer = new CookieContainer();
 			//Debugger.Break();
 			// Monitor for server connection status
-
-
-			// Load new settings
-			//TaskManager.RunAndForget(ViewModelSettings.LoadAsync);
 		}
 
 		/// <summary>
@@ -145,6 +141,10 @@ namespace Neptun
 
 		private void Application_DispatcherUnhandledException(object sender, System.Windows.Threading.DispatcherUnhandledExceptionEventArgs e)
 		{
+			var request = new RestRequest("main.aspx/LogOutFromJS", Method.POST);
+			request.Body = new RequestBody("ContentType = \"application/json\"", "application/json", "{\"link\": \"Login.aspx?timeout=\"}");
+			request.Timeout = 100;
+			CoreDI.RestWebClient.Execute(request);
 			var sb = new StringBuilder();
 
 			AppendExceptionMessages(sb, e.Exception);
@@ -168,6 +168,15 @@ namespace Neptun
 				sb.AppendLine("======== Exception Stacktrace ==========").AppendLine(e.StackTrace);
 				e = e.InnerException;
 			}
+		}
+
+		private void Application_Exit(object sender, ExitEventArgs e)
+		{
+			var request = new RestRequest("main.aspx/LogOutFromJS", Method.POST);
+			request.Body = new RequestBody("ContentType = \"application/json\"", "application/json", "{\"link\": \"Login.aspx?timeout=\"}");
+			request.Timeout = 100;
+			CoreDI.RestWebClient.Execute(request);
+			Application.Current.Shutdown();
 		}
 	}
 }

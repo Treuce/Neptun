@@ -44,7 +44,7 @@ namespace Neptun.Relational
             // --------------------------
             //
             // Set Id as primary key
-            modelBuilder.Entity<LoginCredentialsDataModel>().HasKey(a => a.Id);
+            modelBuilder.Entity<LoginCredentialsDataModel>().HasKey("Id");
 			modelBuilder.Entity<SavedSubjectDataModel>().HasKey(a => a.code);
 
 			// TODO: Set up limits

@@ -190,11 +190,12 @@
 				<Label Grid.Row="1"
 					   Grid.Column="2"
 					   Margin="20,0,0,0"
+					   ToolTip="Percben megadva, 0-nál kisebb = nincs visszajelzés"
 					   Content="Válasz késleltetése" />
 				<wpfTool:DoubleUpDown Grid.Row="1"
 									  Grid.Column="3"
 									  Height="20"
-									  Minimum="0"
+									  Minimum="-1"
 									  Padding="10,0,10,0"
 									  Maximum="20"
 									  HorizontalAlignment="Left"
@@ -215,6 +216,17 @@
 						Height="Auto"
 						FontSize="{StaticResource FontSizeSmall}"
 						Command="{Binding ListSubjects}" />
+				<Button Grid.Row="7"
+						Grid.Column="0"
+						Padding="10"
+						Content="Órarendtervező"
+						VerticalAlignment="Center"
+						IsDefault="True"
+						HorizontalAlignment="Left"
+						HorizontalContentAlignment="Stretch"
+						Height="Auto"
+						FontSize="{StaticResource FontSizeSmall}"
+						Command="{Binding SchedulePlannerCommand}" />
 				<StackPanel Grid.Row="7"
 							Orientation="Horizontal"
 							Grid.Column="1">
@@ -510,16 +522,37 @@
 									<RowDefinition Height="Auto" />
 									<RowDefinition Height="Auto" />
 								</Grid.RowDefinitions>
-								<ContentControl ToolTip="{Binding ToolTip}" PreviewMouseDoubleClick="ExpandTFControl">
-									<TextBlock Grid.Column="0"
-											   
+								<ContentControl ToolTip="{Binding ToolTip}"
+												LostMouseCapture="ContentControl_LostMouseCapture"
+												MouseLeave="ContentControl_LostMouseCapture"
+												PreviewMouseRightButtonDown="ContentControl_PreviewMouseRightButtonDown"
+												PreviewMouseDoubleClick="ExpandTFControl">
+									<Grid>
+										<TextBlock Grid.Column="0"
 											   TextWrapping="WrapWithOverflow"
 											   Text="{Binding Name}"
 											   Foreground="{StaticResource WordDarkBlueBrush}"
 											   FontFamily="{StaticResource LatoBold}"
 											   Margin="20,5,0,5"
 											   HorizontalAlignment="Left"
-											   VerticalAlignment="Center" />
+											   VerticalAlignment="Center">
+									</TextBlock>
+										<Popup AllowsTransparency="True" IsOpen="{Binding isPopUpOpen}" Placement="Bottom">
+											<!--<Border BorderBrush="Red" BorderThickness="0" Background="{StaticResource BackgroundDarkBrush_2}" Padding="0">-->
+												
+											<Button Background="{StaticResource WordBlueBrush}"
+													   Foreground="Black"
+													BorderBrush="{StaticResource BackgroundDarkBrush_2}"
+													BorderThickness="1"
+													FontSize="{StaticResource FontSizeSmall}"
+													Padding="5"
+													Margin="0"
+													CommandParameter="{Binding}"
+													Command="{Binding DataContext.AddToSchedulePlanner, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=local:TFPage}}"
+													   Content="Órarendtervezőbe" />
+											<!--</Border>-->
+										</Popup>
+									</Grid>
 								</ContentControl>
 								<TextBox Grid.Column="1"
 										 TextWrapping="Wrap"
@@ -675,7 +708,7 @@
 									<RowDefinition Height="Auto" />
 									<RowDefinition Height="Auto" />
 								</Grid.RowDefinitions>
-								<ContentControl PreviewMouseDoubleClick="ExpandTFControl">
+								<ContentControl PreviewMouseRightButtonDown="ContentControl_PreviewMouseRightButtonDown" PreviewMouseDoubleClick="ExpandTFControl">
 									<TextBlock Grid.Column="0"
 											   ToolTip="{Binding ToolTip}"
 											   TextWrapping="WrapWithOverflow"
