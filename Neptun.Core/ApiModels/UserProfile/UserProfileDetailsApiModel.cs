@@ -9,10 +9,6 @@ namespace Neptun.Core
 	{
 		#region Public Properties
 
-		/// <summary>
-		/// The authentication token used to stay authenticated through future requests
-		/// </summary>
-		/// <remarks>The Token is only provided when called from the login methods</remarks>
 		private string Password { get; set; }
 
 		/// <summary>

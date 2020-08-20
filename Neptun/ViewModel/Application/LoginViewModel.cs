@@ -66,6 +66,9 @@ namespace Neptun
 					{
 						Application.Current.Dispatcher.Invoke(() =>
 						{
+							try
+							{
+
 							if ((Application.Current.MainWindow as MainWindow).MainWindowPageHost.NewPage.Content is LoginPage)
 							{
 								var smt = (Application.Current.MainWindow as MainWindow).MainWindowPageHost.NewPage.Content as LoginPage;
@@ -73,6 +76,11 @@ namespace Neptun
 							}
 							else
 								Debugger.Break();
+							}
+							catch (Exception e)
+							{
+								Debugger.Break();
+							}
 						});
 					}
 					catch (Exception e)
