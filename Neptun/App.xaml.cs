@@ -61,7 +61,7 @@ namespace Neptun
 				//foreach (var a in result.Cookies)
 				//	RestWebClient.CookieContainer.Add(new Cookie(a.Name, a.Value) { Domain = a.Domain });
 				// If the response has an error...
-				if (await result.HandleErrorIfFailedAsync("Sikertelen Bejelentkezés"))
+				if (await result.HandleErrorIfFailedAsync("Sikertelen Bejelentkezés",false))
 					await ViewModelApplication.HandleSuccessfulLoginAsync(new UserProfileDetailsApiModel(cred.NeptunCode, cred.Password));
 				else ViewModelApplication.GoToPage(ApplicationPage.Login);
 				//ViewModelApplication.GoToPage(ApplicationPage.Messages);
@@ -149,8 +149,8 @@ namespace Neptun
 
 			AppendExceptionMessages(sb, e.Exception);
 			AppendExceptionStacktraces(sb, e.Exception);
-			if (!Directory.Exists(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), @"Neptun\MyAppCrashes.log")))
-				Directory.CreateDirectory(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), @"Neptun\MyAppCrashes.log"));
+			if (!Directory.Exists(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), @"Neptun")))
+				Directory.CreateDirectory(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), @"Neptun"));
 			File.AppendAllText(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), @"Neptun\MyAppCrashes.log"), sb.ToString());
 		}
 		private void AppendExceptionMessages(StringBuilder sb, Exception e)

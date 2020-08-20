@@ -33,6 +33,7 @@ namespace WpfScheduler
 		public event EventHandler<DateTime> OnScheduleDoubleClick;
 
 		internal event EventHandler<ScheduleSubject> OnEventAdded;
+
 		internal event EventHandler<ScheduleSubject> OnEventDeleted;
 		internal event EventHandler OnEventsModified;
 
@@ -202,10 +203,17 @@ namespace WpfScheduler
 		private void Scheduler_Loaded(object sender, RoutedEventArgs e)
 		{
 			if (DataContext is Neptun.EventsChanged vm)
+			{
 				vm.Changed += (ScheduleSubject a) =>
 				{
 					AddEvent(a);
 				};
+				vm.Clear += () =>
+				{
+					Events.Clear();
+					WeekScheduler.PaintAllEvents(null);
+				};
+			}
 		}
 
 		void InnerScheduler_OnScheduleDoubleClick(object sender, DateTime e)
@@ -225,7 +233,15 @@ namespace WpfScheduler
 
 			if (OnEventAdded != null) OnEventAdded(this, e);
 		}
-
+		public void ClearAllEvents()
+		{
+			for (int i = 0; i < Events.Count;++i)
+			{
+				var e = Events[i];
+				Events.Remove(e);
+				if (OnEventDeleted != null) OnEventDeleted(this, e);
+			}
+		}
 		public void DeleteEvent(Guid id)
 		{
 			ScheduleSubject e = Events.SingleOrDefault(ev => ev.Id.Equals(id));

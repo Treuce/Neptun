@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Windows.Media;
 
 namespace WpfScheduler
 {
@@ -11,6 +12,7 @@ namespace WpfScheduler
         public DateTime End { get; set; }
         public bool AllDay { get; set; }
 
+        public string ColorBrush { get; set; }
         public ScheduleSubject()
         {
             Id = Guid.NewGuid();

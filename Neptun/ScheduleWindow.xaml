@@ -17,9 +17,9 @@
 		MinHeight="{Binding WindowMinimumHeight}"
 		MaxHeight="1080"
 		Title="{Binding Title}">
-	
+
 	<!--#region Window stuff -->
-	
+
 	<Window.Resources>
 		<Style TargetType="{x:Type local:ScheduleWindow}">
 			<Setter Property="Template">
@@ -123,185 +123,174 @@
 	</WindowChrome.WindowChrome>
 	<!--#endregion-->
 	<ScrollViewer Padding="10,0,10,0">
-		
-	<Border x:Name="MainContent"
-			Background="Transparent"
-			Margin="5"
-			BorderThickness="2"
-			CornerRadius="5"
-			BorderBrush="{StaticResource BackgroundDarkBrush}">
-		<Grid>
-			<Grid.RowDefinitions>
-				<RowDefinition Height="0.25*" />
-				<RowDefinition Height="0.25*" />
-				<RowDefinition Height="0.25*" />
-				<RowDefinition Height="0.25*" />
-				<RowDefinition Height="0.25*" />
-			</Grid.RowDefinitions>
 
-			<Border Grid.Row="0"
-					Margin="5,20,5,20"
-					CornerRadius="5"
-					BorderThickness="2"
-					BorderBrush="{StaticResource BackgroundDarkBrush}"
-					Background="Transparent">
-				<Grid Margin="0,0,0,0"
-					  Background="Transparent">
-					<Grid.ColumnDefinitions>
-						<ColumnDefinition Width="0.25*" />
-						<ColumnDefinition Width="0.25*" />
-						<ColumnDefinition Width="0.25*" />
-						<ColumnDefinition Width="0.25*" />
-						<ColumnDefinition Width="0.25*" />
-					</Grid.ColumnDefinitions>
-					<TextBox Padding="5"
-							 VerticalAlignment="Center"
-							 HorizontalAlignment="Center"
-							 BorderThickness="0"
-							 FontFamily="{StaticResource LatoBold}"
-							 FontSize="{StaticResource FontSizeSmall}"
-							 Text="Tárgynév"
-							 Background="Transparent" />
-					<TextBox Grid.Column="1"
-							 Padding="5"
-							 VerticalAlignment="Center"
-							 HorizontalAlignment="Center"
-							 BorderThickness="0"
-							 FontFamily="{StaticResource LatoBold}"
-							 FontSize="{StaticResource FontSizeSmall}"
-							 Text="Tárgykód"
-							 Background="Transparent" />
-					<TextBox Grid.Column="2"
-							 VerticalAlignment="Center"
-							 HorizontalAlignment="Center"
-							 BorderThickness="0"
-							 FontFamily="{StaticResource LatoBold}"
-							 FontSize="{StaticResource FontSizeSmall}"
-							 Text="Tanár"
-							 Background="Transparent" />
-					<TextBox Grid.Column="3"
-							 VerticalAlignment="Center"
-							 HorizontalAlignment="Center"
-							 BorderThickness="0"
-							 FontFamily="{StaticResource LatoBold}"
-							 FontSize="{StaticResource FontSizeSmall}"
-							 Text="Órarend"
-							 Background="Transparent" />
-					<TextBox Grid.Column="4"
-							 VerticalAlignment="Center"
-							 HorizontalAlignment="Center"
-							 BorderThickness="0"
-							 FontFamily="{StaticResource LatoBold}"
-							 FontSize="{StaticResource FontSizeSmall}"
-							 Text="Terem"
-							 Background="Transparent" />
-				</Grid>
-			</Border>
-			<ListView ScrollViewer.CanContentScroll="False"
-					  ScrollViewer.VerticalScrollBarVisibility="Auto"
-					  Margin="5,0,5,20"
-					  VerticalContentAlignment="Top"
-					  HorizontalContentAlignment="Left"
-					  HorizontalAlignment="Stretch"
-					  Padding="0,0,0,0"
-					  ScrollViewer.HorizontalScrollBarVisibility="Disabled"
-					  Grid.Row="1"
-					  Background="Transparent"
-					  
-					  BorderThickness="2"
-					  ItemsSource="{Binding Subjects}"
-					  Template="{DynamicResource ListBoxControlTemplate1}">
-				<ListView.Resources>
-					<Style TargetType="{x:Type Border}">
-						<Setter Property="CornerRadius"
-								Value="7" />
-						<Setter Property="BorderThickness"
-								Value="10" />
-					</Style>
+		<Border x:Name="MainContent"
+				Background="Transparent"
+				Margin="5"
+				BorderThickness="2"
+				CornerRadius="5"
+				BorderBrush="{StaticResource BackgroundDarkBrush}">
+			<Grid>
+				<Grid.RowDefinitions>
+					<RowDefinition Height="0.25*" />
+					<RowDefinition Height="0.25*" />
+					<RowDefinition Height="0.25*" />
+					<RowDefinition Height="0.25*" />
+					<RowDefinition Height="0.25*" />
+				</Grid.RowDefinitions>
 
-				</ListView.Resources>
-				<ListView.BorderBrush>
-					<StaticResource ResourceKey="BackgroundDarkBrush" />
-				</ListView.BorderBrush>
-				<ListView.ItemTemplate>
-					<DataTemplate>
-						<Grid Margin="0">
-							<Grid.ColumnDefinitions>
-								<ColumnDefinition Width="0.3*" />
-								<ColumnDefinition Width="0.3*" />
-								<ColumnDefinition Width="0.3*" />
-								<ColumnDefinition Width="0.1*" />
-							</Grid.ColumnDefinitions>
-							<Grid.RowDefinitions>
-								<RowDefinition Height="Auto" />
-								<RowDefinition Height="Auto" />
-							</Grid.RowDefinitions>
-							<ContentControl PreviewMouseDoubleClick="ContentControl_PreviewMouseDoubleClick">
-								<TextBlock Grid.Column="0"
-										   ToolTip="{Binding ToolTip}"
-										   TextWrapping="WrapWithOverflow"
-										   Text="{Binding Name}"
-										   Foreground="{StaticResource WordDarkBlueBrush}"
-										   FontFamily="{StaticResource LatoBold}"
-										   Margin="20,5,0,5"
-										   HorizontalAlignment="Left"
-										   VerticalAlignment="Center" />
-							</ContentControl>
-							<TextBox Grid.Column="1"
-									 TextWrapping="WrapWithOverflow"
-									 Text="{Binding Code}"
-									 Margin="180,0,5,0"
-									 FontSize="{StaticResource FontSizeRegular}"
-									 VerticalContentAlignment="Center"
-									 Background="Transparent"
-									 IsReadOnly="True"
-									 IsReadOnlyCaretVisible="True"
-									 BorderThickness="0"
-									 VerticalAlignment="Center"
-									 HorizontalAlignment="Stretch" />
-							<TextBlock Grid.Column="2"
-									   TextWrapping="WrapWithOverflow"
-									   Text="{Binding Credit}"
-									   VerticalAlignment="Center"
-									   FontFamily="{StaticResource LatoBold}"
-									   Margin="150,0,0,0"
-									   HorizontalAlignment="Center" />
-							<CheckBox VerticalAlignment="Center"
-									  Grid.Column="3"
-									  HorizontalAlignment="Center"
-									  HorizontalContentAlignment="Center"
-									  VerticalContentAlignment="Center"
-									  Margin="5,10,30,10"
-									  IsChecked="{Binding isSelected}"
-									  Foreground="{StaticResource ForegroundMainBrush}"
-									  FontSize="{StaticResource FontSizeXXLarge}"
-									  Background="{StaticResource BackgroundDarkBrushLighter}" />
-							<!--// Custom control here for other stuff-->
-							<local:CourseList Grid.ColumnSpan="5"
-											 Grid.Row="1"
-											 DataContext="{x:Null}"
-											 Visibility="{Binding Path=DataContext.InfoExpanded, Converter={local:BooleanToVisiblityGoneConverter}, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Grid}}, FallbackValue=Collapsed, TargetNullValue=Collapsed}"
-											 Width="{Binding ActualWidth, ElementName=BindToThisWidth2}"
-											 FontSize="10" />
-						</Grid>
-					</DataTemplate>
-				</ListView.ItemTemplate>
-			</ListView>
-			<my:Scheduler Grid.Row="2"
+				<Border Grid.Row="0"
+						Margin="5,20,5,20"
+						CornerRadius="5"
+						BorderThickness="2"
+						BorderBrush="{StaticResource BackgroundDarkBrush}"
+						Background="Transparent">
+					<Grid Margin="0,0,0,0"
+						  Background="Transparent">
+						<Grid.ColumnDefinitions>
+							<ColumnDefinition Width="0.25*" />
+							<ColumnDefinition Width="0.25*" />
+							<ColumnDefinition Width="0.25*" />
+							<ColumnDefinition Width="0.25*" />
+							<ColumnDefinition Width="0.25*" />
+						</Grid.ColumnDefinitions>
+						<TextBox Padding="5"
+								 VerticalAlignment="Center"
+								 HorizontalAlignment="Center"
+								 BorderThickness="0"
+								 FontFamily="{StaticResource LatoBold}"
+								 FontSize="{StaticResource FontSizeSmall}"
+								 Text="Tárgynév"
+								 Background="Transparent" />
+						<TextBox Grid.Column="1"
+								 Padding="5"
+								 VerticalAlignment="Center"
+								 HorizontalAlignment="Center"
+								 BorderThickness="0"
+								 FontFamily="{StaticResource LatoBold}"
+								 FontSize="{StaticResource FontSizeSmall}"
+								 Text="Tárgykód"
+								 Background="Transparent" />
+						<TextBox Grid.Column="2"
+								 VerticalAlignment="Center"
+								 HorizontalAlignment="Center"
+								 BorderThickness="0"
+								 FontFamily="{StaticResource LatoBold}"
+								 FontSize="{StaticResource FontSizeSmall}"
+								 Text=""
+								 Background="Transparent" />
+						<TextBox Grid.Column="3"
+								 VerticalAlignment="Center"
+								 HorizontalAlignment="Center"
+								 BorderThickness="0"
+								 FontFamily="{StaticResource LatoBold}"
+								 FontSize="{StaticResource FontSizeSmall}"
+								 Text=""
+								 Background="Transparent" />
+						<TextBox Grid.Column="4"
+								 VerticalAlignment="Center"
+								 HorizontalAlignment="Center"
+								 BorderThickness="0"
+								 FontFamily="{StaticResource LatoBold}"
+								 FontSize="{StaticResource FontSizeSmall}"
+								 Text=""
+								 Background="Transparent" />
+					</Grid>
+				</Border>
+				<ListView ScrollViewer.CanContentScroll="False"
+						  ScrollViewer.VerticalScrollBarVisibility="Auto"
+						  Margin="5,0,5,20"
+						  x:Name="BindthisWidth"
+						  VerticalContentAlignment="Top"
+						  HorizontalContentAlignment="Left"
 						  HorizontalAlignment="Stretch"
-						  x:Name="scheduler"
-						  Height="745"
-						  ClipToBounds="True"
-						  
-						  VerticalAlignment="Stretch"
-						  ScrollViewer.CanContentScroll="False"
-						  ScrollViewer.HorizontalScrollBarVisibility="Visible"
-						  StartJourney="8:00"
-						  EndJourney="21:00"
-						  Events="{Binding Events, UpdateSourceTrigger=PropertyChanged}"
-						  Mode="Week">
-			</my:Scheduler>
-		</Grid>
-	</Border>
+						  Padding="0,0,0,0"
+						  ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+						  Grid.Row="1"
+						  Background="Transparent"
+						  BorderThickness="2"
+						  ItemsSource="{Binding Subjects}"
+						  Template="{DynamicResource ListBoxControlTemplate1}">
+					<ListView.Resources>
+						<Style TargetType="{x:Type Border}">
+							<Setter Property="CornerRadius"
+									Value="7" />
+							<Setter Property="BorderThickness"
+									Value="10" />
+						</Style>
+
+					</ListView.Resources>
+					<ListView.BorderBrush>
+						<StaticResource ResourceKey="BackgroundDarkBrush" />
+					</ListView.BorderBrush>
+					<ListView.ItemTemplate>
+						<DataTemplate>
+							<Grid Width="{Binding ActualWidth, ElementName=BindthisWidth}" Margin="0">
+								<Grid.ColumnDefinitions>
+									<ColumnDefinition Width="0.2*" />
+									<ColumnDefinition Width="0.2*" />
+									<ColumnDefinition Width="0.2*" />
+									<ColumnDefinition Width="0.2*" />
+									<ColumnDefinition Width="0.15*" />
+									<ColumnDefinition Width="0.05*" />
+								</Grid.ColumnDefinitions>
+								<Grid.RowDefinitions>
+									<RowDefinition Height="Auto" />
+									<RowDefinition Height="Auto" />
+								</Grid.RowDefinitions>
+								<ContentControl PreviewMouseDoubleClick="ContentControl_PreviewMouseDoubleClick">
+									<TextBlock Grid.Column="0"
+											   ToolTip="{Binding ToolTip}"
+											   TextWrapping="WrapWithOverflow"
+											   Text="{Binding Name}"
+											   Foreground="{StaticResource WordDarkBlueBrush}"
+											   FontFamily="{StaticResource LatoBold}"
+											   Margin="20,5,0,5"
+											   HorizontalAlignment="Left"
+											   VerticalAlignment="Center" />
+								</ContentControl>
+								<TextBox Grid.Column="1"
+										 TextWrapping="Wrap"
+										 Text="{Binding Code}"
+										 FontSize="{StaticResource FontSizeRegular}"
+										 BorderThickness="0"
+										 FontFamily="{StaticResource LatoBold}"
+										 HorizontalAlignment="Left"
+										 Margin="70,0,0,0"
+										 IsReadOnly="True"
+										 IsReadOnlyCaretVisible="True"
+										 Background="Transparent"
+										 Padding="0"
+										 VerticalContentAlignment="Center"
+										 HorizontalContentAlignment="Left"
+										 VerticalAlignment="Center" />
+								
+							<!--// Custom control here for other stuff-->
+
+									<local:CourseList Grid.ColumnSpan="6"
+												  Grid.Row="1"
+												  Visibility="{Binding Path=DataContext.InfoExpanded, Converter={local:BooleanToVisiblityGoneConverter}, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Grid}}, FallbackValue=Collapsed, TargetNullValue=Collapsed}"
+												  DataContext="{x:Null}"
+												  Width="{Binding ActualWidth, ElementName=BindthisWidth}"
+												  FontSize="10" />
+							</Grid>
+						</DataTemplate>
+					</ListView.ItemTemplate>
+				</ListView>
+				<my:Scheduler Grid.Row="2"
+							  HorizontalAlignment="Stretch"
+							  x:Name="scheduler"
+							  Height="745"
+							  ClipToBounds="True"
+							  VerticalAlignment="Stretch"
+							  ScrollViewer.CanContentScroll="False"
+							  ScrollViewer.HorizontalScrollBarVisibility="Visible"
+							  StartJourney="8:00"
+							  EndJourney="21:00"
+							  Events="{Binding Events, UpdateSourceTrigger=PropertyChanged}"
+							  Mode="Week">
+				</my:Scheduler>
+			</Grid>
+		</Border>
 	</ScrollViewer>
 </Window>

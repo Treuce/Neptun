@@ -1,4 +1,5 @@
-﻿using Neptun.Core;
+﻿using Dna;
+using Neptun.Core;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -19,29 +20,29 @@ using System.Windows.Shapes;
 
 namespace Neptun
 {
-    /// <summary>
-    /// Interaction logic for MainPage.xaml
-    /// </summary>
-    public partial class TFPage : BasePage<TFViewModel>
-    {
-        #region Constructor
+	/// <summary>
+	/// Interaction logic for MainPage.xaml
+	/// </summary>
+	public partial class TFPage : BasePage<TFViewModel>
+	{
+		#region Constructor
 
-        /// <summary>
-        /// Default constructor
-        /// </summary>
-        public TFPage() : base()
-        {
-            InitializeComponent();
-        }
+		/// <summary>
+		/// Default constructor
+		/// </summary>
+		public TFPage() : base()
+		{
+			InitializeComponent();
+		}
 
-        /// <summary>
-        /// Constructor with specific view model
-        /// </summary>
-        /// <param name="specificViewModel">The specific view model to use for this page</param>
-        public TFPage(TFViewModel specificViewModel) : base(specificViewModel)
-        {
-            InitializeComponent();
-        }
+		/// <summary>
+		/// Constructor with specific view model
+		/// </summary>
+		/// <param name="specificViewModel">The specific view model to use for this page</param>
+		public TFPage(TFViewModel specificViewModel) : base(specificViewModel)
+		{
+			InitializeComponent();
+		}
 
 		#endregion
 
@@ -61,13 +62,21 @@ namespace Neptun
 
 		private void ContentControl_PreviewMouseRightButtonDown(object sender, MouseButtonEventArgs e)
 		{
-            ((sender as ContentControl).DataContext as SubjectViewModel).isPopUpOpen ^= true;
-        }
+			((sender as ContentControl).DataContext as SubjectViewModel).isPopUpOpen ^= true;
+		}
 
 		private async void ContentControl_LostMouseCapture(object sender, MouseEventArgs e)
 		{
-            await Task.Delay(3000);
-            ((sender as ContentControl).DataContext as SubjectViewModel).isPopUpOpen = false;
-        }
+			e.Handled = true;
+			try
+			{
+				await Task.Delay(3000);
+				((sender as ContentControl).DataContext as SubjectViewModel).isPopUpOpen = false;
+			}
+			catch (Exception ex)
+			{
+				FrameworkDI.Logger.LogDebugSource("Control gone probs", exception: ex);
+			}
+		}
 	}
 }

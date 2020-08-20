@@ -38,11 +38,18 @@ namespace Neptun
 					var owner = UIHelper.FindVisualParent<ListViewItem>(sender as Grid);
 					var asd = ((Application.Current.MainWindow as MainWindow).MainWindowPageHost.NewPage.Content as TFPage).DataContext as TFViewModel;
 					var data = owner.DataContext as SubjectViewModel;
+					data.Expanded.Invoke();
 					(sender as Grid).DataContext = new TakeSubjectViewModel(data.id, data, asd);
+					
 				}
 			}
 			else
+			{
+				var owner = UIHelper.FindVisualParent<ListViewItem>(sender as Grid);
+				var data = owner.DataContext as SubjectViewModel;
+				data.Collapsed.Invoke();
 				(sender as Grid).DataContext = null;
+			}
 		}
 
 		private void RadioButton_Unchecked(object sender, RoutedEventArgs e)

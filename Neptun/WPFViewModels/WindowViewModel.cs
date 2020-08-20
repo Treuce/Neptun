@@ -190,6 +190,17 @@ namespace Neptun
 			CloseCommand = new RelayCommand(() =>
 			{
 				LogOutCommand.Execute(null);
+				foreach (var a in Application.Current.Windows)
+				{
+					try
+					{
+						(a as Window).Close();
+					}
+					catch (Exception e)
+					{
+
+					}
+				}
 				Application.Current.Shutdown();
 			});
 			MenuCommand = new RelayCommand(() => SystemCommands.ShowSystemMenu(mWindow, GetMousePosition()));

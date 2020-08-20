@@ -19,24 +19,24 @@ namespace Neptun
 		/// <returns></returns>
 		public Task ShowMessage(MessageBoxDialogViewModel viewModel)
 		{
-			// Create a task completion source
 			var tcs = new TaskCompletionSource<bool>();
+
+			// Create a task completion source
 
 			// Run on UI thread
 			Application.Current.Dispatcher.Invoke(async () =>
 			{
 				try
 				{
-					// Show the dialog box
-					await new DialogMessageBox().ShowDialog(viewModel);
+						// Show the dialog box
+						await new DialogMessageBox().ShowDialog(viewModel);
 				}
 				finally
 				{
-					// Flag we are done
-					tcs.SetResult(true);
+						// Flag we are done
+						tcs.SetResult(true);
 				}
 			});
-
 			// Return the task once complete
 			return tcs.Task;
 		}
@@ -69,7 +69,7 @@ namespace Neptun
 			var tcs = new TaskCompletionSource<bool>();
 
 			// Run on UI thread
-			Application.Current.Dispatcher.Invoke(async () =>
+			Application.Current.Dispatcher.Invoke(() =>
 			{
 				try
 				{

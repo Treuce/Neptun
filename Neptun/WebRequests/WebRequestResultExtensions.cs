@@ -22,8 +22,8 @@ namespace Neptun
 		/// <param name="response">The response to check</param>
 		/// <param name="title">The title of the error dialog if there is an error</param>
 		/// <returns>Returns true if there was an error, or false if all was OK</returns>
-	
-		public static async Task<bool> HandleErrorIfFailedAsync(this IRestResponse response, string title)
+
+		public static async Task<bool> HandleErrorIfFailedAsync(this IRestResponse response, string title, bool showdialog = true)
 		{
 			// If there was no response, bad data, or a response with a error message...
 			if (response != null)
@@ -48,12 +48,12 @@ namespace Neptun
 					{
 						try
 						{
-
-						await UI.ShowMessage(new MessageBoxDialogViewModel
-						{
-							Title = "Figyelmeztetés",
-							Message = b.warningmessage
-						});
+							if (showdialog)
+								await UI.ShowMessage(new MessageBoxDialogViewModel
+								{
+									Title = "Figyelmeztetés",
+									Message = b.warningmessage
+								});
 						}
 						catch (Exception e)
 						{
@@ -65,15 +65,16 @@ namespace Neptun
 				}
 				else
 				{
-					// Display error
-					await UI.ShowMessage(new MessageBoxDialogViewModel
-					{
-						// TODO: Localize strings
-						Title = title,
-						Message = b.errormessage
-					});
+					if (showdialog)
+						// Display error
+						await UI.ShowMessage(new MessageBoxDialogViewModel
+						{
+							// TODO: Localize strings
+							Title = title,
+							Message = b.errormessage
+						});
 
-					return false; 
+					return false;
 				}
 			}
 

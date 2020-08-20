@@ -72,6 +72,12 @@ namespace Neptun
 		public string ToolTip { get; set; }
 
 		public bool isPopUpOpen { get; set; }
+
+		public Action Expanded { get; set; } = () => { };
+		public Action HasCourses { get; set; } = () => { };
+		public Action Collapsed { get; set; } = () => { };
+
+		public bool TFView { get; set; } = true;
 	}
 	
 }
