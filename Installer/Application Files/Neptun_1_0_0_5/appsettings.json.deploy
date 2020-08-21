@@ -1,0 +1,16 @@
+﻿{
+    "Logging": {
+        "IncludeScopes": false,
+        "LogLevel": {
+            "Default": "Warning"
+        }
+    },
+
+    "ConnectionStrings": {
+        "ClientDataStoreConnection": "Data Source=Neptun.db"
+    },
+
+    "NeptunServer": {
+        "HostUrl": "https://hallgato.neptun.elte.hu/"
+    }
+}
