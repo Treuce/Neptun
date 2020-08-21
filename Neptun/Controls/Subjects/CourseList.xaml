@@ -145,10 +145,12 @@
 						Grid.Row="2">
 				<Button Padding="8"
 						Content="Leadás"
+						IsEnabled="False"
 						Margin="30,0,0,0"
 						Command="{Binding ForgetSubject}" />
 				<Button Padding="8"
 						Margin="30,0,0,0"
+						IsEnabled="False"
 						Content="Mentés"
 						Command="{Binding TakeSubject}" />
 			</StackPanel>

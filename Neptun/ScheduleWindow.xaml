@@ -338,7 +338,28 @@
 							  EndJourney="21:00"
 							  Mode="Week">
 				</my:Scheduler>
-				<my:Scheduler Grid.Row="3"
+				<StackPanel Grid.Row="3"
+							HorizontalAlignment="Left"
+							Margin="30,0,0,0"
+							VerticalAlignment="Center">
+					<TextBlock
+						   HorizontalAlignment="Left"
+						   Margin="30,0,0,0"
+						   FontFamily="{StaticResource LatoBold}"
+						   FontSize="{StaticResource FontSizeSmall}"
+							 FontWeight="Black"
+						   VerticalAlignment="Center"
+						   Text="Added ones counter: " />
+					<TextBlock HorizontalAlignment="Left"
+							   Margin="30,0,0,0"
+							   FontFamily="{StaticResource LatoBold}"
+							   FontSize="{StaticResource FontSizeSmall}"
+							   FontWeight="Black"
+							   VerticalAlignment="Center"
+							   Text="{Binding PlanCounter}" />
+				</StackPanel>
+
+				<my:Scheduler Grid.Row="4"
 							  HorizontalAlignment="Stretch"
 							  x:Name="plan"
 							  Height="700"

@@ -609,6 +609,7 @@ namespace Neptun
 
 			AddToSchedulePlanner = new RelayCommand<SubjectViewModel>((SubjectViewModel vm) =>
 			{
+				vm.isPopUpOpen = false;
 				if (!ScheduleVM.Subjects.Any(s => s.Code == vm.Code))
 				{
 					var othervm = new SubjectViewModel(vm);

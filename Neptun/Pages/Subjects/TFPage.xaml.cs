@@ -67,10 +67,9 @@ namespace Neptun
 
 		private async void ContentControl_LostMouseCapture(object sender, MouseEventArgs e)
 		{
-			e.Handled = true;
 			try
 			{
-				await Task.Delay(3000);
+				await Task.Delay(2000);
 				((sender as ContentControl).DataContext as SubjectViewModel).isPopUpOpen = false;
 			}
 			catch (Exception ex)

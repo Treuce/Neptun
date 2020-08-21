@@ -111,7 +111,7 @@ namespace Neptun
 			for (int i = 0; i < currentscheduler.Events.Count; ++i)
 			{
 				var b = currentscheduler.Events[i];
-				if (b.Description == subject.Code)
+				if (b.Code == subject.Code)
 				{
 					currentscheduler.Events.Remove(b);
 					--i;
@@ -137,12 +137,14 @@ namespace Neptun
 
 		private void scheduler_OnEventDoubleClick(object sender, WpfScheduler.ScheduleSubject e)
 		{
+			++DI.ScheduleVM.PlanCounter;
 			var eventcontrol = sender as WpfScheduler.EventUserControl;
 			plan.AddEvent(eventcontrol.Event);
 		}
 
 		private void plan_OnEventDoubleClick(object sender, ScheduleSubject e)
 		{
+			--DI.ScheduleVM.PlanCounter;
 			var eventcontrol = sender as WpfScheduler.EventUserControl;
 			plan.DeleteEvent(eventcontrol.Event.Id);
 		}

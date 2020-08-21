@@ -90,7 +90,8 @@ namespace Neptun
 										End = enddate,
 										AllDay = false,
 										IsEnabled = course.isEnabled,
-										Subject = $"{subject.Name} ({subject.Code}) {Environment.NewLine} #{course.CourseCode}{Environment.NewLine}{course.Teacher}{Environment.NewLine}{course.Note}",
+										Subject = $"{subject.Name} [{course.Type}] ({subject.Code}) {Environment.NewLine} #{course.CourseCode}{Environment.NewLine}{course.Teacher}{Environment.NewLine}{course.Note}",
+										Code = subject.Code,
 										Description = $"{course.ToolTip}"
 									}, ShowDisabledCourses);
 								});
@@ -120,6 +121,7 @@ namespace Neptun
 			});
 			RemoveThis = new RelayCommand<SubjectViewModel>((SubjectViewModel vm) =>
 			{
+				vm.InfoExpanded = false;
 				DeleteItem.Invoke(vm);
 			});
 		}
@@ -133,6 +135,8 @@ namespace Neptun
 		public bool ShowDisabledCourses { get; set; }
 
 		public string SubjectCounterDisplay { get; set; } = "Tárgyak száma: 0";
+
+		public int PlanCounter { get; set; } = 0;
 
 		#endregion
 
