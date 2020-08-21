@@ -1,19 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using Neptun;
+using System;
 using System.Collections.ObjectModel;
-using System.Diagnostics;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Dna;
+using static Dna.FrameworkDI;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace WpfScheduler
 {
@@ -190,7 +182,7 @@ namespace WpfScheduler
 			Mode = WpfScheduler.Mode.Week;
 			Events = new ObservableCollection<ScheduleSubject>();
 			SelectedDate = DateTime.Now;
-			Loaded += Scheduler_Loaded;
+			//Loaded += Scheduler_Loaded;
 			WeekScheduler.OnEventDoubleClick += InnerScheduler_OnEventDoubleClick;
 			//DayScheduler.OnEventDoubleClick += InnerScheduler_OnEventDoubleClick;
 			//MonthScheduler.OnEventDoubleClick += InnerScheduler_OnEventDoubleClick;
@@ -200,21 +192,7 @@ namespace WpfScheduler
 			//MonthScheduler.OnScheduleDoubleClick += InnerScheduler_OnScheduleDoubleClick;
 		}
 
-		private void Scheduler_Loaded(object sender, RoutedEventArgs e)
-		{
-			if (DataContext is Neptun.EventsChanged vm)
-			{
-				vm.Changed += (ScheduleSubject a) =>
-				{
-					AddEvent(a);
-				};
-				vm.Clear += () =>
-				{
-					Events.Clear();
-					WeekScheduler.PaintAllEvents(null);
-				};
-			}
-		}
+		
 
 		void InnerScheduler_OnScheduleDoubleClick(object sender, DateTime e)
 		{
@@ -229,13 +207,16 @@ namespace WpfScheduler
 		public void AddEvent(ScheduleSubject e)
 		{
 			if (e.Start > e.End) throw new ArgumentException("End date is before Start date");
-			Events.Add(e);
+			if (!Events.Any(s => s.Subject == e.Subject && e.End == s.End && s.Start == e.Start))
+			{
+				Events.Add(e);
 
-			if (OnEventAdded != null) OnEventAdded(this, e);
+				if (OnEventAdded != null) OnEventAdded(this, e);
+			}
 		}
 		public void ClearAllEvents()
 		{
-			for (int i = 0; i < Events.Count;++i)
+			for (int i = 0; i < Events.Count; ++i)
 			{
 				var e = Events[i];
 				Events.Remove(e);

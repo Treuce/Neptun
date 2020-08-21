@@ -6,6 +6,7 @@
 		xmlns:local="clr-namespace:Neptun"
 		xmlns:planner="http://mindfusion.eu/scheduling/wpf"
 		xmlns:core="clr-namespace:Neptun.Core;assembly=Neptun.Core"
+		xmlns:system="clr-namespace:System;assembly=mscorlib"
 		xmlns:my="clr-namespace:WpfScheduler"
 		mc:Ignorable="d"
 		WindowStyle="None"
@@ -126,7 +127,7 @@
 
 		<Border x:Name="MainContent"
 				Background="Transparent"
-				Margin="5"
+				Margin="10,5,10,5"
 				BorderThickness="2"
 				CornerRadius="5"
 				BorderBrush="{StaticResource BackgroundDarkBrush}">
@@ -153,6 +154,7 @@
 							<ColumnDefinition Width="0.25*" />
 							<ColumnDefinition Width="0.25*" />
 							<ColumnDefinition Width="0.25*" />
+							<ColumnDefinition Width="0.1*" />
 						</Grid.ColumnDefinitions>
 						<TextBox Padding="5"
 								 VerticalAlignment="Center"
@@ -177,7 +179,7 @@
 								 BorderThickness="0"
 								 FontFamily="{StaticResource LatoBold}"
 								 FontSize="{StaticResource FontSizeSmall}"
-								 Text=""
+								 Text="{Binding SubjectCounterDisplay}"
 								 Background="Transparent" />
 						<TextBox Grid.Column="3"
 								 VerticalAlignment="Center"
@@ -195,6 +197,41 @@
 								 FontSize="{StaticResource FontSizeSmall}"
 								 Text=""
 								 Background="Transparent" />
+						<StackPanel Margin="80,0,0,0" Orientation="Horizontal" Grid.Column="4">
+							
+						<Button Content="Clear"
+								FontSize="{StaticResource FontSizeSmall}"
+								Padding="10,5,10,5"
+								VerticalAlignment="Center"
+								Margin="10,0,10,0"
+								Command="{Binding ClearList}">
+							<Button.CommandParameter>
+								<system:Boolean>True</system:Boolean>
+							</Button.CommandParameter>
+						</Button>
+						<Button Content="Clear scheduler"
+								FontSize="{StaticResource FontSizeSmall}"
+									Padding="10,5,10,5"
+									VerticalAlignment="Center"
+									Margin="10,0,10,0"
+									Command="{Binding ClearList}">
+							<Button.CommandParameter>
+								<system:Boolean>False</system:Boolean>
+							</Button.CommandParameter>
+						</Button>
+						</StackPanel>
+						<CheckBox Content="Letiltott kurzusok mutatása"
+								  VerticalAlignment="Center"
+								  Grid.Column="3"
+								  VerticalContentAlignment="Center"
+								  Width="Auto"
+								  HorizontalAlignment="Center"
+								  FontSize="{StaticResource FontSizeSmall}"
+								  Padding="10,0,0,0"
+								  Checked="CheckBox_Checked"
+								  Unchecked="CheckBox_Checked"
+								  ToolTip="Újra kell tölteni a kurzusokat. Just sayin"
+								  IsChecked="{Binding ShowDisabledCourses}" />
 					</Grid>
 				</Border>
 				<ListView ScrollViewer.CanContentScroll="False"
@@ -225,7 +262,8 @@
 					</ListView.BorderBrush>
 					<ListView.ItemTemplate>
 						<DataTemplate>
-							<Grid Width="{Binding ActualWidth, ElementName=BindthisWidth}" Margin="0">
+							<Grid Width="{Binding ActualWidth, ElementName=BindthisWidth}"
+								  Margin="0">
 								<Grid.ColumnDefinitions>
 									<ColumnDefinition Width="0.2*" />
 									<ColumnDefinition Width="0.2*" />
@@ -264,10 +302,19 @@
 										 VerticalContentAlignment="Center"
 										 HorizontalContentAlignment="Left"
 										 VerticalAlignment="Center" />
-								
-							<!--// Custom control here for other stuff-->
+								<Button Content="Remove"
+										Padding="10,0,10,0"
+										Margin="0,0,0,0"
+										HorizontalAlignment="Center"
+										Command="{Binding ScheduleViewModel.RemoveThis,  Source={x:Static local:ViewModelLocator.Instance}}"
+										CommandParameter="{Binding}"
+										HorizontalContentAlignment="Center"
+										FontSize="{StaticResource FontSizeSmall}"
+										Grid.Column="4" />
 
-									<local:CourseList Grid.ColumnSpan="6"
+								<!--// Custom control here for other stuff-->
+
+								<local:CourseList Grid.ColumnSpan="6"
 												  Grid.Row="1"
 												  Visibility="{Binding Path=DataContext.InfoExpanded, Converter={local:BooleanToVisiblityGoneConverter}, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Grid}}, FallbackValue=Collapsed, TargetNullValue=Collapsed}"
 												  DataContext="{x:Null}"
@@ -280,14 +327,29 @@
 				<my:Scheduler Grid.Row="2"
 							  HorizontalAlignment="Stretch"
 							  x:Name="scheduler"
-							  Height="745"
+							  Height="700"
 							  ClipToBounds="True"
+							  Margin="30,0,30,50"
 							  VerticalAlignment="Stretch"
+							  OnEventDoubleClick="scheduler_OnEventDoubleClick"
 							  ScrollViewer.CanContentScroll="False"
 							  ScrollViewer.HorizontalScrollBarVisibility="Visible"
 							  StartJourney="8:00"
 							  EndJourney="21:00"
-							  Events="{Binding Events, UpdateSourceTrigger=PropertyChanged}"
+							  Mode="Week">
+				</my:Scheduler>
+				<my:Scheduler Grid.Row="3"
+							  HorizontalAlignment="Stretch"
+							  x:Name="plan"
+							  Height="700"
+							  ClipToBounds="True"
+							  Margin="30,50,30,30"
+							  VerticalAlignment="Stretch"
+							  ScrollViewer.CanContentScroll="False"
+							  OnEventDoubleClick="plan_OnEventDoubleClick"
+							  ScrollViewer.HorizontalScrollBarVisibility="Visible"
+							  StartJourney="8:00"
+							  EndJourney="21:00"
 							  Mode="Week">
 				</my:Scheduler>
 			</Grid>

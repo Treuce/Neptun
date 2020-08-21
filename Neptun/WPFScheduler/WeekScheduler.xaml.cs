@@ -24,6 +24,7 @@ namespace WpfScheduler
 		private Scheduler _scheduler;
 
 		internal event EventHandler<ScheduleSubject> OnEventDoubleClick;
+
 		internal event EventHandler<DateTime> OnScheduleDoubleClick;
 
 		#region FirstDay
@@ -187,7 +188,6 @@ namespace WpfScheduler
 						var wEvent = new EventUserControl(e, true);
 						wEvent.Width = width;
 						var asd = e.End.Subtract(e.Start).TotalHours;
-						
 						wEvent.Height = e.End.Subtract(e.Start).TotalHours * oneHourHeight;
 						wEvent.Margin = new Thickness(marginLeft, marginTop, 0, 0);
 						wEvent.MouseDoubleClick += ((object sender, MouseButtonEventArgs ea) =>

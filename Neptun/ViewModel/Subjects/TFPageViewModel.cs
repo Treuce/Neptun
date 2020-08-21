@@ -190,7 +190,7 @@ namespace Neptun
 									await UI.ShowMessage(new MessageBoxDialogViewModel()
 									{
 										Title = "Tárgyak listázása",
-										Message = $"Nincs találat : {subjectcode}",
+										Message = "Nincs találat.",
 										OkText = "Bigsad"
 									});
 									break;
@@ -212,7 +212,7 @@ namespace Neptun
 								var completed = Boolean.Parse(a.ChildNodes[11].GetAttributeValue("checked", ""));
 								var taken = Boolean.Parse(a.ChildNodes[12].GetAttributeValue("checked", ""));
 								//Debugger.Break();
-								if (!code.Contains("18bAN2G"))
+								//if (!code.Contains("18bAN2G"))
 									Application.Current.Dispatcher.Invoke(() =>
 									Subjects.Add(new SubjectViewModel()
 									{
@@ -609,10 +609,13 @@ namespace Neptun
 
 			AddToSchedulePlanner = new RelayCommand<SubjectViewModel>((SubjectViewModel vm) =>
 			{
-				var othervm = new SubjectViewModel(vm);
-				othervm.TFView = false;
-				ScheduleVM.Subjects.Add(othervm);
-				vm.isPopUpOpen = false;
+				if (!ScheduleVM.Subjects.Any(s => s.Code == vm.Code))
+				{
+					var othervm = new SubjectViewModel(vm);
+					othervm.TFView = false;
+					ScheduleVM.Subjects.Add(othervm);
+					vm.isPopUpOpen = false;
+				}
 			});
 
 			#region Page Navigation

@@ -19,7 +19,10 @@ namespace Neptun
         /// The application view model
         /// </summary>
         public ApplicationViewModel ApplicationViewModel => ViewModelApplication;
-
+        /// <summary>
+        /// The view model for the schedule planner
+        /// </summary>
+        public ScheduleViewModel ScheduleViewModel => ScheduleVM;
         #endregion
     }
 }

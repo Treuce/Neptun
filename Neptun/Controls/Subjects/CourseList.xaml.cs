@@ -47,7 +47,7 @@ namespace Neptun
 			{
 				var owner = UIHelper.FindVisualParent<ListViewItem>(sender as Grid);
 				var data = owner.DataContext as SubjectViewModel;
-				data.Collapsed.Invoke();
+				//data.Collapsed.Invoke();
 				(sender as Grid).DataContext = null;
 			}
 		}

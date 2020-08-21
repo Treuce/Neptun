@@ -12,6 +12,7 @@ namespace WpfScheduler
         public DateTime End { get; set; }
         public bool AllDay { get; set; }
 
+        public bool IsEnabled { get; set; }
         public string ColorBrush { get; set; }
         public ScheduleSubject()
         {

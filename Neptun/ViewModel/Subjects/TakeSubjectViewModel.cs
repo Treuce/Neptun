@@ -1220,7 +1220,8 @@ namespace Neptun
 										course.Schedule += b.Item2 + Environment.NewLine;
 										course.Teacher = b.Item3;
 									}
-									course.Schedule = course.Schedule.Remove(course.Schedule.Length - Environment.NewLine.Length -1);
+									//course.Schedule = course.Schedule.Remove(course.Schedule.Length - Environment.NewLine.Length -1);
+									course.Schedule = course.Schedule.TrimEnd(Environment.NewLine.ToCharArray());
 								}
 							}
 							catch (Exception e)
@@ -1231,7 +1232,7 @@ namespace Neptun
 					}
 					catch (Exception e)
 					{
-						Logger.LogErrorSource(e.Message);
+						Logger.LogErrorSource(e.Message + Environment.NewLine + e.StackTrace);
 						Debugger.Break();
 					}
 				});

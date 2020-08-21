@@ -110,7 +110,6 @@
 							</GridViewColumn.CellTemplate>
 						</GridViewColumn>
 						<GridViewColumn Header="Órarend infó"
-										ctrl:RangeColumn.MaxWidth="100"
 										ctrl:RangeColumn.MinWidth="100">
 							<GridViewColumn.CellTemplate>
 								<DataTemplate>

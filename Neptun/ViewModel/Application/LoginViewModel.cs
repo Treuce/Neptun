@@ -79,7 +79,7 @@ namespace Neptun
 							}
 							catch (Exception e)
 							{
-								Debugger.Break();
+								//Debugger.Break();
 							}
 						});
 					}

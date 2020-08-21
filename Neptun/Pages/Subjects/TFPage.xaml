@@ -76,6 +76,8 @@
 						 Padding="5,2,0,2"
 						 FontSize="{StaticResource FontSizeSmaller}"
 						 Background="Transparent"
+						 AcceptsReturn="False"
+						 AcceptsTab="False"
 						 BorderBrush="{StaticResource BackgroundDarkBrush_2}"
 						 Tag="Tárgynév"
 						 Text="{Binding SubjectName, UpdateSourceTrigger=PropertyChanged}">
@@ -89,6 +91,8 @@
 						 FontSize="{StaticResource FontSizeSmaller}"
 						 Tag="Tárgykód"
 						 Background="Transparent"
+						 AcceptsReturn="False"
+						 AcceptsTab="False"
 						 BorderBrush="{StaticResource BackgroundDarkBrush_2}"
 						 Text="{Binding SubjectCode, UpdateSourceTrigger=PropertyChanged}">
 					<TextBox.ToolTip>
@@ -103,6 +107,8 @@
 						 Padding="5,2,0,2"
 						 FontSize="{StaticResource FontSizeSmaller}"
 						 Tag="Oktató"
+						 AcceptsReturn="False"
+						 AcceptsTab="False"
 						 Background="Transparent"
 						 BorderBrush="{StaticResource BackgroundDarkBrush_2}"
 						 Text="{Binding Teacher, UpdateSourceTrigger=PropertyChanged}" />
@@ -115,6 +121,8 @@
 						 FontSize="{StaticResource FontSizeSmaller}"
 						 Tag="Kurzuskód"
 						 Background="Transparent"
+						 AcceptsReturn="False"
+						 AcceptsTab="False"
 						 BorderBrush="{StaticResource BackgroundDarkBrush_2}"
 						 Text="{Binding CourseCode, UpdateSourceTrigger=PropertyChanged}" />
 				<Label Grid.Row="0"

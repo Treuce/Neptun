@@ -30,9 +30,10 @@ namespace WpfScheduler
             this.VerticalAlignment = System.Windows.VerticalAlignment.Top;
             this.HorizontalAlignment = System.Windows.HorizontalAlignment.Left;
             this.Subject = e.Subject;
-            Background = Brushes.Transparent;
-            //Background = (SolidColorBrush)(new BrushConverter().ConvertFrom($"#{e.ColorBrush}"));
-            if (!showTime || e.AllDay)
+            IsEnabled = e.IsEnabled;
+            BorderElement.Background = e.IsEnabled ? Brushes.White : Brushes.Red;
+			//Background = (SolidColorBrush)(new BrushConverter().ConvertFrom($"#{e.ColorBrush}"));
+			if (!showTime || e.AllDay)
             {
                 this.DisplayDateText.Visibility = System.Windows.Visibility.Hidden;
                 this.DisplayDateText.Height = 0;
@@ -42,8 +43,8 @@ namespace WpfScheduler
             {
                 this.DisplayDateText.Text = String.Format("{0} - {1}", e.Start.ToString("HH:mm"), e.End.ToString("HH:mm"));
             }
-            this.BorderElement.ToolTip = this.DisplayDateText.Text + System.Environment.NewLine + this.DisplayText.Text;
-        }
+            this.BorderElement.ToolTip = this.DisplayDateText.Text + System.Environment.NewLine + this.DisplayText.Text + Environment.NewLine + Environment.NewLine + e.Description;
+		}
 
         public ScheduleSubject Event {
             get { return _e; }

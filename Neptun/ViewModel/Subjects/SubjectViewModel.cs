@@ -1,8 +1,10 @@
-﻿using System;
+﻿using GalaSoft.MvvmLight.Command;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Input;
 using System.Windows.Media;
 
 namespace Neptun
@@ -78,6 +80,7 @@ namespace Neptun
 		public Action Collapsed { get; set; } = () => { };
 
 		public bool TFView { get; set; } = true;
+
 	}
 	
 }
