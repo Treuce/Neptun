@@ -17,10 +17,10 @@
     </NuGetPackageImportStamp>
     <TargetFrameworkProfile />
     <RestoreProjectStyle>PackageReference</RestoreProjectStyle>
-    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <IsWebBootstrapper>true</IsWebBootstrapper>
     <PublishUrl>D:\Repos\Neptun\Installer\</PublishUrl>
     <Install>true</Install>
-    <InstallFrom>Disk</InstallFrom>
+    <InstallFrom>Web</InstallFrom>
     <UpdateEnabled>true</UpdateEnabled>
     <UpdateMode>Foreground</UpdateMode>
     <UpdateInterval>7</UpdateInterval>
@@ -28,7 +28,8 @@
     <UpdatePeriodically>false</UpdatePeriodically>
     <UpdateRequired>false</UpdateRequired>
     <MapFileExtensions>true</MapFileExtensions>
-    <UpdateUrl>https://github.com/Treuce/Neptun/tree/master/Installer/</UpdateUrl>
+    <InstallUrl>https://raw.githubusercontent.com/Treuce/Neptun/master/Installer/</InstallUrl>
+    <UpdateUrl>https://raw.githubusercontent.com/Treuce/Neptun/master/Installer/</UpdateUrl>
     <ProductName>Neptun</ProductName>
     <PublisherName>Treuce</PublisherName>
     <ApplicationRevision>4</ApplicationRevision>
