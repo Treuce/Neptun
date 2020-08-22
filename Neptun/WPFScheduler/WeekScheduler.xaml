@@ -6,6 +6,7 @@
 			 mc:Ignorable="d"
 			 d:DesignHeight="500"
 			 d:DesignWidth="800"
+			 Focusable="False"
 			 xmlns:my="clr-namespace:WpfScheduler"
 			 Loaded="UserControl_Loaded">
 
@@ -15,7 +16,7 @@
                 </Grid.LayoutTransform>
     -->
 
-	<Grid>
+	<Grid Focusable="False" Background="Transparent" ScrollViewer.CanContentScroll="False">
 		<Grid.RowDefinitions>
 			<RowDefinition Height="Auto" />
 			<RowDefinition Height="10" />
@@ -82,12 +83,15 @@
 				BorderThickness="0.5"
 				Grid.Row="2">
 			<ScrollViewer x:Name="ScrollEventsViewer"
+						  CanContentScroll="False"
+						  MouseLeftButtonDown="column1_MouseLeftButtonDown"
 						  VerticalScrollBarVisibility="Auto"
 						  HorizontalScrollBarVisibility="Disabled">
 
 				<my:SchedulerGrid x:Name="EventsGrid"
 								  ShowCustomGridLines="True"
 								  GridLineBrush="#555555"
+								  Focusable="False"
 								  GridLineThickness="0.5">
 
 					<Grid.ColumnDefinitions>
@@ -204,6 +208,7 @@
 					<Canvas x:Name="column1"
 							Grid.Column="1"
 							Grid.Row="0"
+							MouseLeftButtonDown="column1_MouseLeftButtonDown"
 							Grid.RowSpan="14"
 							VerticalAlignment="Stretch"
 							HorizontalAlignment="Stretch"></Canvas >
@@ -211,22 +216,26 @@
 							Grid.Column="2"
 							Grid.Row="0"
 							Grid.RowSpan="14"
+							MouseLeftButtonDown="column1_MouseLeftButtonDown"
 							VerticalAlignment="Stretch"
 							HorizontalAlignment="Stretch"></Canvas >
 					<Canvas x:Name="column3"
 							Grid.Column="3"
 							Grid.Row="0"
 							Grid.RowSpan="14"
+							MouseLeftButtonDown="column1_MouseLeftButtonDown"
 							VerticalAlignment="Stretch"
 							HorizontalAlignment="Stretch"></Canvas >
 					<Canvas x:Name="column4"
 							Grid.Column="4"
+							MouseLeftButtonDown="column1_MouseLeftButtonDown"
 							Grid.Row="0"
 							Grid.RowSpan="14"
 							VerticalAlignment="Stretch"
 							HorizontalAlignment="Stretch"></Canvas >
 					<Canvas x:Name="column5"
 							Grid.Column="5"
+							MouseLeftButtonDown="column1_MouseLeftButtonDown"
 							Grid.Row="0"
 							Grid.RowSpan="14"
 							VerticalAlignment="Stretch"

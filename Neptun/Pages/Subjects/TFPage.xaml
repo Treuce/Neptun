@@ -561,7 +561,7 @@
 											   HorizontalAlignment="Left"
 											   VerticalAlignment="Center">
 									</TextBlock>
-										<Popup AllowsTransparency="True" IsOpen="{Binding isPopUpOpen}" Placement="Bottom">
+										<Popup AllowsTransparency="True" IsOpen="{Binding isPopUpOpen}" Placement="Bottom" HorizontalOffset="-100"  PlacementTarget="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type ContentControl}}}">
 											<!--<Border BorderBrush="Red" BorderThickness="0" Background="{StaticResource BackgroundDarkBrush_2}" Padding="0">-->
 												
 											<Button Background="{StaticResource WordBlueBrush}"

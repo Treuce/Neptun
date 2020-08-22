@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Windows;
@@ -270,6 +271,15 @@ namespace WpfScheduler
 				EventsGrid.ColumnDefinitions[i].Width = new GridLength(columnWidth);
 				EventsHeaderGrid.ColumnDefinitions[i].Width = new GridLength(columnWidth);
 			}
+		}
+		/// <summary>
+		/// Used so the content isn't just jumping around when clicked
+		/// </summary>
+		/// <param name="sender"></param>
+		/// <param name="e"></param>
+		private void column1_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+		{
+			e.Handled = true;
 		}
 	}
 }

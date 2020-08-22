@@ -159,27 +159,24 @@
 							<ColumnDefinition Width="0.25*" />
 							<ColumnDefinition Width="0.1*" />
 						</Grid.ColumnDefinitions>
-						<TextBox Padding="5"
+						<TextBlock Padding="5"
 								 VerticalAlignment="Center"
 								 HorizontalAlignment="Center"
-								 BorderThickness="0"
 								 FontFamily="{StaticResource LatoBold}"
 								 FontSize="{StaticResource FontSizeSmall}"
 								 Text="Tárgynév"
 								 Background="Transparent" />
-						<TextBox Grid.Column="1"
+						<TextBlock Grid.Column="1"
 								 Padding="5"
 								 VerticalAlignment="Center"
 								 HorizontalAlignment="Center"
-								 BorderThickness="0"
 								 FontFamily="{StaticResource LatoBold}"
 								 FontSize="{StaticResource FontSizeSmall}"
 								 Text="Tárgykód"
 								 Background="Transparent" />
-						<TextBox Grid.Column="2"
+						<TextBlock Grid.Column="2"
 								 VerticalAlignment="Center"
 								 HorizontalAlignment="Center"
-								 BorderThickness="0"
 								 FontFamily="{StaticResource LatoBold}"
 								 FontSize="{StaticResource FontSizeSmall}"
 								 Text="{Binding SubjectCounterDisplay}"
@@ -245,6 +242,7 @@
 						  HorizontalContentAlignment="Left"
 						  HorizontalAlignment="Stretch"
 						  Padding="0,0,0,0"
+						  Focusable="False"
 						  ScrollViewer.HorizontalScrollBarVisibility="Disabled"
 						  Grid.Row="1"
 						  Background="Transparent"
@@ -334,6 +332,7 @@
 							  ClipToBounds="True"
 							  Margin="30,0,30,50"
 							  Focusable="False"
+							  
 							  Events="{Binding AllCoursesEvents}"
 							  VerticalAlignment="Stretch"
 							  OnEventDoubleClick="scheduler_OnEventDoubleClick"
