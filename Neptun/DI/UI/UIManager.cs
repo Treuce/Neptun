@@ -28,13 +28,13 @@ namespace Neptun
 			{
 				try
 				{
-						// Show the dialog box
-						await new DialogMessageBox().ShowDialog(viewModel);
+					// Show the dialog box
+					await new DialogMessageBox().ShowDialog(viewModel);
 				}
 				finally
 				{
-						// Flag we are done
-						tcs.SetResult(true);
+					// Flag we are done
+					tcs.SetResult(true);
 				}
 			});
 			// Return the task once complete
@@ -74,10 +74,22 @@ namespace Neptun
 				try
 				{
 					// Show the dialog box
-					var window = new ScheduleWindow();
-					//window.Owner = Application.Current.MainWindow;
-					window.WindowStartupLocation = WindowStartupLocation.CenterOwner;
-					window.Show();
+					bool hasscheduleopen = false;
+					int i = 0;
+					while (hasscheduleopen)
+					{
+						var window1 = Application.Current.Windows[i];
+						if (window1 is ScheduleWindow)
+							hasscheduleopen = true;
+						++i;
+					}
+					if (!hasscheduleopen)
+					{
+						var window = new ScheduleWindow();
+						//window.Owner = Application.Current.MainWindow;
+						window.WindowStartupLocation = WindowStartupLocation.CenterOwner;
+						window.Show();
+					}
 				}
 				finally
 				{

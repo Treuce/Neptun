@@ -69,8 +69,11 @@ namespace Neptun
 		{
 			try
 			{
-				await Task.Delay(2000);
-				((sender as ContentControl).DataContext as SubjectViewModel).isPopUpOpen = false;
+				if ((sender as ContentControl)?.DataContext is SubjectViewModel vm)
+				{
+					await Task.Delay(2000);
+					vm.isPopUpOpen = false;
+				}
 			}
 			catch (Exception ex)
 			{

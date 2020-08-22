@@ -123,12 +123,15 @@
 					  GlassFrameThickness="0" />
 	</WindowChrome.WindowChrome>
 	<!--#endregion-->
-	<ScrollViewer Padding="10,0,10,0">
+	<ScrollViewer Padding="10,0,10,0"
+				  CanContentScroll="False"
+				  >
 
 		<Border x:Name="MainContent"
 				Background="Transparent"
 				Margin="10,5,10,5"
 				BorderThickness="2"
+				Focusable="False"
 				CornerRadius="5"
 				BorderBrush="{StaticResource BackgroundDarkBrush}">
 			<Grid>
@@ -330,6 +333,8 @@
 							  Height="700"
 							  ClipToBounds="True"
 							  Margin="30,0,30,50"
+							  Focusable="False"
+							  Events="{Binding AllCoursesEvents}"
 							  VerticalAlignment="Stretch"
 							  OnEventDoubleClick="scheduler_OnEventDoubleClick"
 							  ScrollViewer.CanContentScroll="False"
@@ -363,7 +368,9 @@
 							  HorizontalAlignment="Stretch"
 							  x:Name="plan"
 							  Height="700"
+							  Events="{Binding ScheduledEvents}"
 							  ClipToBounds="True"
+							  Focusable="False"
 							  Margin="30,50,30,30"
 							  VerticalAlignment="Stretch"
 							  ScrollViewer.CanContentScroll="False"

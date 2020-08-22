@@ -397,6 +397,9 @@ namespace Neptun
 			SubjectGroups = new ObservableCollection<SubjectGroupViewModel>();
 
 			#region Commands
+
+			
+
 			DeleteSelectedSavedSubjects = new RelayCommand(() =>
 			{
 				Task.Run(async () =>
@@ -468,32 +471,37 @@ namespace Neptun
 					foreach (var a in list.Where(s => s.type == type.ToString()))
 						SubjectCode += a.code + ";";
 					LoadSubjects();
-					for (int i = 0; i < Subjects.Count && i < list.Count; ++i)
-					{
-						var a = Subjects[i];
-						a.TakeViewModel = new TakeSubjectViewModel(a.id, a, this, true);
-						a.TakeViewModel.Courses = new ObservableCollection<TakeSubjectViewModel.Course>();
-						var asd = list[i].courses.Split(';');
-						foreach (var dman in asd)
-						{
-							a.TakeViewModel.Courses.Add(new TakeSubjectViewModel.Course()
+
+					//MessageBoxResult result = MessageBox.Show("Felvegyem ezeket a tárgyakat most rögtön?", "Neptun", MessageBoxButton.YesNo);
+					//if (result == MessageBoxResult.Yes)
+					//{
+					//	for (int i = 0; i < Subjects.Count && i < list.Count; ++i)
+					//	{
+					//		var a = Subjects[i];
+					//		a.TakeViewModel = new TakeSubjectViewModel(a.id, a, this, true);
+					//		a.TakeViewModel.Courses = new ObservableCollection<TakeSubjectViewModel.Course>();
+					//		var asd = list[i].courses.Split(';');
+					//		foreach (var dman in asd)
+					//		{
+					//			a.TakeViewModel.Courses.Add(new TakeSubjectViewModel.Course()
+					//			{
+					//				ID = dman,
+					//				isSelected = true,
+					//				SelectionChanged = true
+					//			});
+					//		}
+					//	}
+					//	foreach (var a in Subjects)
+					//		a.TakeViewModel.TakeSubject.Execute(null);
+					//}
+
+					var result = MessageBox.Show("Órarendtervezőbe?", "Neptun", MessageBoxButton.YesNo);
+					if (result == MessageBoxResult.Yes)
+						foreach (var a in Subjects)
+							Application.Current.Dispatcher.Invoke(() =>
 							{
-								ID = dman,
-								isSelected = true,
-								SelectionChanged = true
+								AddToSchedulePlanner.Execute(a);
 							});
-						}
-					}
-					MessageBoxResult result = MessageBox.Show("Felvegyem ezeket a tárgyakat most rögtön?", "Neptun", MessageBoxButton.YesNo);
-					switch (result)
-					{
-						case MessageBoxResult.Yes:
-							{
-								foreach (var a in Subjects)
-									a.TakeViewModel.TakeSubject.Execute(null);
-								break;
-							}
-					}
 				});
 			});
 
@@ -617,6 +625,15 @@ namespace Neptun
 					ScheduleVM.Subjects.Add(othervm);
 					vm.isPopUpOpen = false;
 				}
+			});
+
+			AddCurrentSubjectsToSchedule = new RelayCommand(() =>
+			{
+				foreach (var a in Subjects)
+					Application.Current.Dispatcher.Invoke(() =>
+					{
+						AddToSchedulePlanner.Execute(a);
+					});
 			});
 
 			#region Page Navigation
@@ -924,6 +941,7 @@ namespace Neptun
 		public ICommand LoadSavedSubjects { get; set; }
 		public ICommand DeleteSelectedSavedSubjects { get; set; }
 
+		public ICommand AddCurrentSubjectsToSchedule { get; set; }
 		public ICommand SchedulePlannerCommand { get; set; }
 		public ICommand AddToSchedulePlanner { get; set; }
 		#endregion

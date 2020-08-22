@@ -208,6 +208,9 @@ namespace Neptun
 			{
 				try
 				{
+					foreach (var win in Application.Current.Windows)
+						if (!(win is MainWindow))
+							(win as Window).Close();
 					var request = new RestRequest("main.aspx/LogOutFromJS", Method.POST);
 					request.Body = new RequestBody("ContentType = \"application/json\"", "application/json", "{\"link\": \"Login.aspx?timeout=\"}");
 					request.Timeout = 100;

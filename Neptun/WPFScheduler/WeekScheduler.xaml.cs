@@ -178,7 +178,7 @@ namespace WpfScheduler
 						double oneHourHeight = sp.ActualHeight / 14;
 
 						var concurrentEvents = _scheduler.Events.Where(e1 => ((e1.Start <= e.Start && e1.End > e.Start) ||
-																		(e1.Start >= e.Start && e1.Start <= e.End)) &&
+																		(e1.Start >= e.Start && e1.Start < e.End)) &&
 																	   e1.End.Date == e1.Start.Date).OrderBy(ev => ev.End);
 
 						double marginTop = oneHourHeight * (e.Start.Hour + (e.Start.Minute / 60.0) - 8);

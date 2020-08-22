@@ -84,8 +84,8 @@ namespace Neptun
 		public ScheduleWindowViewModel(Window window) : base(window)
 		{
 			// Make minimum size smaller
-			WindowMinimumWidth = 250;
-			WindowMinimumHeight = 100;
+			WindowMinimumWidth = 1000;
+			WindowMinimumHeight = 400;
 			CloseCommand = new RelayCommand(() => mWindow.Close());
 			// Make title bar smaller
 			TitleHeight = 30;

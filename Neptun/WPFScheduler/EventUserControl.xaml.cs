@@ -26,13 +26,13 @@ namespace WpfScheduler
             InitializeComponent();
 
             _e = e;
-
+            DataContext = e;
             this.VerticalAlignment = System.Windows.VerticalAlignment.Top;
             this.HorizontalAlignment = System.Windows.HorizontalAlignment.Left;
             this.Subject = e.Subject;
             IsEnabled = e.IsEnabled;
-            BorderElement.Background = e.IsEnabled ? Brushes.White : Brushes.Red;
-			//Background = (SolidColorBrush)(new BrushConverter().ConvertFrom($"#{e.ColorBrush}"));
+			//BorderElement.Background = (SolidColorBrush)(new BrushConverter().ConvertFromString(e.BackGroundColor_HEX));
+
 			if (!showTime || e.AllDay)
             {
                 this.DisplayDateText.Visibility = System.Windows.Visibility.Hidden;

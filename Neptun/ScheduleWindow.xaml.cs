@@ -138,15 +138,49 @@ namespace Neptun
 		private void scheduler_OnEventDoubleClick(object sender, WpfScheduler.ScheduleSubject e)
 		{
 			++DI.ScheduleVM.PlanCounter;
-			var eventcontrol = sender as WpfScheduler.EventUserControl;
-			plan.AddEvent(eventcontrol.Event);
+			var currentevent = (sender as WpfScheduler.EventUserControl)?.Event;
+			var newevent = new ScheduleSubject(currentevent);
+			newevent.BackGroundColor_HEX = "#ffffff";
+			foreach (var a in scheduler.Events.Where(s => s.Code == e.Code && s != e && s.Type == e.Type))
+			{
+				a.BackGroundColor_HEX = Brushes.Gray.Color.ToString();
+			}
+			if (plan.Events.Any(s => s.Code == e.Code && s.Type == e.Type))
+			{
+				var asd = plan.Events.First(s => s.Code == e.Code && s.Type == e.Type);
+				plan.DeleteEvent(asd.Id);
+				--DI.ScheduleVM.PlanCounter;
+			}
+			//scheduler.WeekScheduler.PaintAllEvents();
+			//(sender as WpfScheduler.EventUserControl).BorderElement.Background = Brushes.Green;
+			currentevent.BackGroundColor_HEX = Brushes.Green.Color.ToString();
+			plan.AddEvent(newevent);
+
+			var concurrentEvents = scheduler.Events.Where(e1 => ((e1.Start <= newevent.Start && e1.End > newevent.End) ||
+							(e1.Start >= newevent.Start && e1.Start < newevent.End) || 
+							(e1.Start < newevent.Start && e1.End < newevent.End && !(e1.End <= newevent.Start))) &&
+						   e1.End.Date == newevent.End.Date && e1.courseID != newevent.courseID);
+			var asdasdasd = concurrentEvents.Count();
+			
+			foreach (var a in concurrentEvents)
+				a.BackGroundColor_HEX = "#ed0202";
 		}
 
 		private void plan_OnEventDoubleClick(object sender, ScheduleSubject e)
 		{
 			--DI.ScheduleVM.PlanCounter;
-			var eventcontrol = sender as WpfScheduler.EventUserControl;
-			plan.DeleteEvent(eventcontrol.Event.Id);
+			var currentevent = (sender as WpfScheduler.EventUserControl)?.Event;
+			plan.DeleteEvent(currentevent.Id);
+
+			foreach (var a in scheduler.Events.Where(s => s.Code == e.Code && s != e && s.Type == e.Type))
+			{
+				a.BackGroundColor_HEX = "#ffffff";
+			}
+			var concurrentEvents = scheduler.Events.Where(e1 => ((e1.Start <= e.Start && e1.End > e.End) ||
+				(e1.Start >= e.Start && e1.Start < e.End) || (e1.Start < e.Start && e1.End < e.End)) &&
+			   e1.End.Date == e.End.Date && e1.courseID != e.courseID);
+			foreach (var a in concurrentEvents)
+				a.BackGroundColor_HEX = "#ffffff";
 		}
 
 		#endregion

@@ -1628,9 +1628,10 @@ namespace Neptun
 					var regex = new Regex(@"(<br />|<br/>|</ br>|</br>|<br>)");
 					resultstr = regex.Replace(html.GetElementbyId("_Label1").InnerHtml, Environment.NewLine);
 					//}
-					if (resultstr.Contains("nem sikerült"))
+					if (!resultstr.Contains("nem sikerült"))
+						ParentViewModel.taken = true;
+					else
 						Debugger.Break();
-
 					if (TFViewModel.WaitTime >= 0)
 					{
 						await Task.Delay(TimeSpan.FromMinutes(TFViewModel.WaitTime));
@@ -1643,7 +1644,6 @@ namespace Neptun
 					}
 					//if (resultstr.ToLower().Contains("siker"))
 					//{
-					ParentViewModel.taken = true;
 					//ParentViewModel.InfoExpanded = false;
 					//}
 				});

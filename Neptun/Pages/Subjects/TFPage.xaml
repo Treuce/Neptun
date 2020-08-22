@@ -224,6 +224,10 @@
 						Height="Auto"
 						FontSize="{StaticResource FontSizeSmall}"
 						Command="{Binding ListSubjects}" />
+				<StackPanel Orientation="Vertical"
+							Grid.Row="7"
+							Grid.Column="0">
+					
 				<Button Grid.Row="7"
 						Grid.Column="0"
 						Padding="10"
@@ -235,6 +239,18 @@
 						Height="Auto"
 						FontSize="{StaticResource FontSizeSmall}"
 						Command="{Binding SchedulePlannerCommand}" />
+				<Button Grid.Row="7"
+						Grid.Column="0"
+						Padding="10"
+						Content="Órarendtervezőbe"
+						VerticalAlignment="Center"
+						IsDefault="True"
+						HorizontalAlignment="Left"
+						HorizontalContentAlignment="Stretch"
+						Height="Auto"
+						FontSize="{StaticResource FontSizeSmall}"
+						Command="{Binding AddCurrentSubjectsToSchedule}" />
+				</StackPanel>
 				<StackPanel Grid.Row="7"
 							Orientation="Horizontal"
 							Grid.Column="1">
