@@ -6,6 +6,7 @@ using Dna;
 using static Dna.FrameworkDI;
 using System.Windows;
 using System.Windows.Controls;
+using System.Diagnostics;
 
 namespace WpfScheduler
 {
@@ -201,6 +202,19 @@ namespace WpfScheduler
 
 		void InnerScheduler_OnEventDoubleClick(object sender, ScheduleSubject e)
 		{
+			if (DataContext is ScheduleViewModel vm)
+			{
+				if (vm.ShowDisabledCourses)
+				{
+					if (OnEventDoubleClick != null) OnEventDoubleClick(sender, e);
+					return;
+				}
+				else if (e.IsEnabled)
+				{
+					if (OnEventDoubleClick != null) OnEventDoubleClick(sender, e);
+					return;
+				}
+			}
 			if (OnEventDoubleClick != null) OnEventDoubleClick(sender, e);
 		}
 

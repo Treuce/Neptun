@@ -174,17 +174,22 @@ namespace WpfScheduler
 					if (numColumn >= 0 && numColumn < 6)
 					{
 						var sp = (Canvas)this.FindName("column" + numColumn);
+						if (numColumn == 3 && (e.courseID == "15" || e.courseID == "7"))
+							;
+							//Debugger.Break();
 						sp.Width = columnWidth;
 
 						double oneHourHeight = sp.ActualHeight / 14;
 
 						var concurrentEvents = _scheduler.Events.Where(e1 => ((e1.Start <= e.Start && e1.End > e.Start) ||
 																		(e1.Start >= e.Start && e1.Start < e.End)) &&
-																	   e1.End.Date == e1.Start.Date).OrderBy(ev => ev.End);
+																	   e1.End.Date == e1.Start.Date).OrderBy(ev => ev.Start).ToList();
+
+
 
 						double marginTop = oneHourHeight * (e.Start.Hour + (e.Start.Minute / 60.0) - 8);
-						double width = columnWidth / concurrentEvents.Count();
-						double marginLeft = width * getIndex(e, concurrentEvents.ToList());
+						double width = columnWidth / concurrentEvents.Count;
+						double marginLeft = width * getIndex(e, concurrentEvents);
 
 						var wEvent = new EventUserControl(e, true);
 						wEvent.Width = width;

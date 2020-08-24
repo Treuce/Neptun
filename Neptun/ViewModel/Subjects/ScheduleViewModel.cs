@@ -16,6 +16,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media;
+using System.Windows.Media.Animation;
 using WpfScheduler;
 
 namespace Neptun
@@ -88,7 +89,7 @@ namespace Neptun
 
 									var concurrentEvents = ScheduledEvents.Where(e1 => (
 													(e1.Start <= start_time && e1.End > end_time) ||
-													(e1.Start >= start_time && e1.Start < end_time) || (e1.Start < start_time && e1.End < end_time && !(e1.End <= start_time)) ) &&
+													(e1.Start >= start_time && e1.Start < end_time) || (e1.Start < start_time && e1.End < end_time && !(e1.End <= start_time))) &&
 												   e1.End.Date == end_time.Date);
 									string hexcolor = course.isEnabled ? "#ffffff" : "#ed0202";
 									var asdasdasd = concurrentEvents.Count();

@@ -30,7 +30,7 @@ namespace WpfScheduler
             this.VerticalAlignment = System.Windows.VerticalAlignment.Top;
             this.HorizontalAlignment = System.Windows.HorizontalAlignment.Left;
             this.Subject = e.Subject;
-            IsEnabled = e.IsEnabled;
+            //IsEnabled = e.IsEnabled;
 			//BorderElement.Background = (SolidColorBrush)(new BrushConverter().ConvertFromString(e.BackGroundColor_HEX));
 
 			if (!showTime || e.AllDay)
