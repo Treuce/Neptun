@@ -26,6 +26,7 @@ namespace Neptun
 		#region Private stuff
 		private void Subjects_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
 		{
+
 			foreach (var subject in (sender as ObservableCollection<SubjectViewModel>))
 			{
 				subject.Expanded += () =>
@@ -144,6 +145,11 @@ namespace Neptun
 			SubjectCounterDisplay = $"Tárgyak száma: {Subjects.Count}";
 		}
 
+		private void ScheduledEvents_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
+		{
+			OnPropertyChanged(nameof(PlanCounter));
+		}
+
 		#endregion
 
 		#region Constructor
@@ -153,9 +159,10 @@ namespace Neptun
 			AllCoursesEvents = new ObservableCollection<ScheduleSubject>();
 			ScheduledEvents = new ObservableCollection<ScheduleSubject>();
 			//Changed = new Action<ScheduleSubject, bool>((ScheduleSubject a, bool showdisabled) => { });
-			Clear = new Action(() => { PlanCounter = 0; });
+			//Clear = new Action(() => { PlanCounter = 0; });
 			//DeleteItem = new Action<SubjectViewModel>((SubjectViewModel a) => { });
 			Subjects.CollectionChanged += Subjects_CollectionChanged;
+			ScheduledEvents.CollectionChanged += ScheduledEvents_CollectionChanged;
 			ClearList = new RelayCommand<bool>((bool clearsubjects) =>
 			{
 				if (clearsubjects)
@@ -183,7 +190,7 @@ namespace Neptun
 
 		public string SubjectCounterDisplay { get; set; } = "Tárgyak száma: 0";
 
-		public int PlanCounter { get; set; } = 0;
+		public int PlanCounter { get => ScheduledEvents.Count; }
 
 		#endregion
 

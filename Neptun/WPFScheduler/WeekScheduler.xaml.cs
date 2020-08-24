@@ -174,8 +174,8 @@ namespace WpfScheduler
 					if (numColumn >= 0 && numColumn < 6)
 					{
 						var sp = (Canvas)this.FindName("column" + numColumn);
-						if (numColumn == 3 && (e.courseID == "15" || e.courseID == "7"))
-							;
+						//if (numColumn == 3 && (e.courseID == "15" || e.courseID == "7"))
+						//	;
 							//Debugger.Break();
 						sp.Width = columnWidth;
 
