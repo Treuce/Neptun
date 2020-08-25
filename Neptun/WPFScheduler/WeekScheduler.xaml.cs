@@ -180,12 +180,10 @@ namespace WpfScheduler
 						sp.Width = columnWidth;
 
 						double oneHourHeight = sp.ActualHeight / 14;
-
+						//_scheduler.Events
 						var concurrentEvents = _scheduler.Events.Where(e1 => ((e1.Start <= e.Start && e1.End > e.Start) ||
 																		(e1.Start >= e.Start && e1.Start < e.End)) &&
-																	   e1.End.Date == e1.Start.Date).OrderBy(ev => ev.Start).ToList();
-
-
+																	   e1.End.Date == e1.Start.Date).OrderBy(ev => ev.End).ToList();
 
 						double marginTop = oneHourHeight * (e.Start.Hour + (e.Start.Minute / 60.0) - 8);
 						double width = columnWidth / concurrentEvents.Count;

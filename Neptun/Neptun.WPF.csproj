@@ -170,6 +170,7 @@
     <Compile Include="Helpers\HTMLParser\htmlschema.cs" />
     <Compile Include="Helpers\HTMLParser\htmltokentype.cs" />
     <Compile Include="Helpers\HTMLParser\htmltoxamlconverter.cs" />
+    <Compile Include="Helpers\RangeObservableCollection.cs" />
     <Compile Include="Helpers\TextBlockHelper.cs" />
     <Compile Include="ScheduleWindow.xaml.cs">
       <DependentUpon>ScheduleWindow.xaml</DependentUpon>

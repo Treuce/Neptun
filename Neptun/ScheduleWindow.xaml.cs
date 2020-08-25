@@ -1,6 +1,8 @@
 ﻿using MindFusion.Scheduling;
 using MindFusion.Scheduling.Wpf;
 using System;
+using System.Collections;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
@@ -72,7 +74,11 @@ namespace Neptun
 			{
 				vm.Changed += (ScheduleSubject a, bool showdisabled) =>
 				{
-					OnChangedInvoke(currentscheduler, a, showdisabled);
+					onChangedInvokation(currentscheduler, a, showdisabled);
+				};
+				vm.RangeChanged += (IEnumerable<ScheduleSubject> items, bool showdisabled) =>
+				{
+					onChangedInvokation(currentscheduler, items, showdisabled);
 				};
 				vm.Clear += () =>
 				{
@@ -87,12 +93,19 @@ namespace Neptun
 		#endregion
 
 		#region Methods for scheduler events
-		private void OnChangedInvoke(Scheduler currentscheduler, ScheduleSubject a, bool showdisabled)
+		private void onChangedInvokation(Scheduler currentscheduler, ScheduleSubject a, bool showdisabled)
 		{
 			if (showdisabled)
 				currentscheduler.AddEvent(a);
 			else if (a.IsEnabled)
 				currentscheduler.AddEvent(a);
+		}
+		private void onChangedInvokation(Scheduler currentscheduler, IEnumerable<ScheduleSubject> items, bool showdisabled)
+		{
+			if (showdisabled)
+				currentscheduler.AddEvents(items.ToList());
+			else
+				currentscheduler.AddEvents(items.Where(s => s.IsEnabled).ToList());
 		}
 		private void OnClearInvoke(Scheduler currentscheduler)
 		{

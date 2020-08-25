@@ -7,6 +7,7 @@ using static Dna.FrameworkDI;
 using System.Windows;
 using System.Windows.Controls;
 using System.Diagnostics;
+using System.Collections.Generic;
 
 namespace WpfScheduler
 {
@@ -57,12 +58,12 @@ namespace WpfScheduler
 
 		#region Events
 		public static readonly DependencyProperty EventsProperty =
-			DependencyProperty.Register("Events", typeof(ObservableCollection<ScheduleSubject>), typeof(Scheduler),
+			DependencyProperty.Register("Events", typeof(ObservableRangeCollection<ScheduleSubject>), typeof(Scheduler),
 			new FrameworkPropertyMetadata(new PropertyChangedCallback(AdjustEvents)));
 
-		public ObservableCollection<ScheduleSubject> Events
+		public ObservableRangeCollection<ScheduleSubject> Events
 		{
-			get { return (ObservableCollection<ScheduleSubject>)GetValue(EventsProperty); }
+			get { return (ObservableRangeCollection<ScheduleSubject>)GetValue(EventsProperty); }
 			set { SetValue(EventsProperty, value); }
 		}
 
@@ -181,7 +182,7 @@ namespace WpfScheduler
 		{
 			InitializeComponent();
 			Mode = WpfScheduler.Mode.Week;
-			Events = new ObservableCollection<ScheduleSubject>();
+			Events = new ObservableRangeCollection<ScheduleSubject>();
 			SelectedDate = DateTime.Now;
 			//Loaded += Scheduler_Loaded;
 			WeekScheduler.OnEventDoubleClick += InnerScheduler_OnEventDoubleClick;
@@ -193,7 +194,7 @@ namespace WpfScheduler
 			//MonthScheduler.OnScheduleDoubleClick += InnerScheduler_OnScheduleDoubleClick;
 		}
 
-		
+
 
 		void InnerScheduler_OnScheduleDoubleClick(object sender, DateTime e)
 		{
@@ -227,6 +228,19 @@ namespace WpfScheduler
 
 				if (OnEventAdded != null) OnEventAdded(this, e);
 			}
+		}
+		public void AddEvents(IEnumerable<ScheduleSubject> items)
+		{
+			//Events.AddRange(items);
+			foreach (var e in items)
+			{
+				if (e.Start > e.End) throw new ArgumentException("End date is before Start date");
+				if (!Events.Any(s => s.Subject == e.Subject && e.End == s.End && s.Start == e.Start))
+				{
+					Events.Add(e);
+				}
+			}
+			if (OnEventsModified != null) OnEventsModified(this, new EventArgs());
 		}
 		public void ClearAllEvents()
 		{

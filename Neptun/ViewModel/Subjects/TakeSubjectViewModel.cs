@@ -45,8 +45,11 @@ namespace Neptun
 			Hallgatók,
 			Előkövetelmény
 		}
+		#region Course
 		public class Course : BaseViewModel
 		{
+			private DateTime mStartTime;
+			private DateTime mEndTime;
 			public string CourseCode { get; set; }
 
 			public string Type { get; set; }
@@ -69,7 +72,78 @@ namespace Neptun
 			public bool SelectionChanged { get; set; } = false;
 
 			public TFViewModel.SubjectType SubjectType { get; set; }
+
+			public DateTime StartTime
+			{
+				get
+				{
+					if (mStartTime == null)
+					{
+						var day = Schedule.Split(new string[] { Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries);
+						var damn = new Dictionary<string, string>();
+						for (int i = 0; i < day.Length; ++i)
+							damn.Add(day[i], day[++i]);
+						var currentDate = DateTime.Today;
+						if (damn.Count > 0)
+						{
+							var b = damn.ElementAt(0);
+							var start_time = DateTime.Today;
+							var end_time = DateTime.Today;
+							var timespans = b.Value.Split(new char[] { '-' }, StringSplitOptions.RemoveEmptyEntries);
+							start_time += TimeSpan.Parse(timespans[0]);
+							end_time += TimeSpan.Parse(timespans[1]);
+							DayOfWeek dayOfWeek;
+							switch (b.Key)
+							{
+								case "Hétfő":
+									dayOfWeek = DayOfWeek.Monday;
+									break;
+								case "Kedd":
+									dayOfWeek = DayOfWeek.Tuesday;
+									break;
+								case "Szerda":
+									dayOfWeek = DayOfWeek.Wednesday;
+									break;
+								case "Csütörtök":
+									dayOfWeek = DayOfWeek.Thursday;
+									break;
+								default:
+									dayOfWeek = DayOfWeek.Friday;
+									break;
+							}
+							while (start_time.DayOfWeek != DayOfWeek.Monday)
+							{
+								start_time = start_time.AddDays(-1);
+								end_time = end_time.AddDays(-1);
+							}
+
+							mStartTime = start_time.AddDays((int)dayOfWeek - 1);
+							mEndTime = end_time.AddDays((int)dayOfWeek - 1);
+						}
+					}
+					return mStartTime;
+				}
+				private set
+				{
+					mStartTime = value;
+				}
+			}
+			public DateTime EndTime
+			{
+				get
+				{
+					if (mEndTime == null)
+						throw new NullReferenceException("this is bad");
+					return mEndTime;
+				}
+				private set
+				{
+					mEndTime = value;
+				}
+			}
 		}
+		#endregion
+
 		#endregion
 
 		#region Private Methods

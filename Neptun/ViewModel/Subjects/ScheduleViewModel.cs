@@ -26,7 +26,6 @@ namespace Neptun
 		#region Private stuff
 		private void Subjects_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
 		{
-
 			foreach (var subject in (sender as ObservableCollection<SubjectViewModel>))
 			{
 				subject.Expanded += () =>
@@ -43,7 +42,9 @@ namespace Neptun
 				//	};
 				subject.HasCourses += () =>
 					{
-						foreach (var course in subject.TakeViewModel.Courses)
+						var ResultList = new List<ScheduleSubject>();
+						var courselist = subject.TakeViewModel.Courses.OrderBy(s => s.StartTime).ToList();
+						foreach (var course in courselist)
 						{
 							try
 							{
@@ -116,23 +117,25 @@ namespace Neptun
 									{
 										hexcolor = "#FF808080";
 									}
-									Application.Current.Dispatcher.Invoke(() =>
+									//Application.Current.Dispatcher.Invoke(() =>
+									//{
+									//ScheduleSubject a = new ScheduleSubject
+									//Changed.Invoke
+									ResultList.Add(new ScheduleSubject()
 									{
-										//ScheduleSubject a = new ScheduleSubject
-										Changed.Invoke(new ScheduleSubject()
-										{
-											Start = start_time,
-											End = end_time,
-											AllDay = false,
-											IsEnabled = course.isEnabled,
-											Type = course.Type,
-											BackGroundColor_HEX = hexcolor,
-											courseID = course.CourseCode,
-											Subject = $"{subject.Name} [{course.Type}] ({subject.Code}) {Environment.NewLine} #{course.CourseCode}{Environment.NewLine}{course.Teacher}{Environment.NewLine}{course.Note}",
-											Code = subject.Code,
-											Description = $"{course.ToolTip}"
-										}, ShowDisabledCourses);
+										Start = start_time,
+										End = end_time,
+										AllDay = false,
+										IsEnabled = course.isEnabled,
+										Type = course.Type,
+										BackGroundColor_HEX = hexcolor,
+										courseID = course.CourseCode,
+										Subject = $"{subject.Name} [{course.Type}] ({subject.Code}) {Environment.NewLine} #{course.CourseCode}{Environment.NewLine}{course.Teacher}{Environment.NewLine}{course.Note}",
+										Code = subject.Code,
+										Description = $"{course.ToolTip}"
 									});
+									//}, ShowDisabledCourses);
+									//});
 								}
 							}
 							catch (Exception ex)
@@ -140,6 +143,14 @@ namespace Neptun
 								Dna.FrameworkDI.Logger.LogDebugSource("Loading course data..", exception: ex);
 							}
 						}
+						ResultList.Sort(delegate (ScheduleSubject a, ScheduleSubject b)
+						{
+							return a.Start.CompareTo(b.Start);
+						});
+						Application.Current.Dispatcher.Invoke(() =>
+						{
+							RangeChanged.Invoke(ResultList, ShowDisabledCourses);
+						});
 					};
 			}
 			SubjectCounterDisplay = $"Tárgyak száma: {Subjects.Count}";
@@ -158,6 +169,8 @@ namespace Neptun
 			Subjects = new ObservableCollection<SubjectViewModel>();
 			AllCoursesEvents = new ObservableCollection<ScheduleSubject>();
 			ScheduledEvents = new ObservableCollection<ScheduleSubject>();
+			test = new ObservableRangeCollection<ScheduleSubject>();
+			test.CollectionChanged += ScheduledEvents_CollectionChanged;
 			//Changed = new Action<ScheduleSubject, bool>((ScheduleSubject a, bool showdisabled) => { });
 			//Clear = new Action(() => { PlanCounter = 0; });
 			//DeleteItem = new Action<SubjectViewModel>((SubjectViewModel a) => { });
@@ -186,16 +199,19 @@ namespace Neptun
 		public ObservableCollection<WpfScheduler.ScheduleSubject> ScheduledEvents { get; set; }
 		public ObservableCollection<SubjectViewModel> Subjects { get; set; }
 
+		public ObservableRangeCollection<ScheduleSubject> test { get; set; }
+
 		public bool ShowDisabledCourses { get; set; }
 
 		public string SubjectCounterDisplay { get; set; } = "Tárgyak száma: 0";
 
-		public int PlanCounter { get => ScheduledEvents.Count; }
+		public int PlanCounter { get => test.Count; }
 
 		#endregion
 
 		#region Public Actions
 		public Action<ScheduleSubject, bool> Changed { get; set; }
+		public Action<IEnumerable<ScheduleSubject>, bool> RangeChanged { get; set; }
 		public Action Clear { get; set; }
 
 		public Action<SubjectViewModel> DeleteItem { get; set; }

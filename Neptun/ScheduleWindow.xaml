@@ -332,8 +332,6 @@
 							  ClipToBounds="True"
 							  Margin="30,0,30,50"
 							  Focusable="False"
-							  
-							  Events="{Binding AllCoursesEvents}"
 							  VerticalAlignment="Stretch"
 							  OnEventDoubleClick="scheduler_OnEventDoubleClick"
 							  ScrollViewer.CanContentScroll="False"
@@ -367,7 +365,7 @@
 							  HorizontalAlignment="Stretch"
 							  x:Name="plan"
 							  Height="700"
-							  Events="{Binding ScheduledEvents}"
+
 							  ClipToBounds="True"
 							  Focusable="False"
 							  Margin="30,50,30,30"
