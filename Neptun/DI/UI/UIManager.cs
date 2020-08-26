@@ -75,13 +75,10 @@ namespace Neptun
 				{
 					// Show the dialog box
 					bool hasscheduleopen = false;
-					int i = 0;
-					while (hasscheduleopen)
+					for (int i = 0; i < Application.Current.Windows.Count && !hasscheduleopen; ++i)
 					{
-						var window1 = Application.Current.Windows[i];
-						if (window1 is ScheduleWindow)
+						if (Application.Current.Windows[i] is ScheduleWindow)
 							hasscheduleopen = true;
-						++i;
 					}
 					if (!hasscheduleopen)
 					{

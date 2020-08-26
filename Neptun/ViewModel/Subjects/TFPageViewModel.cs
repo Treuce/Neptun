@@ -604,7 +604,7 @@ namespace Neptun
 				MintaTantervView = type == SubjectType.Mintatantervi;
 				var asd = SelectedSemesterIndex;
 				//Debugger.Break();
-				Task.Run(LoadSubjects);
+				CoreDI.TaskManager.RunAndForget(LoadSubjects);
 				//isPageChanging = false;
 			});
 

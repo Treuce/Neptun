@@ -11,7 +11,9 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Media;
 using System.Net;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -61,7 +63,7 @@ namespace Neptun
 				//foreach (var a in result.Cookies)
 				//	RestWebClient.CookieContainer.Add(new Cookie(a.Name, a.Value) { Domain = a.Domain });
 				// If the response has an error...
-				if (await result.HandleErrorIfFailedAsync("Sikertelen Bejelentkezés",false))
+				if (await result.HandleErrorIfFailedAsync("Sikertelen Bejelentkezés", false))
 					await ViewModelApplication.HandleSuccessfulLoginAsync(new UserProfileDetailsApiModel(cred.NeptunCode, cred.Password));
 				else ViewModelApplication.GoToPage(ApplicationPage.Login);
 				//ViewModelApplication.GoToPage(ApplicationPage.Messages);
@@ -119,17 +121,29 @@ namespace Neptun
 							tmphtml = RestWebClient.Execute(request).Content;
 						var html = new HtmlDocument();
 						html.LoadHtml(tmphtml);
+
 						var unreadmessages = html.GetElementbyId("_lnkInbox").ChildNodes[0].InnerText.Split(' ');
 						if (unreadmessages.Length == 3)
 						{
 							var str = unreadmessages[2].Trim('(', ')');
 							Int32.TryParse(str, out int tmp);
 							ViewModelApplication.UnreadMessageCount = tmp;
+							//if (tmp != 0)
+							//{
+							//	TaskManager.RunAndForget(async() =>
+							//	{
+							//		for (int i = 0; i < 10; ++i)
+							//		{
+							//			SystemSounds.Exclamation.Play();
+							//			await Task.Delay(200);
+							//		}
+							//	});
+							//}
 							//ViewModelApplication.OnPropertyChanged("");
 							//ViewModelApplication.MainMenuVM.OnPropertyChanged("messagesText");
 						}
 					}
-					await Task.Delay(TimeSpan.FromMinutes(2));
+					await Task.Delay(TimeSpan.FromMinutes(1));
 				}
 			}
 			catch (Exception e)

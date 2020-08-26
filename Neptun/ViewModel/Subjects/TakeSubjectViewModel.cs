@@ -73,16 +73,24 @@ namespace Neptun
 
 			public TFViewModel.SubjectType SubjectType { get; set; }
 
+			public bool NeptunHasSchedule { get; set; } = false;
+
 			public DateTime StartTime
 			{
 				get
 				{
 					if (mStartTime == null)
 					{
-						var day = Schedule.Split(new string[] { Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries);
 						var damn = new Dictionary<string, string>();
-						for (int i = 0; i < day.Length; ++i)
-							damn.Add(day[i], day[++i]);
+						if (NeptunHasSchedule)
+						{
+						}
+						else
+						{
+							var day = Schedule.Split(new string[] { Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries);
+							for (int i = 0; i < day.Length; ++i)
+								damn.Add(day[i], day[++i]);
+						}
 						var currentDate = DateTime.Today;
 						if (damn.Count > 0)
 						{
@@ -1114,12 +1122,12 @@ namespace Neptun
 					request.AddParameter("__VIEWSTATE", ViewStateStr);
 					//request.AddParameter("__VIEWSTATEGENERATOR", "202EA31B");
 					request.AddParameter("upFilter$cmbLanguage", TFViewModel.Languages[TFViewModel.SelectedLanguageIndex].Value);
-					request.AddParameter("upFilter$cmbSubjectGroups", TFViewModel.SelectedSubjectGroup.value);
+					request.AddParameter("upFilter$cmbSubjectGroups", type == TFViewModel.SubjectType.Mintatantervi ? TFViewModel.SelectedSubjectGroup.value : String.Empty);
 					request.AddParameter("upFilter$txtKurzuskod", "");
 					request.AddParameter("upFilter$txtOktato", "");
 					request.AddParameter("upFilter$txtTargyNev", "");
 					request.AddParameter("upFilter$txtTargykod", ParentViewModel.Code);
-					request.AddParameter("upFilter$cmbTemplates", TFViewModel.SelectedMintatanterv.value);
+					request.AddParameter("upFilter$cmbTemplates", type == TFViewModel.SubjectType.Mintatantervi ? TFViewModel.SelectedMintatanterv.value : String.Empty);
 					request.AddParameter("upFilter$cmbTerms", TFViewModel.Semesters[TFViewModel.SelectedSemesterIndex > 0 ? TFViewModel.SelectedSemesterIndex : 0].Value);
 					request.AddParameter("upFilter$expandedsearchbutton", "Tárgyak listázása");
 					request.AddParameter("upFilter$rbtnSubjectType", type.ToString());
@@ -1157,10 +1165,10 @@ namespace Neptun
 					request.AddParameter("hiddenEditLabel", "");
 					request.AddParameter("progressalerttype", "progress");
 					request.AddParameter("upFilter$cmbLanguage", TFViewModel.Languages[TFViewModel.SelectedLanguageIndex].Value);
-					request.AddParameter("upFilter$cmbSubjectGroups", TFViewModel.SelectedSubjectGroup.value);
-					request.AddParameter("upFilter$cmbTemplates", TFViewModel.SelectedMintatanterv.value);
+					request.AddParameter("upFilter$cmbSubjectGroups", type == TFViewModel.SubjectType.Mintatantervi ? TFViewModel.SelectedSubjectGroup.value : String.Empty);
+					request.AddParameter("upFilter$cmbTemplates", type == TFViewModel.SubjectType.Mintatantervi ? TFViewModel.SelectedMintatanterv.value : String.Empty);
 					request.AddParameter("upFilter$cmbTerms", TFViewModel.Semesters[TFViewModel.SelectedSemesterIndex].Value);
-					request.AddParameter("upFilter$rbtnSubjectType", type == TFViewModel.SubjectType.Mintatantervi ? "Mintatantervi" : "MindenIntezmenyi");
+					request.AddParameter("upFilter$rbtnSubjectType", type.ToString());
 					request.AddParameter("upFunction$h_addsubjects$upFilter$searchpanel$searchpanel_state", "expanded");
 
 					#endregion
@@ -1172,19 +1180,18 @@ namespace Neptun
 					{
 						#region Menu
 						var menu = html.GetElementbyId("Subject_data_for_schedule_tab_header")?.ChildNodes.Where(s => s.Name == "span");
-						if (menu == null)
-							Debugger.Break();
-						foreach (var a in menu)
-						{
-							Application.Current.Dispatcher.Invoke(() =>
+						if (menu != null)
+							foreach (var a in menu)
 							{
-								MenuItems.Add(new TFMenuItemViewModel()
+								Application.Current.Dispatcher.Invoke(() =>
 								{
-									Name = a.InnerText
+									MenuItems.Add(new TFMenuItemViewModel()
+									{
+										Name = a.InnerText
+									});
 								});
-							});
-						}
-						MenuItems[0].isEnabled = false;
+								MenuItems[0].isEnabled = false;
+							}
 
 						#endregion
 
@@ -1285,7 +1292,6 @@ namespace Neptun
 						foreach (var course in Courses)
 							try
 							{
-
 								if (String.IsNullOrEmpty(course.Schedule))
 								{
 									var a = courseschedulelist.Where(s => s.Item1 == course.CourseCode);
@@ -1297,6 +1303,7 @@ namespace Neptun
 									//course.Schedule = course.Schedule.Remove(course.Schedule.Length - Environment.NewLine.Length -1);
 									course.Schedule = course.Schedule.TrimEnd(Environment.NewLine.ToCharArray());
 								}
+								else course.NeptunHasSchedule = true;
 							}
 							catch (Exception e)
 							{

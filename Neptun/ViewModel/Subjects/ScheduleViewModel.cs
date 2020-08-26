@@ -49,91 +49,127 @@ namespace Neptun
 							try
 							{
 								var asd = course.Schedule;
-								var day = asd.Split(new string[] { Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries);
 								var damn = new Dictionary<string, string>();
-								for (int i = 0; i < day.Length; ++i)
-									damn.Add(day[i], day[++i]);
+								if ( course.NeptunHasSchedule)
+								{
+									var ind = asd.IndexOf('(');
+									var day = asd.Substring(0, (ind == -1 ? asd.Length - 1 : ind)).TrimEnd().Split(new char[] { ':' }, 2, StringSplitOptions.RemoveEmptyEntries);
+									for (int i = 0; i < day.Length; ++i)
+										damn.Add(day[i], day[++i]);
+								}
+								else
+								{
+									var day = asd.Split(new string[] { Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries);
+									for (int i = 0; i < day.Length; ++i)
+										damn.Add(day[i], day[++i]);
+								}
+
 								var currentDate = DateTime.Today;
 								foreach (var b in damn)
 								{
-									var start_time = DateTime.Today;
-									var end_time = DateTime.Today;
-									var timespans = b.Value.Split(new char[] { '-' }, StringSplitOptions.RemoveEmptyEntries);
-									start_time += TimeSpan.Parse(timespans[0]);
-									end_time += TimeSpan.Parse(timespans[1]);
-									DayOfWeek dayOfWeek;
-									switch (b.Key)
+									try
 									{
-										case "Hétfő":
-											dayOfWeek = DayOfWeek.Monday;
-											break;
-										case "Kedd":
-											dayOfWeek = DayOfWeek.Tuesday;
-											break;
-										case "Szerda":
-											dayOfWeek = DayOfWeek.Wednesday;
-											break;
-										case "Csütörtök":
-											dayOfWeek = DayOfWeek.Thursday;
-											break;
-										default:
-											dayOfWeek = DayOfWeek.Friday;
-											break;
-									}
-									while (start_time.DayOfWeek != DayOfWeek.Monday)
-									{
-										start_time = start_time.AddDays(-1);
-										end_time = end_time.AddDays(-1);
-									}
 
-									start_time = start_time.AddDays((int)dayOfWeek - 1);
-									end_time = end_time.AddDays((int)dayOfWeek - 1);
+										var start_time = DateTime.Today;
+										var end_time = DateTime.Today;
+										var timespans = b.Value.Split(new char[] { '-' }, StringSplitOptions.RemoveEmptyEntries);
+										start_time += TimeSpan.Parse(timespans[0]);
+										end_time += TimeSpan.Parse(timespans[1]);
+										DayOfWeek dayOfWeek;
+										switch (b.Key)
+										{
+											case "H":
+											case "h":
+											case "Hétfő":
+												dayOfWeek = DayOfWeek.Monday;
+												break;
+											case "Kedd":
+											case "k":
+											case "K":
+												dayOfWeek = DayOfWeek.Tuesday;
+												break;
+											case "Szerda":
+											case "sz":
+											case "Sz":
+											case "SZE":
+											case "SZ":
+												dayOfWeek = DayOfWeek.Wednesday;
+												break;
+											case "Cs":
+											case "CS":
+											case "cs":
+											case "Csütörtök":
+												dayOfWeek = DayOfWeek.Thursday;
+												break;
+											case "Péntek":
+											case "P":
+											case "p":
+												dayOfWeek = DayOfWeek.Friday;
+												break;
+											default:
+												throw new Exception("Fuck my life");
+												break;
+										}
+										while (start_time.DayOfWeek != DayOfWeek.Monday)
+										{
+											start_time = start_time.AddDays(-1);
+											end_time = end_time.AddDays(-1);
+										}
 
-									var concurrentEvents = ScheduledEvents.Where(e1 => (
-													(e1.Start <= start_time && e1.End > end_time) ||
-													(e1.Start >= start_time && e1.Start < end_time) || (e1.Start < start_time && e1.End < end_time && !(e1.End <= start_time))) &&
-												   e1.End.Date == end_time.Date);
-									string hexcolor = course.isEnabled ? "#ffffff" : "#ed0202";
-									var asdasdasd = concurrentEvents.Count();
-									if (concurrentEvents.Count() > 0)
-									{
-										try
+										start_time = start_time.AddDays((int)dayOfWeek - 1);
+										end_time = end_time.AddDays((int)dayOfWeek - 1);
+
+										var concurrentEvents = ScheduledEvents.Where(e1 => (
+														(e1.Start <= start_time && e1.End > end_time) ||
+														(e1.Start >= start_time && e1.Start < end_time) || (e1.Start < start_time && e1.End < end_time && !(e1.End <= start_time))) &&
+													   e1.End.Date == end_time.Date);
+										string hexcolor = course.isEnabled ? "#ffffff" : "#ed0202";
+										var asdasdasd = concurrentEvents.Count();
+										if (concurrentEvents.Count() > 0)
 										{
-											var e1 = ScheduledEvents.First(ev => ((ev.Start <= start_time && ev.End > end_time) ||
-														(ev.Start >= start_time && ev.Start < end_time) ||
-														(ev.Start < start_time && ev.End < end_time)
-														) &&
-													   ev.End.Date == end_time.Date);
-											if (e1.courseID != course.CourseCode)
-												hexcolor = "#ed0202";
-											else hexcolor = "#FF008000";
+											try
+											{
+												var e1 = ScheduledEvents.First(ev => ((ev.Start <= start_time && ev.End > end_time) ||
+															(ev.Start >= start_time && ev.Start < end_time) ||
+															(ev.Start < start_time && ev.End < end_time)
+															) &&
+														   ev.End.Date == end_time.Date);
+												if (e1.courseID != course.CourseCode)
+													hexcolor = "#ed0202";
+												else hexcolor = "#FF008000";
+											}
+											catch (Exception exception)
+											{
+												Dna.FrameworkDI.Logger.LogDebugSource("FUCKMYLIFE", exception: exception);
+											}
 										}
-										catch (Exception exception)
+										foreach (var ev in ScheduledEvents.Where(s => s.Code == subject.Code && s.Type == course.Type && s.courseID != course.CourseCode))
 										{
-											Dna.FrameworkDI.Logger.LogDebugSource("FUCKMYLIFE", exception: exception);
+											hexcolor = "#FF808080";
 										}
+										//Application.Current.Dispatcher.Invoke(() =>
+										//{
+										//ScheduleSubject a = new ScheduleSubject
+										//Changed.Invoke
+										ResultList.Add(new ScheduleSubject()
+										{
+											Start = start_time,
+											End = end_time,
+											AllDay = false,
+											IsEnabled = course.isEnabled,
+											Type = course.Type,
+											BackGroundColor_HEX = hexcolor,
+											courseID = course.CourseCode,
+											Subject = $"{subject.Name} [{course.Type}] ({subject.Code}) {Environment.NewLine} #{course.CourseCode}{Environment.NewLine}{course.Teacher}{Environment.NewLine}{course.Note}",
+											Code = subject.Code,
+											Description = $"{course.ToolTip}"
+										});
 									}
-									foreach (var ev in ScheduledEvents.Where(s => s.Code == subject.Code && s.Type == course.Type && s.courseID != course.CourseCode))
+									catch (Exception ex)
 									{
-										hexcolor = "#FF808080";
+										Debugger.Break();
+										FrameworkDI.Logger.LogDebugSource(ex.Message, exception: ex);
 									}
-									//Application.Current.Dispatcher.Invoke(() =>
-									//{
-									//ScheduleSubject a = new ScheduleSubject
-									//Changed.Invoke
-									ResultList.Add(new ScheduleSubject()
-									{
-										Start = start_time,
-										End = end_time,
-										AllDay = false,
-										IsEnabled = course.isEnabled,
-										Type = course.Type,
-										BackGroundColor_HEX = hexcolor,
-										courseID = course.CourseCode,
-										Subject = $"{subject.Name} [{course.Type}] ({subject.Code}) {Environment.NewLine} #{course.CourseCode}{Environment.NewLine}{course.Teacher}{Environment.NewLine}{course.Note}",
-										Code = subject.Code,
-										Description = $"{course.ToolTip}"
-									});
 									//}, ShowDisabledCourses);
 									//});
 								}

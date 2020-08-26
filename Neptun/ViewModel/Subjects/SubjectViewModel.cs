@@ -48,6 +48,8 @@ namespace Neptun
 			id = vm.id;
 			semester = vm.semester;
 			TakeViewModel = vm.TakeViewModel;
+			SubjectType = vm.SubjectType;
+			type = vm.type;
 		}
 		public string Name { get; set; }
 

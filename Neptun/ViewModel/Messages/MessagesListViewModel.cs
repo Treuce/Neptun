@@ -220,6 +220,8 @@ namespace Neptun
 				{
 					foreach (var msg in selected)
 					{
+						--ViewModelApplication.UnreadMessageCount;
+						msg.isRead = true;
 						var request = new RestRequest(Configuration["NeptunServer:HostUrl"] + $"/HandleRequest.ashx?RequestType=GetData&GridID=c_messages_gridMessages&pageindex=1&pagesize=10000&sort1=SendDate%20DESC&sort2=&fixedheader=false&searchcol=&searchtext=&searchexpanded=false&allsubrowsexpanded=False&selectedid=undefined&functionname=&level=", Method.GET);
 
 						request.AddHeader("Accept", "*/*");
