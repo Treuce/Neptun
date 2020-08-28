@@ -60,7 +60,7 @@ namespace Neptun.Relational
 			try
 			{
 				// Make sure the database exists and is created
-				await mDbContext.Database.EnsureCreatedAsync();
+				 await mDbContext.Database.EnsureCreatedAsync();
 			}
 			catch (Exception e)
 			{

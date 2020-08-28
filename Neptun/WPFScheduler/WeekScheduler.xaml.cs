@@ -11,6 +11,7 @@ using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
+using System.Windows.Media.Animation;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
@@ -147,8 +148,9 @@ namespace WpfScheduler
 			try
 			{
 				if (_scheduler == null || _scheduler.Events == null) return;
+				//FrameworkDI.Logger.LogErrorSource($"painting all events: {date} and {_scheduler.Name}");
 
-				IEnumerable<ScheduleSubject> eventList = _scheduler.Events.Where(ev => ev.Start.Date == ev.End.Date && !ev.AllDay).OrderBy(ev => ev.Start);
+				var eventList = _scheduler.Events.Where(ev => ev.Start.Date == ev.End.Date && !ev.AllDay).OrderBy(ev => ev.End).ToList();
 
 				if (date == null)
 				{
@@ -163,44 +165,70 @@ namespace WpfScheduler
 					int numColumn = (int)date.Value.Date.Subtract(FirstDay.Date).TotalDays + 1;
 					((Canvas)this.FindName("column" + numColumn)).Children.Clear();
 
-					eventList = eventList.Where(ev => ev.Start.Date == date.Value.Date).OrderBy(ev => ev.Start);
+					eventList = eventList.Where(ev => ev.Start.Date == date.Value.Date).OrderBy(ev => ev.End).ToList();
 				}
 
 				double columnWidth = EventsGrid.ColumnDefinitions[1].Width.Value;
 
 				foreach (ScheduleSubject e in eventList)
 				{
-					int numColumn = (int)e.Start.Date.Subtract(FirstDay.Date).TotalDays + 1;
-					if (numColumn >= 0 && numColumn < 6)
+					try
 					{
-						var sp = (Canvas)this.FindName("column" + numColumn);
-						//if (numColumn == 3 && (e.courseID == "15" || e.courseID == "7"))
-						//	;
-							//Debugger.Break();
-						sp.Width = columnWidth;
 
-						double oneHourHeight = sp.ActualHeight / 14;
-						//_scheduler.Events
-						var concurrentEvents = _scheduler.Events.Where(e1 => ((e1.Start <= e.Start && e1.End > e.Start) ||
-																		(e1.Start >= e.Start && e1.Start < e.End)) &&
-																	   e1.End.Date == e1.Start.Date).OrderBy(ev => ev.End).ToList();
-
-						double marginTop = oneHourHeight * (e.Start.Hour + (e.Start.Minute / 60.0) - 8);
-						double width = columnWidth / concurrentEvents.Count;
-						double marginLeft = width * getIndex(e, concurrentEvents);
-
-						var wEvent = new EventUserControl(e, true);
-						wEvent.Width = width;
-						var asd = e.End.Subtract(e.Start).TotalHours;
-						wEvent.Height = e.End.Subtract(e.Start).TotalHours * oneHourHeight;
-						wEvent.Margin = new Thickness(marginLeft, marginTop, 0, 0);
-						wEvent.MouseDoubleClick += ((object sender, MouseButtonEventArgs ea) =>
+						int numColumn = (int)e.Start.Date.Subtract(FirstDay.Date).TotalDays + 1;
+						if (numColumn >= 0 && numColumn < 6)
 						{
-							ea.Handled = true;
-							OnEventDoubleClick(sender, wEvent.Event);
-						});
+							var sp = (Canvas)this.FindName("column" + numColumn);
+							//if (numColumn == 3 && (e.courseID == "15" || e.courseID == "7"))
+							//	;
+							//Debugger.Break();
+							sp.Width = columnWidth;
 
-						sp.Children.Add(wEvent);
+							double oneHourHeight = sp.ActualHeight / 14;
+							var concurrentEvents = _scheduler.Events.Where(e1 => ((e1.Start <= e.Start && e1.End > e.Start) ||
+																			(e1.Start >= e.Start && e1.Start < e.End)) &&
+																		   e1.End.Date == e1.Start.Date).ToList();
+						
+							concurrentEvents.Sort(delegate (ScheduleSubject a, ScheduleSubject b)
+							{
+								if (a.Start <= b.Start && a.End < b.End) return -1;
+								else if (a.Start <= b.Start && a.End > b.End) return 1;
+								else if (a.Start <= b.Start && a.End == b.End) return -1;
+								else if (a.Start > b.Start && a.End <= b.End) return -1;
+								else if (a.Start >= b.Start && a.End >= b.End) return 1;
+								else if (a.Start == b.Start && a.End < b.End) return -1;
+								else if (a.Start == b.Start && a.End > b.End) return 1;
+								else if (a.Start == b.Start && a.End == b.End)
+									return 0;
+								else
+								{
+									FrameworkDI.Logger.LogDebugSource($"a = {a.Start}-{a.End} {Environment.NewLine}b = {b.Start}-{b.End}");
+									throw new ArgumentException("Missed some stupid case in comparing... fml");
+								}
+							});
+							
+							double marginTop = oneHourHeight * (e.Start.Hour + (e.Start.Minute / 60.0) - 8);
+							double width = columnWidth / concurrentEvents.Count;
+							//var test = concurrentEvents.GroupBy(s => s.Start, s => s).ToList();
+							double marginLeft = width * getIndex(e, concurrentEvents);
+
+							var wEvent = new EventUserControl(e, true);
+							wEvent.Width = width;
+							var asd = e.End.Subtract(e.Start).TotalHours;
+							wEvent.Height = e.End.Subtract(e.Start).TotalHours * oneHourHeight;
+							wEvent.Margin = new Thickness(marginLeft, marginTop, 0, 0);
+							wEvent.MouseDoubleClick += ((object sender, MouseButtonEventArgs ea) =>
+							{
+								ea.Handled = true;
+								OnEventDoubleClick(sender, wEvent.Event);
+							});
+
+							sp.Children.Add(wEvent);
+						}
+					}
+					catch (Exception ex)
+					{
+						FrameworkDI.Logger.LogErrorSource(ex.Message, exception: ex);
 					}
 				}
 			}
@@ -211,11 +239,22 @@ namespace WpfScheduler
 			}
 		}
 
-		private int getIndex(ScheduleSubject e, List<ScheduleSubject> list)
+		private double getIndex(ScheduleSubject e, List<IGrouping<DateTime, ScheduleSubject>> list)
 		{
 			for (int i = 0; i < list.Count; i++)
 			{
-				if (e.Id == list[i].Id) return i;
+				foreach (var a in list[i])
+					if (a.Id == e.Id) return i;
+			}
+			return -1;
+		}
+
+		private int getIndex(ScheduleSubject e, List<ScheduleSubject> list)
+		{
+			
+			for (int i = 0; i < list.Count; i++)
+			{
+					if (list[i].Id == e.Id) return i;
 			}
 			return -1;
 		}

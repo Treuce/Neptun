@@ -5,6 +5,7 @@
     <AssemblyName>Neptun.Relational</AssemblyName>
     <RootNamespace>Neptun.Relational</RootNamespace>
     <Platforms>AnyCPU;x64</Platforms>
+    <LangVersion>8.0</LangVersion>
   </PropertyGroup>
 
   <ItemGroup>

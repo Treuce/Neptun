@@ -472,30 +472,30 @@ namespace Neptun
 						SubjectCode += a.code + ";";
 					LoadSubjects();
 
-					//MessageBoxResult result = MessageBox.Show("Felvegyem ezeket a tárgyakat most rögtön?", "Neptun", MessageBoxButton.YesNo);
-					//if (result == MessageBoxResult.Yes)
-					//{
-					//	for (int i = 0; i < Subjects.Count && i < list.Count; ++i)
-					//	{
-					//		var a = Subjects[i];
-					//		a.TakeViewModel = new TakeSubjectViewModel(a.id, a, this, true);
-					//		a.TakeViewModel.Courses = new ObservableCollection<TakeSubjectViewModel.Course>();
-					//		var asd = list[i].courses.Split(';');
-					//		foreach (var dman in asd)
-					//		{
-					//			a.TakeViewModel.Courses.Add(new TakeSubjectViewModel.Course()
-					//			{
-					//				ID = dman,
-					//				isSelected = true,
-					//				SelectionChanged = true
-					//			});
-					//		}
-					//	}
-					//	foreach (var a in Subjects)
-					//		a.TakeViewModel.TakeSubject.Execute(null);
-					//}
+					MessageBoxResult result = MessageBox.Show("Felvegyem ezeket a tárgyakat most rögtön?", "Neptun", MessageBoxButton.YesNo);
+					if (result == MessageBoxResult.Yes)
+					{
+						for (int i = 0; i < Subjects.Count && i < list.Count; ++i)
+						{
+							var a = Subjects[i];
+							a.TakeViewModel = new TakeSubjectViewModel(a.id, a, this, true);
+							a.TakeViewModel.Courses = new ObservableCollection<TakeSubjectViewModel.Course>();
+							var asd = list[i].courses.Split(';');
+							foreach (var dman in asd)
+							{
+								a.TakeViewModel.Courses.Add(new TakeSubjectViewModel.Course()
+								{
+									ID = dman,
+									isSelected = true,
+									SelectionChanged = true
+								});
+							}
+						}
+						foreach (var a in Subjects)
+							a.TakeViewModel.TakeSubject.Execute(null);
+					}
 
-					var result = MessageBox.Show("Órarendtervezőbe?", "Neptun", MessageBoxButton.YesNo);
+					result = MessageBox.Show("Órarendtervezőbe?", "Neptun", MessageBoxButton.YesNo);
 					if (result == MessageBoxResult.Yes)
 						foreach (var a in Subjects)
 							Application.Current.Dispatcher.Invoke(() =>

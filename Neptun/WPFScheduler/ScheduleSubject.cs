@@ -7,12 +7,15 @@ namespace WpfScheduler
 {
 	public class ScheduleSubject : Neptun.BaseViewModel
 	{
+		private DateRange mDateRange;
 		public Guid Id { get; set; }
 		public string Subject { get; set; }
 		public string Description { get; set; }
 		public string Code { get; set; }
 		public DateTime Start { get; set; }
 		public DateTime End { get; set; }
+
+		public DateRange DateRange { get => mDateRange ??= new DateRange(Start, End); set => mDateRange = value; }
 		public bool AllDay { get; set; }
 
 		public bool IsEnabled { get; set; }
@@ -26,6 +29,7 @@ namespace WpfScheduler
 		public ScheduleSubject(ScheduleSubject other)
 		{
 			Id = Guid.NewGuid();
+			DateRange = other.DateRange;
 			Subject = other.Subject;
 			Description = other.Description;
 			Code = other.Code;

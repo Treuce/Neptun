@@ -168,7 +168,7 @@ namespace Neptun
 			//(sender as WpfScheduler.EventUserControl).BorderElement.Background = Brushes.Green;
 			currentevent.BackGroundColor_HEX = Brushes.Green.Color.ToString();
 			plan.AddEvent(newevent);
-
+			//DI.ScheduleVM.ScheduledEvents.Add(newevent);
 			var concurrentEvents = scheduler.Events.Where(e1 => ((e1.Start <= newevent.Start && e1.End > newevent.End) ||
 							(e1.Start >= newevent.Start && e1.Start < newevent.End) ||
 							(e1.Start < newevent.Start && e1.End < newevent.End && !(e1.End <= newevent.Start))) &&

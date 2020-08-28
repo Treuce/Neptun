@@ -203,15 +203,16 @@ namespace Neptun
 		public ScheduleViewModel()
 		{
 			Subjects = new ObservableCollection<SubjectViewModel>();
-			AllCoursesEvents = new ObservableCollection<ScheduleSubject>();
-			ScheduledEvents = new ObservableCollection<ScheduleSubject>();
-			test = new ObservableRangeCollection<ScheduleSubject>();
-			test.CollectionChanged += ScheduledEvents_CollectionChanged;
+			AllCoursesEvents = new ObservableRangeCollection<ScheduleSubject>();
+			///*ScheduledEvents*/ = new ObservableCollection<ScheduleSubject>();
+			ScheduledEvents = new ObservableRangeCollection<ScheduleSubject>();
+			//ScheduledEvents.CollectionChanged += ScheduledEvents_CollectionChanged;
+			ScheduledEvents.CollectionChanged += ScheduledEvents_CollectionChanged;
 			//Changed = new Action<ScheduleSubject, bool>((ScheduleSubject a, bool showdisabled) => { });
 			//Clear = new Action(() => { PlanCounter = 0; });
 			//DeleteItem = new Action<SubjectViewModel>((SubjectViewModel a) => { });
 			Subjects.CollectionChanged += Subjects_CollectionChanged;
-			ScheduledEvents.CollectionChanged += ScheduledEvents_CollectionChanged;
+			//ScheduledEvents.CollectionChanged += ScheduledEvents_CollectionChanged;
 			ClearList = new RelayCommand<bool>((bool clearsubjects) =>
 			{
 				if (clearsubjects)
@@ -231,17 +232,17 @@ namespace Neptun
 		#endregion
 
 		#region Public Properties
-		public ObservableCollection<WpfScheduler.ScheduleSubject> AllCoursesEvents { get; set; }
-		public ObservableCollection<WpfScheduler.ScheduleSubject> ScheduledEvents { get; set; }
+		public ObservableRangeCollection<WpfScheduler.ScheduleSubject> AllCoursesEvents { get; set; }
+		//public ObservableCollection<WpfScheduler.ScheduleSubject> ScheduledEvents { get; set; }
 		public ObservableCollection<SubjectViewModel> Subjects { get; set; }
 
-		public ObservableRangeCollection<ScheduleSubject> test { get; set; }
+		public ObservableRangeCollection<ScheduleSubject> ScheduledEvents { get; set; }
 
 		public bool ShowDisabledCourses { get; set; }
 
 		public string SubjectCounterDisplay { get; set; } = "Tárgyak száma: 0";
 
-		public int PlanCounter { get => test.Count; }
+		public int PlanCounter { get => ScheduledEvents.Count; }
 
 		#endregion
 

@@ -114,34 +114,35 @@ namespace Neptun
 				var request = new RestRequest("main.aspx", Method.GET);
 				while (true)
 				{
-					if (ViewModelApplication.isLoggedIn)
+					try
 					{
-						string tmphtml = String.Empty;
-						lock (RestWebClient)
-							tmphtml = RestWebClient.Execute(request).Content;
-						var html = new HtmlDocument();
-						html.LoadHtml(tmphtml);
-
-						var unreadmessages = html.GetElementbyId("_lnkInbox").ChildNodes[0].InnerText.Split(' ');
-						if (unreadmessages.Length == 3)
+						if (ViewModelApplication.isLoggedIn)
 						{
-							var str = unreadmessages[2].Trim('(', ')');
-							Int32.TryParse(str, out int tmp);
-							ViewModelApplication.UnreadMessageCount = tmp;
-							//if (tmp != 0)
-							//{
-							//	TaskManager.RunAndForget(async() =>
-							//	{
-							//		for (int i = 0; i < 10; ++i)
-							//		{
-							//			SystemSounds.Exclamation.Play();
-							//			await Task.Delay(200);
-							//		}
-							//	});
-							//}
-							//ViewModelApplication.OnPropertyChanged("");
-							//ViewModelApplication.MainMenuVM.OnPropertyChanged("messagesText");
+							string tmphtml = String.Empty;
+							lock (RestWebClient)
+								tmphtml = RestWebClient.Execute(request).Content;
+							var html = new HtmlDocument();
+							html.LoadHtml(tmphtml);
+
+							var unreadmessages = html.GetElementbyId("_lnkInbox").ChildNodes[0].InnerText.Split(' ');
+							if (unreadmessages.Length == 3)
+							{
+								var str = unreadmessages[2].Trim('(', ')');
+								Int32.TryParse(str, out int tmp);
+								ViewModelApplication.UnreadMessageCount = tmp;
+
+							}
 						}
+					}
+					catch (Exception e)
+					{
+						Logger.LogDebugSource(e.Message, exception: e);
+						ViewModelApplication.GoToPage(ApplicationPage.Login);
+						request = new RestRequest("main.aspx/LogOutFromJS", Method.POST);
+						request.Body = new RequestBody("ContentType = \"application/json\"", "application/json", "{\"link\": \"Login.aspx?timeout=\"}");
+						request.Timeout = 100;
+						CoreDI.RestWebClient.Execute(request);
+						var sb = new StringBuilder();
 					}
 					await Task.Delay(TimeSpan.FromMinutes(1));
 				}
